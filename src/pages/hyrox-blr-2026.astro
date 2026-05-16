@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What heart rate looks like during a HYROX race — Bengaluru 2026 data</title>
+<meta name="description" content="1,157 heart rate samples from a 2:01:06 HYROX race, broken down by all 16 segments. 92% at threshold+, average 167 bpm. Real Apple Watch data with zone, drift, and recovery analysis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What heart rate looks like during a HYROX race: 1,157 data points from Bengaluru 2026",
+  "description": "Continuous heart rate trace from a 2:01:06 HYROX race, broken down by all 16 segments. 92% of the race spent at threshold or above, average 167 bpm, peak 189 bpm.",
+  "datePublished": "2026-05-15",
+  "dateModified": "2026-05-15",
+  "author": {
+    "@type": "Person",
+    "name": "Prashant Singh"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Prashant Singh"
+  },
+  "about":[
+    {
+      "@type": "SportsEvent",
+      "name": "HYROX Bengaluru 2026",
+      "startDate": "2026-04-12"
+    },
+    {
+      "@type": "Thing",
+      "name": "HYROX"
+    },
+    {
+      "@type": "Thing",
+      "name": "Heart rate training"
+    },
+    {
+      "@type": "Thing",
+      "name": "Hybrid fitness racing"
+    }
+  ],
+  "mainEntity": {
+    "@type": "Dataset",
+    "name": "HYROX Bengaluru 2026 \u2014 heart rate per segment",
+    "description": "Per-segment heart rate stats (average, peak, low, zone) for all 16 segments of a HYROX race.",
+    "creator": {
+      "@type": "Person",
+      "name": "Prashant Singh"
+    },
+    "measurementTechnique": "Apple Watch optical heart rate sensor, sampled at ~5 second intervals via HealthKit",
+    "variableMeasured":[
+      "heart rate (bpm)",
+      "duration (seconds)",
+      "heart rate zone"
+    ]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity":[
+    {
+      "@type": "Question",
+      "name": "What's a typical heart rate during a HYROX race?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For a competitive sub-2-hour finish, expect to average around 167 bpm and spend 90%+ of the race at threshold or above (Z4 + Z5). In this race, the average was 167 bpm across 2 hours 1 minute, with 92.3% of total time at or above 80% of max HR."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which HYROX station has the highest heart rate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In this race, the running segments produced higher average heart rates than the strength stations. The single highest segment average was Run 3 and Run 7, both at 178 bpm. Among workout stations, Sled Push (170 bpm avg) and Sandbag Lunges (170 bpm avg) were the highest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which HYROX station gives the most recovery?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sled Pull, despite being a heavy strength station, ended with the lowest finishing heart rate at 157 bpm \u2014 the slow, technical nature of pulling the sled the full 50 metres in stages allows HR to come down between efforts. It's a deceptive 'recovery' though: the heart rate jumped 21 bpm into the following Run 4."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much time do you spend in each heart rate zone during HYROX?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In this race: Z1 Recovery 0.1%, Z2 Aerobic 0.0%, Z3 Tempo 7.6%, Z4 Threshold 51.7%, Z5 Anaerobic 40.6%. More than 92% of the race was spent at threshold or anaerobic effort \u2014 HYROX is functionally a 2-hour threshold race."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does heart rate drift during a HYROX race?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, but unevenly. In this race, the second-half average heart rate was only +0.6 bpm higher than the first half overall \u2014 but when you isolate just the running segments, drift was +4.2 bpm (168.7 \u2192 172.8). Stations stayed nearly flat. Translation: the legs were paying the cumulative cost on the runs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is heart rate during the roxzone (transitions)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The roxzone \u2014 the time spent moving between segments \u2014 averaged ~41 seconds per transition in this race (10:12 total across 15 transitions). Heart rate behaviour in transitions was bidirectional: 5 of 6 measured transitions saw HR rise into the next run rather than drop, because the run effort exceeds what the previous station was demanding by the end."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this heart rate data collected and processed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Heart rate was captured on an Apple Watch during a Mixed Cardio workout session, exported as JSON via the Health Auto Export iOS app. 1,157 samples were recorded during the 2:01:06 race window at a median interval of 5 seconds. Segment durations are taken from the official HYROX race results. The 10:12 of total roxzone time is distributed equally as ~41 seconds between each of the 15 segment transitions for charting."
+      }
+    }
+  ]
+}
+</script>
+<style>
+:root {
+  --bg: #0A0A0B;
+  --surface: #14141A;
+  --panel: #1A1A22;
+  --ink-1: #F5F5EE;
+  --ink-2: #A0A09A;
+  --ink-3: #5C5C58;
+  --rule: #26262C;
+  --yellow: #FFE600;
+  --crimson: #E84B5F;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink-1); }
+body {
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+.wrap { max-width: 1240px; margin: 0 auto; padding: 64px 24px 96px; }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+}
+.eyebrow .dash { color: var(--yellow); margin: 0 10px; }
+
+h1.title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(36px, 5.6vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0 0 22px;
+  color: var(--ink-1);
+  font-variation-settings: "SOFT" 50, "WONK" 0;
+}
+h1 em {
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: var(--yellow);
+  font-weight: 400;
+}
+
+.standfirst {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(19px, 1.6vw, 22px);
+  line-height: 1.45;
+  color: var(--ink-2);
+  max-width: 760px;
+  margin: 0 0 56px;
+  font-variation-settings: "SOFT" 100, "opsz" 32;
+}
+
+.takeaways {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 32px 36px;
+  margin: 0 0 56px;
+}
+.takeaways h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin: 0 0 22px;
+  font-weight: 500;
+}
+.takeaways ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 0;
+}
+.takeaways li {
+  padding: 18px 24px 18px 20px;
+  border-left: 2px solid var(--yellow);
+  margin: 0 0 4px;
+  background: transparent;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--ink-1);
+}
+.takeaways li .n {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--yellow);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.takeaways li strong { color: var(--ink-1); font-weight: 600; }
+
+.byline {
+  display: flex; gap: 28px; flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px; color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 16px 0;
+  margin-bottom: 44px;
+}
+.byline strong { color: var(--ink-1); font-weight: 500; }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 0 0 44px;
+  border-top: 2px solid var(--ink-1);
+  border-bottom: 1px solid var(--rule);
+}
+.stat {
+  padding: 20px 24px 20px 0;
+  border-right: 1px solid var(--rule);
+}
+.stat:last-child { border-right: none; }
+.stat .num {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 46px;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  display: block;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-1);
+}
+.stat .num .unit { font-size: 16px; color: var(--ink-3); font-weight: 400; margin-left: 4px; }
+.stat .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 10px;
+  display: block;
+}
+.stat.accent .num { color: var(--yellow); }
+
+section { margin-bottom: 56px; }
+.chart-frame {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 36px 32px 28px;
+  margin: 0 0 16px;
+  position: relative;
+}
+.chart-frame h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  color: var(--ink-1);
+  font-variation-settings: "SOFT" 60;
+}
+.chart-frame .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.chart-frame p.lede {
+  color: var(--ink-2);
+  margin: 0 0 28px;
+  max-width: 760px;
+  font-size: 16px;
+}
+svg.hyrox-chart { width: 100%; height: auto; display: block; }
+
+.axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.axis-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  fill: var(--ink-2);
+}
+.seg-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.zone-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+.ref-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.peak-callout {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--yellow);
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+.zone-row-label {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+.zone-row-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+}
+.zone-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.zone-pct { fill: var(--ink-3); margin-left: 6px; font-weight: 400; }
+.seg-axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.04em;
+}
+.bar-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.bar-value-small {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.delta {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.group-label {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+.leg-mini {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.recovery-station {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+.recovery-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.recovery-delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.legend-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.no-data {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.body-section { max-width: 760px; margin: 0 auto 56px; }
+.body-section h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+  color: var(--ink-1);
+}
+.body-section h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin: 36px 0 10px;
+  color: var(--ink-1);
+}
+.body-section h3 .zone-tag-inline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+.body-section p {
+  color: var(--ink-1);
+  margin: 0 0 14px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.body-section p.muted { color: var(--ink-2); }
+
+table.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 14.5px;
+}
+table.breakdown-table thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid var(--ink-1);
+  font-weight: 500;
+}
+table.breakdown-table thead th.num { text-align: right; }
+table.breakdown-table tbody td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+table.breakdown-table tbody td.seg-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-3);
+  width: 36px;
+}
+table.breakdown-table tbody td.seg-name {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink-1);
+}
+table.breakdown-table tbody td.seg-name .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-3);
+  margin-left: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+table.breakdown-table tbody td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  color: var(--ink-1);
+}
+table.breakdown-table tbody td.num.emph {
+  color: var(--yellow);
+  font-weight: 500;
+}
+table.breakdown-table tbody td.num.muted { color: var(--ink-3); }
+table.breakdown-table tbody tr.kind-run td.seg-name { color: var(--ink-2); }
+.zone-pill {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 1px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.zone-pill.nd { background: transparent; color: var(--ink-3); border-color: var(--rule); }
+
+.faq {
+  margin: 56px auto;
+  max-width: 880px;
+}
+.faq h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 36px;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px;
+  color: var(--ink-1);
+}
+.faq details {
+  border-bottom: 1px solid var(--rule);
+  padding: 22px 4px;
+}
+.faq details:first-of-type { border-top: 1px solid var(--rule); }
+.faq details summary {
+  cursor: pointer;
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--ink-1);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  letter-spacing: -0.01em;
+}
+.faq details summary::-webkit-details-marker { display: none; }
+.faq details summary::after {
+  content: '+';
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 300;
+  font-size: 28px;
+  color: var(--yellow);
+  transition: transform 0.2s;
+  line-height: 1;
+}
+.faq details[open] summary::after { content: '−'; }
+.faq details p {
+  margin: 16px 0 4px;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.method {
+  margin-top: 60px;
+  padding: 28px 32px;
+  background: var(--surface);
+  border-left: 3px solid var(--yellow);
+  font-size: 14.5px;
+  color: var(--ink-2);
+  max-width: 880px;
+}
+.method h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: var(--ink-1);
+  font-weight: 500;
+}
+.method p { margin: 0 0 10px; }
+.method p:last-child { margin-bottom: 0; }
+
+.tooltip {
+  position: fixed;
+  background: var(--ink-1);
+  color: var(--bg);
+  padding: 14px 16px;
+  border-radius: 1px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+  z-index: 100;
+  min-width: 220px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+.tooltip strong {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.tooltip .row { display: flex; justify-content: space-between; padding: 2px 0; }
+.tooltip .row span:first-child { color: var(--ink-3); }
+.tooltip .row span:last-child { font-variant-numeric: tabular-nums; color: var(--bg); font-weight: 500; }
+
+@media (max-width: 720px) {
+  .wrap { padding: 44px 18px 64px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .stat { padding: 16px 12px; border-bottom: 1px solid var(--rule); }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(3), .stat:nth-child(4) { border-bottom: none; }
+  .chart-frame { padding: 24px 16px 16px; }
+  .takeaways { padding: 24px 20px; }
+  .takeaways ol { grid-template-columns: 1fr; }
+  table.breakdown-table tbody td.seg-name { font-size: 15px; }
+  table.breakdown-table tbody td.seg-name .sub { display: block; margin: 4px 0 0 0; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">HYROX <span class="dash">/</span> Bengaluru 2026 <span class="dash">/</span> Race Report</div>
+
+  <h1 class="title">What does <em>heart rate</em> look like during a HYROX race?</h1>
+
+  <p class="standfirst">
+    1,157 heart rate samples from a 2:01:06 finish in Bengaluru — mapped to all 16
+    segments, decomposed into zones, drift, and recovery. The story the splits alone can&#8217;t tell.
+  </p>
+
+  <div class="takeaways">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>
+        <span class="n">01 — INTENSITY</span>
+        <strong>92.3% of the race was at threshold or above.</strong> Of 2 hours 1 minute, only ~8 minutes
+        ran below 80% of max HR. HYROX is functionally a 2-hour threshold event, not an interval workout.
+      </li>
+      <li>
+        <span class="n">02 — RUNS &gt; STATIONS</span>
+        <strong>Running heart rate drift was +4.2 bpm</strong> (168.7 → 172.8 across halves). Stations stayed flat
+        at +0.6. The runs accumulate the real cardiovascular cost, not the strength stations.
+      </li>
+      <li>
+        <span class="n">03 — DECEPTIVE STATION</span>
+        <strong>Sled Pull ended at the race&#8217;s lowest station HR (157)</strong> — then the transition into
+        Run 4 spiked HR 21 bpm to 178. The biggest cardiovascular jump of the race lives in a recovery moment.
+      </li>
+      <li>
+        <span class="n">04 — TRUE RECOVERY</span>
+        <strong>Only one of six measured transitions saw HR actually drop into the next run:</strong>
+        Sandbag Lunges → Run 8 (167 → 146, −21 bpm). Likely the only moment of true pacing release in the race.
+      </li>
+      <li>
+        <span class="n">05 — Z5 BURDEN</span>
+        <strong>40.6% of the race spent in Z5 anaerobic</strong> (&gt;90% max HR). That&#8217;s 41 minutes
+        accumulated above 171 bpm — the cost of a sub-2:05 finish.
+      </li>
+    </ol>
+  </div>
+
+  <div class="byline">
+    <div>By <strong>Prashant Singh</strong></div>
+    <div>Bib <strong>95039</strong></div>
+    <div>Age group <strong>30–34</strong></div>
+    <div>Race <strong>12 April 2026</strong></div>
+    <div>Final time <strong>02:01:06</strong></div>
+    <div>Tracker <strong>Apple Watch</strong></div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat accent">
+      <span class="num">167<span class="unit">bpm</span></span>
+      <span class="lbl">Average heart rate</span>
+    </div>
+    <div class="stat">
+      <span class="num">189<span class="unit">bpm</span></span>
+      <span class="lbl">Peak (99% max)</span>
+    </div>
+    <div class="stat">
+      <span class="num">92<span class="unit">%</span></span>
+      <span class="lbl">Time at threshold+</span>
+    </div>
+    <div class="stat">
+      <span class="num">2:01:06</span>
+      <span class="lbl">Total race time</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="chart-frame">
+      <h2>The full race in one breath</h2>
+      <div class="sub">1,157 samples · ~5 second resolution · zones shown as background bands</div>
+      <svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="c1-title c1-desc" class="hyrox-chart">
+<title id="c1-title">Heart rate across all 16 HYROX segments</title>
+<desc id="c1-desc">Heart rate line plot over 121 minutes, showing 1,157 samples. Average 167 bpm, peak 189 bpm.</desc>
+<g class="zone-bands">
+<rect x="64" y="400.2" width="1080" height="79.8" fill="#5C7593" opacity="0.08"/>
+<rect x="64" y="320.4" width="1080" height="79.8" fill="#5B8C7F" opacity="0.08"/>
+<rect x="64" y="240.6" width="1080" height="79.8" fill="#C9A436" opacity="0.08"/>
+<rect x="64" y="160.8" width="1080" height="79.8" fill="#D6783D" opacity="0.08"/>
+<rect x="64" y="81.0" width="1080" height="79.8" fill="#D43F3F" opacity="0.08"/>
+</g>
+<g class="zone-tags">
+<text x="1150" y="443.1" class="zone-tag" fill="#5C7593">Z1</text>
+<text x="1150" y="363.3" class="zone-tag" fill="#5B8C7F">Z2</text>
+<text x="1150" y="283.5" class="zone-tag" fill="#C9A436">Z3</text>
+<text x="1150" y="203.7" class="zone-tag" fill="#D6783D">Z4</text>
+<text x="1150" y="123.9" class="zone-tag" fill="#D43F3F">Z5</text>
+</g>
+<g class="seg-separators">
+<line x1="126.5" y1="60" x2="126.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="132.5" y1="60" x2="132.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="178.7" y1="60" x2="178.7" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="184.8" y1="60" x2="184.8" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="244.1" y1="60" x2="244.1" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="250.2" y1="60" x2="250.2" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="298.6" y1="60" x2="298.6" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="304.6" y1="60" x2="304.6" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="371.9" y1="60" x2="371.9" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="377.9" y1="60" x2="377.9" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="467.1" y1="60" x2="467.1" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="473.2" y1="60" x2="473.2" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="534.5" y1="60" x2="534.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="540.6" y1="60" x2="540.6" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="617.3" y1="60" x2="617.3" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="623.4" y1="60" x2="623.4" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="683.5" y1="60" x2="683.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="689.5" y1="60" x2="689.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="741.3" y1="60" x2="741.3" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="747.4" y1="60" x2="747.4" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="798.4" y1="60" x2="798.4" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="804.5" y1="60" x2="804.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="826.6" y1="60" x2="826.6" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="832.7" y1="60" x2="832.7" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="880.5" y1="60" x2="880.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="886.5" y1="60" x2="886.5" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="958.2" y1="60" x2="958.2" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="964.3" y1="60" x2="964.3" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="1035.8" y1="60" x2="1035.8" y2="480" stroke="#26262C" stroke-width="0.5"/>
+<line x1="1041.9" y1="60" x2="1041.9" y2="480" stroke="#26262C" stroke-width="0.5"/>
+</g>
+<g class="y-axis">
+<line x1="60" y1="459.0" x2="64" y2="459.0" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="56" y="462.0" text-anchor="end" class="axis-label">100</text>
+<line x1="60" y1="375.0" x2="64" y2="375.0" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="56" y="378.0" text-anchor="end" class="axis-label">120</text>
+<line x1="60" y1="291.0" x2="64" y2="291.0" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="56" y="294.0" text-anchor="end" class="axis-label">140</text>
+<line x1="60" y1="207.0" x2="64" y2="207.0" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="56" y="210.0" text-anchor="end" class="axis-label">160</text>
+<line x1="60" y1="123.0" x2="64" y2="123.0" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="56" y="126.0" text-anchor="end" class="axis-label">180</text>
+<text x="14" y="270.0" transform="rotate(-90 14 270.0)" class="axis-title" text-anchor="middle">Heart rate (bpm)</text>
+</g>
+<g class="seg-markers">
+<rect x="64.0" y="46" width="62.5" height="3" fill="#5C5C58"/>
+<text x="95.2" y="40" text-anchor="middle" class="seg-label">R1</text>
+<rect x="132.5" y="46" width="46.2" height="3" fill="#FFE600"/>
+<text x="155.6" y="40" text-anchor="middle" class="seg-label">SkiErg</text>
+<rect x="184.8" y="46" width="59.4" height="3" fill="#5C5C58"/>
+<text x="214.5" y="40" text-anchor="middle" class="seg-label">R2</text>
+<rect x="250.2" y="46" width="48.4" height="3" fill="#FFE600"/>
+<text x="274.4" y="40" text-anchor="middle" class="seg-label">Sled P</text>
+<rect x="304.6" y="46" width="67.2" height="3" fill="#5C5C58"/>
+<text x="338.3" y="40" text-anchor="middle" class="seg-label">R3</text>
+<rect x="377.9" y="46" width="89.2" height="3" fill="#FFE600"/>
+<text x="422.5" y="40" text-anchor="middle" class="seg-label">Sled Pull</text>
+<rect x="473.2" y="46" width="61.3" height="3" fill="#5C5C58"/>
+<text x="503.9" y="40" text-anchor="middle" class="seg-label">R4</text>
+<rect x="540.6" y="46" width="76.7" height="3" fill="#FFE600"/>
+<text x="578.9" y="40" text-anchor="middle" class="seg-label">Burpee Bro</text>
+<rect x="623.4" y="46" width="60.1" height="3" fill="#5C5C58"/>
+<text x="653.4" y="40" text-anchor="middle" class="seg-label">R5</text>
+<rect x="689.5" y="46" width="51.8" height="3" fill="#FFE600"/>
+<text x="715.4" y="40" text-anchor="middle" class="seg-label">Row</text>
+<rect x="747.4" y="46" width="51.1" height="3" fill="#5C5C58"/>
+<text x="772.9" y="40" text-anchor="middle" class="seg-label">R6</text>
+<rect x="804.5" y="46" width="22.1" height="3" fill="#FFE600"/>
+<rect x="832.7" y="46" width="47.8" height="3" fill="#5C5C58"/>
+<text x="856.6" y="40" text-anchor="middle" class="seg-label">R7</text>
+<rect x="886.5" y="46" width="71.7" height="3" fill="#FFE600"/>
+<text x="922.4" y="40" text-anchor="middle" class="seg-label">Sandbag Lu</text>
+<rect x="964.3" y="46" width="71.5" height="3" fill="#5C5C58"/>
+<text x="1000.0" y="40" text-anchor="middle" class="seg-label">R8</text>
+<rect x="1041.9" y="46" width="102.1" height="3" fill="#FFE600"/>
+<text x="1092.9" y="40" text-anchor="middle" class="seg-label">Wall Balls</text>
+</g>
+<g class="x-axis">
+<line x1="64.0" y1="480" x2="64.0" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="64.0" y="498" text-anchor="middle" class="axis-label">0:00</text>
+<line x1="153.1" y1="480" x2="153.1" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="153.1" y="498" text-anchor="middle" class="axis-label">10:00</text>
+<line x1="242.1" y1="480" x2="242.1" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="242.1" y="498" text-anchor="middle" class="axis-label">20:00</text>
+<line x1="331.2" y1="480" x2="331.2" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="331.2" y="498" text-anchor="middle" class="axis-label">30:00</text>
+<line x1="420.2" y1="480" x2="420.2" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="420.2" y="498" text-anchor="middle" class="axis-label">40:00</text>
+<line x1="509.3" y1="480" x2="509.3" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="509.3" y="498" text-anchor="middle" class="axis-label">50:00</text>
+<line x1="598.4" y1="480" x2="598.4" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="598.4" y="498" text-anchor="middle" class="axis-label">1:00:00</text>
+<line x1="687.4" y1="480" x2="687.4" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="687.4" y="498" text-anchor="middle" class="axis-label">1:10:00</text>
+<line x1="776.5" y1="480" x2="776.5" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="776.5" y="498" text-anchor="middle" class="axis-label">1:20:00</text>
+<line x1="865.5" y1="480" x2="865.5" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="865.5" y="498" text-anchor="middle" class="axis-label">1:30:00</text>
+<line x1="954.6" y1="480" x2="954.6" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="954.6" y="498" text-anchor="middle" class="axis-label">1:40:00</text>
+<line x1="1043.7" y1="480" x2="1043.7" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="1043.7" y="498" text-anchor="middle" class="axis-label">1:50:00</text>
+<line x1="1132.7" y1="480" x2="1132.7" y2="484" stroke="#5C5C58" stroke-width="0.6"/>
+<text x="1132.7" y="498" text-anchor="middle" class="axis-label">2:00:00</text>
+<text x="604.0" y="534" text-anchor="middle" class="axis-title">Elapsed race time</text>
+</g>
+<line x1="64" y1="480" x2="1144" y2="480" stroke="#A0A09A" stroke-width="0.8"/>
+<defs>
+<linearGradient id="hrFill" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#FFE600" stop-opacity="0.22"/>
+<stop offset="100%" stop-color="#FFE600" stop-opacity="0.0"/>
+</linearGradient></defs>
+<g class="hr-area">
+<path d="M 64.0 480.0 L 64.0 454.8 L 64.9 429.6 L 65.2 421.2 L 65.2 480.0 Z" fill="url(#hrFill)"/>
+<path d="M 75.4 480.0 L 75.4 236.4 L 76.2 236.4 L 76.9 232.2 L 77.1 236.4 L 77.8 228.0 L 78.7 223.8 L 79.3 219.6 L 80.5 215.4 L 80.9 215.4 L 82.1 215.4 L 82.3 211.2 L 83.0 215.4 L 84.3 223.8 L 85.1 232.2 L 85.7 244.8 L 86.1 236.4 L 86.9 236.4 L 93.2 223.8 L 94.7 244.8 L 94.9 244.8 L 94.9 480.0 Z" fill="url(#hrFill)"/>
+<path d="M 117.4 480.0 L 117.4 198.6 L 118.5 190.2 L 119.2 190.2 L 119.4 194.4 L 120.7 190.2 L 121.4 186.0 L 121.6 190.2 L 122.9 173.4 L 123.1 177.6 L 124.3 181.8 L 124.7 186.0 L 125.7 186.0 L 126.0 190.2 L 127.2 194.4 L 127.8 194.4 L 128.9 194.4 L 129.2 198.6 L 130.2 198.6 L 131.1 198.6 L 131.7 194.4 L 132.0 198.6 L 132.0 480.0 Z" fill="url(#hrFill)"/>
+<path d="M 232.0 480.0 L 232.0 198.6 L 232.2 198.6 L 239.3 173.4 L 240.2 173.4 L 240.3 173.4 L 241.1 177.6 L 242.4 181.8 L 243.2 177.6 L 243.3 173.4 L 244.0 173.4 L 245.4 173.4 L 245.5 173.4 L 246.7 173.4 L 247.6 177.6 L 247.8 177.6 L 248.5 194.4 L 249.5 177.6 L 249.5 480.0 Z" fill="url(#hrFill)"/>
+<path d="M 275.1 480.0 L 275.1 114.6 L 275.8 118.8 L 276.1 123.0 L 277.2 135.6 L 278.9 131.4 L 279.7 127.2 L 281.0 127.2 L 281.8 127.2 L 281.9 131.4 L 283.1 131.4 L 283.5 144.0 L 284.3 148.2 L 285.2 144.0 L 285.6 139.8 L 286.5 148.2 L 287.1 152.4 L 287.8 177.6 L 289.2 181.8 L 289.9 173.4 L 290.5 173.4 L 291.3 177.6 L 291.5 181.8 L 292.3 181.8 L 293.5 198.6 L 294.1 207.0 L 294.7 211.2 L 295.7 228.0 L 296.0 232.2 L 297.2 232.2 L 298.1 249.0 L 298.7 257.4 L 299.0 253.2 L 300.2 257.4 L 300.5 253.2 L 301.3 261.6 L 304.0 265.8 L 304.8 265.8 L 305.1 270.0 L 305.8 270.0 L 306.4 274.2 L 307.4 274.2 L 308.3 274.2 L 309.1 265.8 L 309.4 265.8 L 310.4 219.6 L 311.1 198.6 L 311.7 186.0 L 312.3 181.8 L 313.7 144.0 L 314.0 139.8 L 315.0 135.6 L 315.7 135.6 L 316.6 127.2 L 317.2 123.0 L 317.8 118.8 L 318.7 114.6 L 319.2 110.4 L 320.3 114.6 L 320.5 110.4 L 321.4 114.6 L 322.6 114.6 L 322.7 118.8 L 323.5 114.6 L 324.6 114.6 L 325.5 118.8 L 325.8 118.8 L 326.9 118.8 L 327.2 118.8 L 328.2 118.8 L 329.1 118.8 L 330.0 118.8 L 330.7 123.0 L 330.9 123.0 L 331.8 123.0 L 332.4 123.0 L 333.6 118.8 L 334.3 123.0 L 334.6 123.0 L 335.9 114.6 L 336.1 114.6 L 337.4 118.8 L 338.0 118.8 L 338.6 114.6 L 339.0 123.0 L 340.4 114.6 L 340.8 114.6 L 341.9 114.6 L 342.2 114.6 L 343.4 114.6 L 343.9 118.8 L 345.6 114.6 L 346.3 114.6 L 346.8 114.6 L 347.8 110.4 L 348.0 110.4 L 348.8 114.6 L 349.4 114.6 L 350.2 114.6 L 351.2 110.4 L 351.7 110.4 L 353.0 110.4 L 353.3 110.4 L 353.9 106.2 L 355.2 106.2 L 356.0 106.2 L 356.1 106.2 L 357.5 102.0 L 357.6 102.0 L 358.9 102.0 L 359.4 102.0 L 360.4 102.0 L 360.7 102.0 L 361.9 97.8 L 362.1 97.8 L 363.4 106.2 L 364.1 106.2 L 364.6 93.6 L 365.3 93.6 L 366.2 85.2 L 366.7 93.6 L 367.4 97.8 L 368.7 102.0 L 368.9 97.8 L 369.6 102.0 L 370.4 106.2 L 371.1 110.4 L 372.3 106.2 L 373.2 106.2 L 373.5 102.0 L 374.5 106.2 L 375.0 106.2 L 376.0 114.6 L 376.3 127.2 L 380.6 160.8 L 381.4 186.0 L 381.5 190.2 L 382.2 186.0 L 383.0 173.4 L 386.1 160.8 L 387.1 169.2 L 387.9 169.2 L 388.5 181.8 L 389.5 181.8 L 390.1 173.4 L 390.6 177.6 L 391.1 186.0 L 391.9 186.0 L 392.9 190.2 L 394.0 177.6 L 394.1 173.4 L 395.5 190.2 L 396.2 219.6 L 396.8 240.6 L 397.1 240.6 L 397.8 249.0 L 399.2 249.0 L 399.3 249.0 L 400.6 236.4 L 401.2 232.2 L 401.8 223.8 L 402.9 215.4 L 403.2 211.2 L 403.8 202.8 L 405.0 198.6 L 405.7 215.4 L 406.1 215.4 L 407.3 211.2 L 408.1 207.0 L 408.2 207.0 L 409.6 181.8 L 410.0 198.6 L 410.6 211.2 L 411.8 211.2 L 411.9 207.0 L 412.7 202.8 L 414.0 165.0 L 414.5 165.0 L 414.9 169.2 L 415.6 177.6 L 416.7 165.0 L 417.7 202.8 L 418.2 211.2 L 418.8 240.6 L 419.8 257.4 L 420.4 270.0 L 421.0 261.6 L 421.6 240.6 L 422.3 232.2 L 423.7 232.2 L 424.1 249.0 L 424.7 265.8 L 425.3 286.8 L 426.6 278.4 L 426.8 265.8 L 427.8 265.8 L 430.0 240.6 L 430.5 236.4 L 431.8 207.0 L 432.4 223.8 L 432.7 236.4 L 433.5 240.6 L 434.5 228.0 L 436.4 219.6 L 437.9 207.0 L 438.9 202.8 L 439.4 198.6 L 440.7 194.4 L 441.3 156.6 L 441.8 177.6 L 442.8 181.8 L 443.7 215.4 L 444.1 215.4 L 444.6 219.6 L 445.3 228.0 L 446.7 240.6 L 446.8 240.6 L 447.6 232.2 L 448.9 232.2 L 449.0 232.2 L 449.8 232.2 L 451.1 198.6 L 451.4 198.6 L 452.3 219.6 L 452.7 219.6 L 453.5 215.4 L 454.5 215.4 L 455.1 219.6 L 455.7 219.6 L 457.1 211.2 L 457.2 215.4 L 458.1 215.4 L 458.8 215.4 L 460.0 223.8 L 460.3 211.2 L 460.9 215.4 L 465.5 253.2 L 466.7 232.2 L 467.0 219.6 L 467.6 202.8 L 468.3 181.8 L 469.7 165.0 L 470.4 152.4 L 471.2 148.2 L 471.9 139.8 L 472.2 135.6 L 472.9 135.6 L 474.1 131.4 L 474.6 127.2 L 475.6 123.0 L 475.8 123.0 L 476.8 118.8 L 477.5 123.0 L 478.0 118.8 L 479.0 118.8 L 480.1 118.8 L 480.8 114.6 L 480.9 114.6 L 482.3 110.4 L 482.4 110.4 L 483.5 114.6 L 484.5 110.4 L 484.7 114.6 L 485.4 110.4 L 486.3 110.4 L 486.9 118.8 L 487.9 127.2 L 488.4 131.4 L 489.7 131.4 L 490.4 127.2 L 490.7 127.2 L 491.5 127.2 L 492.7 131.4 L 492.8 131.4 L 494.0 131.4 L 494.3 135.6 L 495.2 135.6 L 496.4 131.4 L 496.7 131.4 L 497.7 135.6 L 498.0 135.6 L 498.9 135.6 L 500.1 139.8 L 500.8 139.8 L 501.0 139.8 L 502.3 152.4 L 502.5 152.4 L 503.5 152.4 L 504.0 160.8 L 504.8 156.6 L 505.9 152.4 L 506.6 152.4 L 507.4 152.4 L 508.3 152.4 L 509.0 148.2 L 509.3 148.2 L 510.5 148.2 L 510.9 144.0 L 512.0 144.0 L 512.3 144.0 L 513.5 139.8 L 514.2 144.0 L 514.3 148.2 L 515.2 139.8 L 516.3 144.0 L 517.0 139.8 L 517.9 139.8 L 518.1 144.0 L 519.1 139.8 L 519.5 144.0 L 520.6 144.0 L 521.6 156.6 L 522.4 148.2 L 523.1 160.8 L 523.3 165.0 L 524.3 165.0 L 525.3 169.2 L 526.1 169.2 L 526.2 165.0 L 527.0 169.2 L 528.0 169.2 L 528.4 169.2 L 529.5 165.0 L 530.5 160.8 L 530.7 160.8 L 531.4 156.6 L 532.2 160.8 L 533.5 169.2 L 533.8 169.2 L 535.0 181.8 L 535.7 181.8 L 536.3 181.8 L 536.6 186.0 L 537.9 215.4 L 538.1 215.4 L 538.8 223.8 L 540.2 211.2 L 540.3 211.2 L 541.4 198.6 L 542.4 190.2 L 542.8 211.2 L 543.6 215.4 L 544.0 215.4 L 544.8 207.0 L 546.1 211.2 L 546.3 211.2 L 547.6 211.2 L 548.3 223.8 L 548.5 228.0 L 549.2 228.0 L 550.6 215.4 L 551.3 215.4 L 553.1 257.4 L 553.7 249.0 L 554.4 232.2 L 555.2 219.6 L 556.5 202.8 L 557.1 202.8 L 557.4 207.0 L 558.4 207.0 L 559.3 194.4 L 559.6 194.4 L 561.0 202.8 L 561.1 198.6 L 562.4 211.2 L 563.8 232.2 L 564.1 223.8 L 565.4 207.0 L 566.1 198.6 L 566.4 198.6 L 567.0 207.0 L 567.8 211.2 L 568.5 202.8 L 569.9 190.2 L 570.6 177.6 L 570.8 177.6 L 571.6 169.2 L 572.8 173.4 L 573.1 177.6 L 574.3 173.4 L 574.6 173.4 L 575.8 177.6 L 576.5 190.2 L 576.7 194.4 L 577.4 198.6 L 578.2 207.0 L 579.5 186.0 L 579.7 186.0 L 580.8 169.2 L 581.1 169.2 L 581.9 165.0 L 584.7 169.2 L 585.1 165.0 L 585.9 160.8 L 586.9 181.8 L 587.2 186.0 L 588.4 190.2 L 588.9 194.4 L 589.5 211.2 L 590.0 215.4 L 590.8 223.8 L 591.5 215.4 L 592.9 207.0 L 593.0 207.0 L 593.9 207.0 L 594.5 211.2 L 595.7 211.2 L 596.4 194.4 L 596.7 190.2 L 598.1 198.6 L 598.2 198.6 L 599.5 207.0 L 600.3 207.0 L 600.4 202.8 L 601.5 194.4 L 602.5 181.8 L 603.3 177.6 L 603.4 177.6 L 604.7 181.8 L 605.2 186.0 L 605.8 181.8 L 606.8 190.2 L 607.6 186.0 L 609.3 207.0 L 610.1 202.8 L 610.8 194.4 L 612.2 186.0 L 612.3 186.0 L 613.5 198.6 L 613.8 211.2 L 614.5 211.2 L 615.4 198.6 L 616.6 202.8 L 617.1 198.6 L 617.5 198.6 L 618.7 198.6 L 619.6 194.4 L 620.0 190.2 L 621.1 194.4 L 621.5 186.0 L 622.4 177.6 L 623.3 169.2 L 623.7 169.2 L 624.8 165.0 L 625.2 160.8 L 626.3 156.6 L 626.4 156.6 L 627.2 152.4 L 628.5 148.2 L 628.8 148.2 L 629.4 148.2 L 630.1 148.2 L 631.3 148.2 L 631.9 144.0 L 632.4 148.2 L 633.4 144.0 L 634.0 144.0 L 634.6 144.0 L 635.3 144.0 L 636.5 144.0 L 637.4 148.2 L 637.5 148.2 L 638.6 144.0 L 639.0 148.2 L 639.8 148.2 L 640.7 148.2 L 641.3 148.2 L 642.1 152.4 L 642.9 152.4 L 643.6 156.6 L 644.8 156.6 L 645.0 156.6 L 646.0 160.8 L 646.6 160.8 L 647.8 160.8 L 648.1 160.8 L 649.3 160.8 L 649.4 160.8 L 650.5 160.8 L 650.9 165.0 L 651.8 165.0 L 653.0 160.8 L 653.6 160.8 L 653.9 160.8 L 654.8 160.8 L 655.4 160.8 L 656.4 165.0 L 657.0 165.0 L 658.2 160.8 L 658.5 156.6 L 659.4 156.6 L 660.3 156.6 L 660.6 156.6 L 661.3 156.6 L 662.2 160.8 L 662.8 165.0 L 663.7 160.8 L 664.3 165.0 L 665.2 169.2 L 666.3 165.0 L 666.8 165.0 L 667.8 160.8 L 668.6 160.8 L 668.9 160.8 L 670.1 156.6 L 670.8 156.6 L 671.4 156.6 L 671.8 152.4 L 673.0 152.4 L 673.3 152.4 L 674.1 152.4 L 675.1 152.4 L 675.5 152.4 L 676.1 152.4 L 677.0 152.4 L 677.9 156.6 L 678.8 156.6 L 679.1 160.8 L 682.7 240.6 L 683.1 244.8 L 683.6 249.0 L 684.3 249.0 L 685.6 236.4 L 686.2 253.2 L 687.1 249.0 L 688.2 249.0 L 688.9 249.0 L 689.3 244.8 L 690.2 244.8 L 690.8 244.8 L 691.6 236.4 L 692.3 236.4 L 693.1 236.4 L 693.5 236.4 L 694.2 240.6 L 695.6 228.0 L 695.9 228.0 L 696.6 228.0 L 697.5 232.2 L 698.0 228.0 L 699.0 223.8 L 699.6 223.8 L 700.2 219.6 L 701.5 219.6 L 701.7 219.6 L 703.0 219.6 L 703.2 219.6 L 704.0 211.2 L 705.2 211.2 L 705.4 211.2 L 706.6 202.8 L 707.5 207.0 L 708.1 207.0 L 708.9 211.2 L 709.4 211.2 L 710.4 215.4 L 711.2 215.4 L 711.9 215.4 L 712.1 215.4 L 712.8 215.4 L 713.5 215.4 L 714.3 219.6 L 715.0 219.6 L 716.4 215.4 L 717.1 215.4 L 717.8 211.2 L 718.0 211.2 L 719.0 207.0 L 719.5 207.0 L 720.7 207.0 L 721.4 207.0 L 722.0 207.0 L 722.9 207.0 L 723.2 207.0 L 723.9 202.8 L 724.7 202.8 L 726.0 198.6 L 726.8 194.4 L 727.2 190.2 L 727.6 186.0 L 728.4 198.6 L 729.1 207.0 L 730.5 207.0 L 730.9 207.0 L 731.4 211.2 L 732.1 211.2 L 733.1 215.4 L 734.2 207.0 L 734.3 207.0 L 735.7 207.0 L 736.4 202.8 L 737.1 198.6 L 737.7 198.6 L 738.2 194.4 L 739.4 190.2 L 739.5 190.2 L 740.3 186.0 L 741.4 181.8 L 741.7 181.8 L 742.9 177.6 L 743.7 173.4 L 744.1 173.4 L 745.0 169.2 L 745.6 169.2 L 746.2 165.0 L 746.9 169.2 L 748.1 165.0 L 748.6 165.0 L 749.6 165.0 L 749.9 165.0 L 751.2 165.0 L 751.4 165.0 L 752.3 165.0 L 753.5 165.0 L 753.6 165.0 L 755.0 165.0 L 755.1 165.0 L 755.8 165.0 L 757.2 177.6 L 757.6 177.6 L 758.7 173.4 L 759.4 165.0 L 759.6 165.0 L 760.9 160.8 L 761.2 160.8 L 761.9 160.8 L 762.5 165.0 L 763.7 165.0 L 764.5 169.2 L 765.3 160.8 L 765.5 160.8 L 766.8 160.8 L 767.0 165.0 L 768.3 156.6 L 768.8 148.2 L 769.2 152.4 L 770.4 152.4 L 770.7 148.2 L 771.9 148.2 L 772.8 144.0 L 773.5 131.4 L 774.3 127.2 L 774.4 127.2 L 775.3 127.2 L 775.9 127.2 L 777.2 127.2 L 778.0 127.2 L 778.1 127.2 L 778.9 127.2 L 779.6 131.4 L 780.6 131.4 L 781.1 135.6 L 782.0 135.6 L 782.7 135.6 L 783.3 144.0 L 784.6 144.0 L 784.8 139.8 L 786.0 139.8 L 786.9 148.2 L 787.6 139.8 L 788.2 139.8 L 788.7 144.0 L 789.2 165.0 L 790.6 177.6 L 791.0 186.0 L 791.5 194.4 L 792.4 211.2 L 793.1 219.6 L 793.7 232.2 L 794.6 244.8 L 795.8 253.2 L 796.5 236.4 L 796.8 232.2 L 797.4 228.0 L 798.3 219.6 L 799.3 219.6 L 800.2 211.2 L 801.0 207.0 L 801.1 207.0 L 802.5 207.0 L 803.2 198.6 L 803.9 202.8 L 804.1 202.8 L 804.8 190.2 L 806.2 194.4 L 806.3 194.4 L 807.7 190.2 L 808.2 181.8 L 809.1 181.8 L 809.6 186.0 L 810.0 181.8 L 811.2 190.2 L 812.1 177.6 L 812.5 173.4 L 813.0 169.2 L 814.3 181.8 L 814.9 181.8 L 815.7 177.6 L 816.3 173.4 L 817.0 173.4 L 817.4 173.4 L 818.2 173.4 L 819.4 173.4 L 820.0 173.4 L 820.7 181.8 L 821.3 181.8 L 825.9 139.8 L 827.1 135.6 L 827.5 131.4 L 828.1 135.6 L 829.3 131.4 L 830.2 123.0 L 830.7 123.0 L 831.7 118.8 L 832.4 114.6 L 833.2 114.6 L 833.9 114.6 L 834.1 114.6 L 834.8 118.8 L 835.6 110.4 L 836.9 114.6 L 837.5 114.6 L 838.4 114.6 L 839.1 114.6 L 839.4 114.6 L 840.0 114.6 L 841.3 114.6 L 842.1 110.4 L 842.4 110.4 L 843.0 114.6 L 844.3 110.4 L 845.1 110.4 L 845.4 110.4 L 846.4 110.4 L 847.3 110.4 L 847.7 110.4 L 848.2 114.6 L 848.9 114.6 L 850.0 118.8 L 850.5 118.8 L 851.1 123.0 L 852.0 123.0 L 852.6 127.2 L 853.4 127.2 L 854.1 131.4 L 854.9 127.2 L 856.0 127.2 L 856.9 127.2 L 857.1 127.2 L 858.4 123.0 L 859.2 123.0 L 859.6 123.0 L 860.2 123.0 L 860.8 123.0 L 861.5 127.2 L 862.6 127.2 L 863.0 127.2 L 863.9 131.4 L 864.6 131.4 L 865.7 131.4 L 866.6 127.2 L 866.7 131.4 L 867.5 131.4 L 868.4 131.4 L 869.0 131.4 L 870.3 135.6 L 871.0 139.8 L 871.2 139.8 L 872.4 139.8 L 873.3 139.8 L 874.0 139.8 L 874.7 135.6 L 875.5 135.6 L 875.6 135.6 L 876.4 160.8 L 877.7 207.0 L 878.0 207.0 L 878.6 215.4 L 879.9 223.8 L 880.5 236.4 L 881.3 240.6 L 881.9 236.4 L 882.8 228.0 L 883.1 223.8 L 884.5 194.4 L 884.8 190.2 L 885.6 186.0 L 886.6 173.4 L 887.2 177.6 L 887.7 173.4 L 888.8 169.2 L 889.6 177.6 L 890.0 173.4 L 891.1 165.0 L 892.0 173.4 L 892.1 177.6 L 893.0 173.4 L 893.6 160.8 L 894.9 194.4 L 895.5 198.6 L 895.8 198.6 L 897.2 219.6 L 897.7 215.4 L 898.0 215.4 L 899.2 211.2 L 899.5 211.2 L 901.6 165.0 L 902.2 156.6 L 902.6 148.2 L 903.7 181.8 L 904.4 173.4 L 905.2 165.0 L 905.5 165.0 L 906.4 160.8 L 907.2 160.8 L 908.1 165.0 L 908.9 165.0 L 909.5 160.8 L 910.1 160.8 L 910.8 160.8 L 911.6 160.8 L 912.6 160.8 L 913.3 152.4 L 913.9 152.4 L 915.0 160.8 L 915.6 169.2 L 916.2 173.4 L 917.0 177.6 L 917.3 177.6 L 918.4 186.0 L 919.3 181.8 L 920.0 181.8 L 920.5 173.4 L 921.1 173.4 L 921.9 169.2 L 922.5 169.2 L 923.4 165.0 L 924.6 165.0 L 924.9 169.2 L 926.1 165.0 L 926.7 165.0 L 927.3 165.0 L 928.2 160.8 L 928.5 160.8 L 929.7 160.8 L 930.0 160.8 L 931.3 160.8 L 931.6 156.6 L 932.3 156.6 L 933.2 152.4 L 933.7 148.2 L 935.0 165.0 L 935.7 165.0 L 936.0 165.0 L 936.8 165.0 L 937.8 173.4 L 938.4 177.6 L 938.9 181.8 L 939.8 181.8 L 940.6 177.6 L 941.5 165.0 L 942.3 156.6 L 943.2 156.6 L 943.3 156.6 L 944.5 156.6 L 945.0 152.4 L 946.0 148.2 L 946.9 135.6 L 947.3 139.8 L 948.2 127.2 L 948.7 127.2 L 949.6 131.4 L 950.1 127.2 L 951.0 118.8 L 951.9 118.8 L 952.4 127.2 L 957.6 177.6 L 958.8 181.8 L 959.6 186.0 L 959.9 190.2 L 960.5 207.0 L 961.9 228.0 L 962.6 244.8 L 963.2 253.2 L 964.0 261.6 L 964.8 265.8 L 965.0 270.0 L 965.7 278.4 L 967.1 253.2 L 967.7 240.6 L 968.6 232.2 L 968.7 232.2 L 970.0 244.8 L 970.6 240.6 L 971.5 253.2 L 971.7 253.2 L 972.4 261.6 L 973.5 265.8 L 974.2 265.8 L 974.9 261.6 L 975.8 261.6 L 976.4 265.8 L 977.3 274.2 L 977.6 274.2 L 978.3 274.2 L 979.1 261.6 L 980.0 232.2 L 981.2 219.6 L 981.3 207.0 L 982.7 186.0 L 982.9 177.6 L 983.8 156.6 L 984.3 156.6 L 985.2 152.4 L 986.4 144.0 L 986.8 139.8 L 987.6 139.8 L 988.6 135.6 L 988.7 135.6 L 989.8 135.6 L 990.4 131.4 L 991.1 131.4 L 992.3 131.4 L 992.4 131.4 L 993.2 131.4 L 994.5 131.4 L 995.3 131.4 L 996.0 131.4 L 996.3 127.2 L 997.5 131.4 L 997.8 127.2 L 999.0 131.4 L 999.4 131.4 L 1000.3 131.4 L 1000.9 127.2 L 1001.9 127.2 L 1002.4 127.2 L 1003.3 123.0 L 1004.0 123.0 L 1004.5 123.0 L 1005.4 123.0 L 1006.3 118.8 L 1006.8 118.8 L 1007.3 123.0 L 1008.6 118.8 L 1008.8 118.8 L 1010.1 118.8 L 1010.9 118.8 L 1011.6 118.8 L 1012.0 118.8 L 1013.1 118.8 L 1013.4 118.8 L 1014.0 118.8 L 1015.2 123.0 L 1015.5 123.0 L 1016.6 123.0 L 1016.9 123.0 L 1018.3 123.0 L 1018.7 123.0 L 1019.2 127.2 L 1020.5 127.2 L 1020.7 127.2 L 1022.0 131.4 L 1022.6 131.4 L 1023.3 127.2 L 1023.6 127.2 L 1024.4 131.4 L 1025.7 131.4 L 1025.8 127.2 L 1026.7 131.4 L 1027.3 127.2 L 1028.7 127.2 L 1029.0 127.2 L 1030.2 127.2 L 1030.6 127.2 L 1031.6 131.4 L 1032.2 127.2 L 1032.5 131.4 L 1033.4 135.6 L 1034.6 139.8 L 1034.8 139.8 L 1035.9 144.0 L 1036.8 139.8 L 1037.1 139.8 L 1038.3 198.6 L 1038.9 219.6 L 1039.2 219.6 L 1040.1 228.0 L 1040.7 236.4 L 1042.0 236.4 L 1042.2 236.4 L 1043.1 249.0 L 1044.0 257.4 L 1044.5 261.6 L 1045.1 270.0 L 1046.0 278.4 L 1048.9 244.8 L 1049.7 232.2 L 1050.9 211.2 L 1051.2 207.0 L 1052.4 190.2 L 1053.3 165.0 L 1054.0 127.2 L 1054.8 139.8 L 1055.1 144.0 L 1055.7 148.2 L 1056.4 160.8 L 1057.2 160.8 L 1058.4 152.4 L 1058.7 152.4 L 1060.0 165.0 L 1060.7 198.6 L 1061.0 207.0 L 1061.6 215.4 L 1062.5 207.0 L 1063.1 190.2 L 1064.4 144.0 L 1065.2 139.8 L 1065.3 139.8 L 1066.1 148.2 L 1067.0 177.6 L 1067.6 190.2 L 1068.3 202.8 L 1069.5 186.0 L 1069.8 181.8 L 1071.1 156.6 L 1071.9 144.0 L 1072.6 139.8 L 1075.7 198.6 L 1076.5 202.8 L 1077.8 186.0 L 1077.9 181.8 L 1080.6 194.4 L 1081.5 215.4 L 1081.7 215.4 L 1083.0 232.2 L 1083.3 228.0 L 1083.9 236.4 L 1085.2 215.4 L 1085.5 207.0 L 1086.1 202.8 L 1086.9 190.2 L 1088.2 240.6 L 1088.8 244.8 L 1089.1 249.0 L 1089.8 265.8 L 1090.6 274.2 L 1091.3 274.2 L 1092.0 244.8 L 1093.4 202.8 L 1094.0 186.0 L 1094.3 181.8 L 1095.6 186.0 L 1096.4 219.6 L 1096.6 219.6 L 1097.2 223.8" stroke="#FFE600" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 1112.1 244.8 L 1115.2 253.2 L 1116.4 253.2 L 1116.8 257.4 L 1118.2 257.4 L 1118.9 244.8 L 1119.7 236.4 L 1120.0 232.2 L 1121.1 228.0 L 1121.4 228.0 L 1122.6 198.6 L 1123.4 202.8 L 1123.5 207.0 L 1124.3 219.6 L 1125.0 215.4 L 1125.7 211.2 L 1128.3 181.8 L 1129.2 186.0 L 1130.0 177.6 L 1130.2 169.2 L 1131.5 181.8 L 1132.1 181.8 L 1132.4 181.8 L 1133.8 202.8 L 1134.5 223.8 L 1134.6 228.0 L 1136.0 240.6 L 1136.1 240.6 L 1136.9 223.8 L 1137.6 223.8 L 1139.0 198.6 L 1139.7 177.6 L 1139.8 173.4 L 1140.7 160.8 L 1141.8 148.2 L 1142.5 144.0 L 1142.8 148.2 L 1143.7 148.2 L 1144.6 152.4 L 1145.2 156.6 L 1145.8 165.0" stroke="#FFE600" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<line x1="64" y1="176.2" x2="1144" y2="176.2" stroke="#F5F5EE" stroke-width="0.8" stroke-dasharray="3,5" opacity="0.4"/>
+<text x="72" y="171.2" class="ref-label">race avg · 167 bpm</text>
+<circle cx="366.2" cy="85.2" r="4" fill="#FFE600" stroke="#0A0A0B" stroke-width="2"/>
+<text x="376.2" y="79.2" text-anchor="start" class="peak-callout">RACE PEAK · 189 bpm</text>
+<g class="hover-overlay">
+</g>
+</svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="chart-frame">
+      <h2>Where the 2 hours went</h2>
+      <div class="sub">Time spent in each heart rate zone, total 102:01 of valid data</div>
+      <p class="lede">
+        Heart rate zones are defined as percentages of a reference max of 190 bpm
+        (one above the observed race peak). In this race, two zones dominate: Z4 Threshold and Z5 Anaerobic.
+      </p>
+      <svg viewBox="0 0 1200 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Time spent in each heart rate zone" class="hyrox-chart">
+<text x="188" y="55.0" text-anchor="end" class="zone-row-label">Z1 Recovery</text>
+<text x="188" y="69.0" text-anchor="end" class="zone-row-sub">95–114 bpm  ·  50–60% max</text>
+<rect x="200" y="37.4" width="920" height="27.3" fill="#1A1A22" rx="1"/>
+<rect x="200" y="37.4" width="2.0" height="27.3" fill="#5C7593" rx="1"/>
+<text x="212.0" y="55.0" class="zone-value">0:08  <tspan class="zone-pct">0.1%</tspan></text>
+<text x="188" y="97.0" text-anchor="end" class="zone-row-label">Z2 Aerobic</text>
+<text x="188" y="111.0" text-anchor="end" class="zone-row-sub">114–133 bpm  ·  60–70% max</text>
+<rect x="200" y="79.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
+<text x="210.0" y="97.0" class="zone-value">0:00  <tspan class="zone-pct">0.0%</tspan></text>
+<text x="188" y="139.0" text-anchor="end" class="zone-row-label">Z3 Tempo</text>
+<text x="188" y="153.0" text-anchor="end" class="zone-row-sub">133–152 bpm  ·  70–80% max</text>
+<rect x="200" y="121.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
+<rect x="200" y="121.3" width="116.0" height="27.3" fill="#C9A436" rx="1"/>
+<text x="326.0" y="139.0" class="zone-value">7:43  <tspan class="zone-pct">7.6%</tspan></text>
+<text x="188" y="181.0" text-anchor="end" class="zone-row-label">Z4 Threshold</text>
+<text x="188" y="195.0" text-anchor="end" class="zone-row-sub">152–171 bpm  ·  80–90% max</text>
+<rect x="200" y="163.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
+<rect x="200" y="163.3" width="792.1" height="27.3" fill="#D6783D" rx="1"/>
+<text x="1002.1" y="181.0" class="zone-value">52:42  <tspan class="zone-pct">51.7%</tspan></text>
+<text x="188" y="223.0" text-anchor="end" class="zone-row-label">Z5 Anaerobic</text>
+<text x="188" y="237.0" text-anchor="end" class="zone-row-sub">171–190 bpm  ·  90–100% max</text>
+<rect x="200" y="205.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
+<rect x="200" y="205.3" width="623.3" height="27.3" fill="#D43F3F" rx="1"/>
+<text x="833.3" y="223.0" class="zone-value">41:28  <tspan class="zone-pct">40.6%</tspan></text>
+</svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="chart-frame">
+      <h2>Effort, segment by segment</h2>
+      <div class="sub">Average bpm per segment · bar coloured by zone · yellow tick = peak bpm</div>
+      <p class="lede">
+        The pattern is striking: every running segment from Run 3 onwards landed in Z5. Stations are mixed,
+        with Sled Pull, Row, and Wall Balls coming in below the race average.
+      </p>
+      <svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Average heart rate per segment" class="hyrox-chart">
+<g>
+<line x1="64" y1="224.6" x2="1170" y2="224.6" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
+<text x="56" y="227.6" text-anchor="end" class="axis-label">140</text>
+<line x1="64" y1="189.2" x2="1170" y2="189.2" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
+<text x="56" y="192.2" text-anchor="end" class="axis-label">150</text>
+<line x1="64" y1="153.8" x2="1170" y2="153.8" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
+<text x="56" y="156.8" text-anchor="end" class="axis-label">160</text>
+<line x1="64" y1="118.5" x2="1170" y2="118.5" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
+<text x="56" y="121.5" text-anchor="end" class="axis-label">170</text>
+<line x1="64" y1="83.1" x2="1170" y2="83.1" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
+<text x="56" y="86.1" text-anchor="end" class="axis-label">180</text>
+<line x1="64" y1="47.7" x2="1170" y2="47.7" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
+<text x="56" y="50.7" text-anchor="end" class="axis-label">190</text>
+</g>
+<line x1="64" y1="127.9" x2="1170" y2="127.9" stroke="#F5F5EE" stroke-width="0.6" stroke-dasharray="3,5" opacity="0.4"/>
+<text x="1166" y="122.9" text-anchor="end" class="ref-label">race avg 167</text>
+<text x="98.6" y="282" text-anchor="end" transform="rotate(-50 98.6 282)" class="seg-axis-label">R1</text>
+<rect x="77.1" y="174.0" width="42.9" height="86.0" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="74.1" y1="125.5" x2="123.0" y2="125.5" stroke="#FFE600" stroke-width="1.8"/>
+<text x="98.6" y="168.0" text-anchor="middle" class="bar-value">154</text>
+<text x="167.7" y="282" text-anchor="end" transform="rotate(-50 167.7 282)" class="seg-axis-label">SkiErg</text>
+<text x="167.7" y="252.0" text-anchor="middle" class="no-data">no data</text>
+<text x="236.8" y="282" text-anchor="end" transform="rotate(-50 236.8 282)" class="seg-axis-label">R2</text>
+<rect x="215.4" y="131.2" width="42.9" height="128.8" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="212.4" y1="125.5" x2="261.2" y2="125.5" stroke="#FFE600" stroke-width="1.8"/>
+<text x="236.8" y="125.2" text-anchor="middle" class="bar-value">166</text>
+<text x="305.9" y="282" text-anchor="end" transform="rotate(-50 305.9 282)" class="seg-axis-label">Sled Push</text>
+<rect x="284.5" y="118.5" width="42.9" height="141.5" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="281.5" y1="76.0" x2="330.4" y2="76.0" stroke="#FFE600" stroke-width="1.8"/>
+<text x="305.9" y="112.5" text-anchor="middle" class="bar-value">170</text>
+<text x="375.1" y="282" text-anchor="end" transform="rotate(-50 375.1 282)" class="seg-axis-label">R3</text>
+<rect x="353.6" y="89.5" width="42.9" height="170.5" fill="#D43F3F" opacity="0.85" rx="1"/>
+<line x1="350.6" y1="51.2" x2="399.5" y2="51.2" stroke="#FFE600" stroke-width="1.8"/>
+<text x="375.1" y="83.5" text-anchor="middle" class="bar-value">178</text>
+<text x="444.2" y="282" text-anchor="end" transform="rotate(-50 444.2 282)" class="seg-axis-label">Sled Pull</text>
+<rect x="422.8" y="159.3" width="42.9" height="100.7" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="419.8" y1="111.4" x2="468.6" y2="111.4" stroke="#FFE600" stroke-width="1.8"/>
+<text x="444.2" y="153.3" text-anchor="middle" class="bar-value">158</text>
+<text x="513.3" y="282" text-anchor="end" transform="rotate(-50 513.3 282)" class="seg-axis-label">R4</text>
+<rect x="491.9" y="98.0" width="42.9" height="162.0" fill="#D43F3F" opacity="0.85" rx="1"/>
+<line x1="488.9" y1="72.5" x2="537.7" y2="72.5" stroke="#FFE600" stroke-width="1.8"/>
+<text x="513.3" y="92.0" text-anchor="middle" class="bar-value">176</text>
+<text x="582.4" y="282" text-anchor="end" transform="rotate(-50 582.4 282)" class="seg-axis-label">Burpee Broad Jump</text>
+<rect x="561.0" y="147.1" width="42.9" height="112.9" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="558.0" y1="114.9" x2="606.9" y2="114.9" stroke="#FFE600" stroke-width="1.8"/>
+<text x="582.4" y="141.1" text-anchor="middle" class="bar-value">162</text>
+<text x="651.6" y="282" text-anchor="end" transform="rotate(-50 651.6 282)" class="seg-axis-label">R5</text>
+<rect x="630.1" y="112.7" width="42.9" height="147.3" fill="#D43F3F" opacity="0.85" rx="1"/>
+<line x1="627.1" y1="100.8" x2="676.0" y2="100.8" stroke="#FFE600" stroke-width="1.8"/>
+<text x="651.6" y="106.7" text-anchor="middle" class="bar-value">172</text>
+<text x="720.7" y="282" text-anchor="end" transform="rotate(-50 720.7 282)" class="seg-axis-label">Row</text>
+<rect x="699.3" y="158.8" width="42.9" height="101.2" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="696.3" y1="136.2" x2="745.1" y2="136.2" stroke="#FFE600" stroke-width="1.8"/>
+<text x="720.7" y="152.8" text-anchor="middle" class="bar-value">159</text>
+<text x="789.8" y="282" text-anchor="end" transform="rotate(-50 789.8 282)" class="seg-axis-label">R6</text>
+<rect x="768.4" y="117.1" width="42.9" height="142.9" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="765.4" y1="86.6" x2="814.2" y2="86.6" stroke="#FFE600" stroke-width="1.8"/>
+<text x="789.8" y="111.1" text-anchor="middle" class="bar-value">170</text>
+<text x="858.9" y="282" text-anchor="end" transform="rotate(-50 858.9 282)" class="seg-axis-label">Farmers Carry</text>
+<rect x="837.5" y="130.3" width="42.9" height="129.7" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="834.5" y1="97.2" x2="883.4" y2="97.2" stroke="#FFE600" stroke-width="1.8"/>
+<text x="858.9" y="124.3" text-anchor="middle" class="bar-value">167</text>
+<text x="928.1" y="282" text-anchor="end" transform="rotate(-50 928.1 282)" class="seg-axis-label">R7</text>
+<rect x="906.6" y="88.4" width="42.9" height="171.6" fill="#D43F3F" opacity="0.85" rx="1"/>
+<line x1="903.6" y1="72.5" x2="952.5" y2="72.5" stroke="#FFE600" stroke-width="1.8"/>
+<text x="928.1" y="82.4" text-anchor="middle" class="bar-value">178</text>
+<text x="997.2" y="282" text-anchor="end" transform="rotate(-50 997.2 282)" class="seg-axis-label">Sandbag Lunges</text>
+<rect x="975.8" y="119.4" width="42.9" height="140.6" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="972.8" y1="79.5" x2="1021.6" y2="79.5" stroke="#FFE600" stroke-width="1.8"/>
+<text x="997.2" y="113.4" text-anchor="middle" class="bar-value">170</text>
+<text x="1066.3" y="282" text-anchor="end" transform="rotate(-50 1066.3 282)" class="seg-axis-label">R8</text>
+<rect x="1044.9" y="115.3" width="42.9" height="144.7" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="1041.9" y1="79.5" x2="1090.7" y2="79.5" stroke="#FFE600" stroke-width="1.8"/>
+<text x="1066.3" y="109.3" text-anchor="middle" class="bar-value">171</text>
+<text x="1135.4" y="282" text-anchor="end" transform="rotate(-50 1135.4 282)" class="seg-axis-label">Wall Balls</text>
+<rect x="1114.0" y="149.4" width="42.9" height="110.6" fill="#D6783D" opacity="0.85" rx="1"/>
+<line x1="1111.0" y1="86.6" x2="1159.9" y2="86.6" stroke="#FFE600" stroke-width="1.8"/>
+<text x="1135.4" y="143.4" text-anchor="middle" class="bar-value">161</text>
+<line x1="64" y1="260" x2="1170" y2="260" stroke="#A0A09A" stroke-width="0.8"/>
+<g transform="translate(950, 8)">
+<line x1="0" y1="8" x2="14" y2="8" stroke="#FFE600" stroke-width="1.8"/>
+<text x="20" y="12" class="legend-text">peak bpm</text>
+<rect x="100" y="2" width="14" height="12" fill="#D6783D" opacity="0.85"/>
+<text x="120" y="12" class="legend-text">bar coloured by zone</text>
+</g>
+</svg>
+    </div>
+  </section>
+
+  <section class="body-section">
+    <h2>The full breakdown</h2>
+    <table class="breakdown-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Segment</th>
+          <th class="num">Duration</th>
+          <th class="num">Avg</th>
+          <th class="num">Peak</th>
+          <th class="num">Low</th>
+          <th class="num">% max</th>
+          <th>Zone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="kind-run">
+      <td class="seg-num">01</td>
+      <td class="seg-name">Run 1<span class="sub">~1 km</span></td>
+      <td class="num">7:01</td>
+      <td class="num emph">154</td>
+      <td class="num">168</td>
+      <td class="num">101</td>
+      <td class="num muted">81%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">02</td>
+      <td class="seg-name">SkiErg<span class="sub">1000 m</span></td>
+      <td class="num">5:11</td>
+      <td class="num emph">—</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+      <td class="num muted">—</td>
+      <td><span class="zone-pill nd">—</span></td>
+    </tr>
+<tr class="kind-run">
+      <td class="seg-num">03</td>
+      <td class="seg-name">Run 2<span class="sub">~1 km</span></td>
+      <td class="num">6:40</td>
+      <td class="num emph">166</td>
+      <td class="num">168</td>
+      <td class="num">162</td>
+      <td class="num muted">88%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">04</td>
+      <td class="seg-name">Sled Push<span class="sub">50 m</span></td>
+      <td class="num">5:26</td>
+      <td class="num emph">170</td>
+      <td class="num">182</td>
+      <td class="num">150</td>
+      <td class="num muted">89%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-run">
+      <td class="seg-num">05</td>
+      <td class="seg-name">Run 3<span class="sub">~1 km</span></td>
+      <td class="num">7:33</td>
+      <td class="num emph">178</td>
+      <td class="num">189</td>
+      <td class="num">144</td>
+      <td class="num muted">94%</td>
+      <td><span class="zone-pill" style="background:#D43F3F1F; color:#D43F3F; border-color:#D43F3F40">Z5 Anaerobic</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">06</td>
+      <td class="seg-name">Sled Pull<span class="sub">50 m</span></td>
+      <td class="num">10:01</td>
+      <td class="num emph">158</td>
+      <td class="num">172</td>
+      <td class="num">141</td>
+      <td class="num muted">83%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-run">
+      <td class="seg-num">07</td>
+      <td class="seg-name">Run 4<span class="sub">~1 km</span></td>
+      <td class="num">6:53</td>
+      <td class="num emph">176</td>
+      <td class="num">183</td>
+      <td class="num">169</td>
+      <td class="num muted">93%</td>
+      <td><span class="zone-pill" style="background:#D43F3F1F; color:#D43F3F; border-color:#D43F3F40">Z5 Anaerobic</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">08</td>
+      <td class="seg-name">Burpee Broad Jump<span class="sub">80 m</span></td>
+      <td class="num">8:37</td>
+      <td class="num emph">162</td>
+      <td class="num">171</td>
+      <td class="num">148</td>
+      <td class="num muted">85%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-run">
+      <td class="seg-num">09</td>
+      <td class="seg-name">Run 5<span class="sub">~1 km</span></td>
+      <td class="num">6:45</td>
+      <td class="num emph">172</td>
+      <td class="num">175</td>
+      <td class="num">151</td>
+      <td class="num muted">90%</td>
+      <td><span class="zone-pill" style="background:#D43F3F1F; color:#D43F3F; border-color:#D43F3F40">Z5 Anaerobic</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">10</td>
+      <td class="seg-name">Row<span class="sub">1000 m</span></td>
+      <td class="num">5:49</td>
+      <td class="num emph">159</td>
+      <td class="num">165</td>
+      <td class="num">151</td>
+      <td class="num muted">83%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-run">
+      <td class="seg-num">11</td>
+      <td class="seg-name">Run 6<span class="sub">~1 km</span></td>
+      <td class="num">5:44</td>
+      <td class="num emph">170</td>
+      <td class="num">179</td>
+      <td class="num">149</td>
+      <td class="num muted">90%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">12</td>
+      <td class="seg-name">Farmers Carry<span class="sub">200 m</span></td>
+      <td class="num">2:29</td>
+      <td class="num emph">167</td>
+      <td class="num">176</td>
+      <td class="num">163</td>
+      <td class="num muted">88%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-run">
+      <td class="seg-num">13</td>
+      <td class="seg-name">Run 7<span class="sub">~1 km</span></td>
+      <td class="num">5:22</td>
+      <td class="num emph">178</td>
+      <td class="num">183</td>
+      <td class="num">156</td>
+      <td class="num muted">94%</td>
+      <td><span class="zone-pill" style="background:#D43F3F1F; color:#D43F3F; border-color:#D43F3F40">Z5 Anaerobic</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">14</td>
+      <td class="seg-name">Sandbag Lunges<span class="sub">100 m</span></td>
+      <td class="num">8:03</td>
+      <td class="num emph">170</td>
+      <td class="num">181</td>
+      <td class="num">157</td>
+      <td class="num muted">89%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-run">
+      <td class="seg-num">15</td>
+      <td class="seg-name">Run 8<span class="sub">~1 km</span></td>
+      <td class="num">8:02</td>
+      <td class="num emph">171</td>
+      <td class="num">181</td>
+      <td class="num">143</td>
+      <td class="num muted">90%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+<tr class="kind-station">
+      <td class="seg-num">16</td>
+      <td class="seg-name">Wall Balls<span class="sub">100 reps</span></td>
+      <td class="num">11:28</td>
+      <td class="num emph">161</td>
+      <td class="num">179</td>
+      <td class="num">143</td>
+      <td class="num muted">85%</td>
+      <td><span class="zone-pill" style="background:#D6783D1F; color:#D6783D; border-color:#D6783D40">Z4 Threshold</span></td>
+    </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="body-section">
+    <h2>Station by station</h2>
+    <p class="muted">A closer look at each workout station&#8217;s heart rate signature — what the trace reveals about
+    physiological cost and pacing.</p>
+
+    <h3>SkiErg <span class="zone-tag-inline" style="background:#5C75931F; color:#5C7593; border:1px solid #5C759340">NO HR DATA</span></h3>
+    <p>The SkiErg has no recorded heart rate data in this dataset — a ~11-minute sensor gap covered the SkiErg and the start of Run 2, likely due to skin contact on the upper-body pulling motion. From the split time (5:11), this was a controlled effort. A typical Z4 effort would be expected based on surrounding context.</p>
+
+    <h3>Sled Push <span class="zone-tag-inline" style="background:#D6783D1F; color:#D6783D; border:1px solid #D6783D40">Z4 THRESHOLD</span></h3>
+    <p>Sled Push averaged 170 bpm with a peak of 182 — squarely in threshold and pushing toward anaerobic at the end. At 5:26 for 50 metres, this was a continuous near-max effort with brief restarts. The lasting cost shows up in the next run: Run 3 hit the race's overall peak of 189 bpm.</p>
+
+    <h3>Sled Pull <span class="zone-tag-inline" style="background:#D6783D1F; color:#D6783D; border:1px solid #D6783D40">Z4 THRESHOLD</span></h3>
+    <p>Sled Pull was the longest single segment at 10:01 but had a deceptively low average HR of 158 bpm — among the lowest of any segment. The technical, stop-start nature of pulling the sled lets HR come down between efforts. But the followup is brutal: the transition into Run 4 produced a 21 bpm spike (157 → 178), the biggest cardiovascular jump of the race.</p>
+
+    <h3>Burpee Broad Jump <span class="zone-tag-inline" style="background:#D6783D1F; color:#D6783D; border:1px solid #D6783D40">Z4 THRESHOLD</span></h3>
+    <p>Burpee Broad Jumps averaged 162 bpm — surprisingly lower than the surrounding runs. The combination of mandatory deep breaths (burpees force them) and forward locomotion produces a different HR signature than continuous-grind stations. Peak hit 171.</p>
+
+    <h3>Row <span class="zone-tag-inline" style="background:#D6783D1F; color:#D6783D; border:1px solid #D6783D40">Z4 THRESHOLD</span></h3>
+    <p>The 1000m Row sat at 159 bpm average — the second-lowest of any station after Sled Pull. Rowing's biomechanical advantage (large muscle groups, controlled rhythm) translates to better HR efficiency. Peak 165, very narrow range.</p>
+
+    <h3>Farmers Carry <span class="zone-tag-inline" style="background:#D6783D1F; color:#D6783D; border:1px solid #D6783D40">Z4 THRESHOLD</span></h3>
+    <p>The shortest station at 2:29 ran at 167 bpm average / 176 peak. Heart rate sits at race-average — it's heavy but brief, not enough time to build above threshold. The carry's grip and trunk demand is the cost; cardiovascular cost is moderate.</p>
+
+    <h3>Sandbag Lunges <span class="zone-tag-inline" style="background:#D6783D1F; color:#D6783D; border:1px solid #D6783D40">Z4 THRESHOLD</span></h3>
+    <p>Sandbag Lunges averaged 170 bpm with a peak of 181. Despite being primarily lower-body strength, the static eccentric loading combined with sustained time-under-tension keeps HR high. Interestingly, the transition into Run 8 showed a 21 bpm drop (167 → 146) — the only true recovery transition of the race.</p>
+
+    <h3>Wall Balls <span class="zone-tag-inline" style="background:#D6783D1F; color:#D6783D; border:1px solid #D6783D40">Z4 THRESHOLD</span></h3>
+    <p>Wall Balls — the final station and a 11:28 grind — averaged 161 bpm with peaks up to 179. Despite being the closer, the average HR is lower than mid-race stations because the smart strategy is small-set wave throws with brief rests. This is paced effort, not all-out.</p>
+  </section>
+
+  <section class="faq">
+    <h2>Frequently asked questions</h2>
+    <details><summary>What's a typical heart rate during a HYROX race?</summary><p>For a competitive sub-2-hour finish, expect to average around 167 bpm and spend 90%+ of the race at threshold or above (Z4 + Z5). In this race, the average was 167 bpm across 2 hours 1 minute, with 92.3% of total time at or above 80% of max HR.</p></details>
+<details><summary>Which HYROX station has the highest heart rate?</summary><p>In this race, the running segments produced higher average heart rates than the strength stations. The single highest segment average was Run 3 and Run 7, both at 178 bpm. Among workout stations, Sled Push (170 bpm avg) and Sandbag Lunges (170 bpm avg) the highest.</p></details>
+<details><summary>Which HYROX station gives the most recovery?</summary><p>Sled Pull, despite being a heavy strength station, ended with the lowest finishing heart rate at 157 bpm — the slow, technical nature of pulling the sled the full 50 metres in stages allows HR to come down between efforts. It's a deceptive 'recovery' though: the heart rate jumped 21 bpm into the following Run 4.</p></details>
+<details><summary>How much time do you spend in each heart rate zone during HYROX?</summary><p>In this race: Z1 Recovery 0.1%, Z2 Aerobic 0.0%, Z3 Tempo 7.6%, Z4 Threshold 51.7%, Z5 Anaerobic 40.6%. More than 92% of the race was spent at threshold or anaerobic effort — HYROX is functionally a 2-hour threshold race.</p></details>
+<details><summary>Does heart rate drift during a HYROX race?</summary><p>Yes, but unevenly. In this race, the second-half average heart rate was only +0.6 bpm higher than the first half overall — but when you isolate just the running segments, drift was +4.2 bpm (168.7 → 172.8). Stations stayed nearly flat. Translation: the legs were paying the cumulative cost on the runs.</p></details>
+<details><summary>How is heart rate during the roxzone (transitions)?</summary><p>The roxzone — the time spent moving between segments — averaged ~41 seconds per transition in this race (10:12 total across 15 transitions). Heart rate behaviour in transitions was bidirectional: 5 of 6 measured transitions saw HR rise into the next run rather than drop, because the run effort exceeds what the previous station was demanding by the end.</p></details>
+<details><summary>How is this heart rate data collected and processed?</summary><p>Heart rate was captured on an Apple Watch during a Mixed Cardio workout session, exported as JSON via the Health Auto Export iOS app. 1,157 samples were recorded during the 2:01:06 race window at a median interval of 5 seconds. Segment durations are taken from the official HYROX race results. The 10:12 of total roxzone time is distributed equally as ~41 seconds between each of the 15 segment transitions for charting.</p></details>
+  </section>
+
+  <div class="method">
+    <h3>Methodology &amp; data provenance</h3>
+    <p>
+      Heart rate was captured on an Apple Watch (Mixed Cardio workout, started 09:50:10 IST, ended 11:51:38 IST
+      on 12 April 2026), exported via the Health Auto Export iOS app as JSON. 1,157 heart-rate samples were
+      recorded across the race window at a median interval of 5 seconds.
+    </p>
+    <p>
+      Segment durations are taken directly from the official HYROX results (bib 95039, HYROX Bengaluru 2026,
+      Sunday division). The 10:12 of roxzone (transition) time is distributed equally as ~41 seconds between
+      each of the 15 segment transitions for charting.
+    </p>
+    <p>
+      One ~11-minute window during the SkiErg and early Run 2 has no HR samples (a watch sensor gap) — this
+      region is shown as a break in the line rather than interpolated. Heart rate zones use a reference max
+      of 190 bpm (one bpm above the observed race peak of 189). Time in zone is summed only between
+      consecutive samples less than 60 seconds apart, to avoid mis-attributing the sensor gap.
+    </p>
+  </div>
+
+</div>
+<div class="tooltip" id="tt"></div>
+</body>
+</html>
