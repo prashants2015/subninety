@@ -1,0 +1,100 @@
+---
+/**
+ * RecoveryTransitions.astro
+ *
+ * Horizontal dumbbell chart showing how heart rate changed from the
+ * end of each workout station to the first sample of the next run.
+ *
+ *   ● (grey dot)  = HR at end of station
+ *   ● (yellow dot) = HR at start of next run
+ *   yellow line   = HR dropped between them (recovery)
+ *   red line      = HR rose between them (no recovery / kick into next effort)
+ *
+ * Usage:
+ *   <RecoveryTransitions raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { recoveries } = raceData;
+
+// ----- layout -----
+const W = 1200;
+const H = 380;
+const PL = 200;
+const PR = 80;
+const PT = 30;
+const PB = 40;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+
+// ----- x axis: BPM scale -----
+const X_MIN = 135;
+const X_MAX = 195;
+const x = (b: number) => PL + ((b - X_MIN) / (X_MAX - X_MIN)) * CW;
+
+// ----- vertical gridlines -----
+const gridBpms: number[] = [];
+for (let b = 140; b <= 190; b += 10) gridBpms.push(b);
+
+// ----- rows -----
+const rowH = CH / Math.max(recoveries.length, 1);
+const rows = recoveries.map((r, i) => {
+  const yRow = PT + i * rowH + rowH / 2;
+  const endX = x(r.station_end_hr);
+  const startX = x(r.run_start_hr);
+  const isDrop = r.drop > 0;
+  const lineColor = isDrop ? '#FFE600' : '#D43F3F';
+  const deltaX = Math.max(endX, startX) + 14;
+  const sign = isDrop ? '↓' : '↑';
+  const absDrop = Math.abs(Math.round(r.drop));
+  return {
+    station: r.station,
+    yRow,
+    endX,
+    startX,
+    lineColor,
+    deltaX,
+    deltaStr: `${sign} ${absDrop} bpm`,
+  };
+});
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Heart rate change from station end to next run start"
+  class="hyrox-chart"
+>
+  <g transform={`translate(${PL}, -2)`}>
+    <circle cx="6" cy="14" r="5" fill="#5C5C58" stroke="#F5F5EE" stroke-width="1.2" />
+    <text x="18" y="18" class="legend-text">station end HR</text>
+    <circle cx="160" cy="14" r="5" fill="#FFE600" stroke="#0A0A0B" stroke-width="1.2" />
+    <text x="172" y="18" class="legend-text">next run start HR</text>
+  </g>
+
+  {gridBpms.map((b) => (
+    <g>
+      <line x1={x(b).toFixed(1)} y1={PT} x2={x(b).toFixed(1)} y2={PT + CH} stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4" />
+      <text x={x(b).toFixed(1)} y={(PT + CH + 22).toFixed(1)} text-anchor="middle" class="axis-label">{b}</text>
+    </g>
+  ))}
+  <text x={(PL + CW / 2).toFixed(1)} y={(H - 8).toFixed(1)} text-anchor="middle" class="axis-title">Heart rate (bpm)</text>
+
+  {rows.map((r) => (
+    <g>
+      <text x={PL - 12} y={(r.yRow + 4).toFixed(1)} text-anchor="end" class="recovery-station">{r.station}</text>
+      <text x={PL - 12} y={(r.yRow + 18).toFixed(1)} text-anchor="end" class="recovery-sub">→ next run</text>
+      <line x1={r.endX.toFixed(1)} y1={r.yRow.toFixed(1)} x2={r.startX.toFixed(1)} y2={r.yRow.toFixed(1)} stroke={r.lineColor} stroke-width="2" opacity="0.6" />
+      <circle cx={r.endX.toFixed(1)} cy={r.yRow.toFixed(1)} r="5" fill="#5C5C58" stroke="#F5F5EE" stroke-width="1.2" />
+      <circle cx={r.startX.toFixed(1)} cy={r.yRow.toFixed(1)} r="5" fill="#FFE600" stroke="#0A0A0B" stroke-width="1.2" />
+      <text x={r.deltaX.toFixed(1)} y={(r.yRow + 4).toFixed(1)} class="recovery-delta" fill={r.lineColor}>{r.deltaStr}</text>
+    </g>
+  ))}
+</svg>

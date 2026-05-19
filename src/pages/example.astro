@@ -1,0 +1,108 @@
+---
+/**
+ * Example page showing all 5 pillar chart components.
+ *
+ * Drop these imports into your real race page; the markup below is the
+ * reference pattern for using each component.
+ */
+import '../styles/hyrox-theme.css';
+import raceData from '../data/race-2026-04-12.json';
+import MainHRTimeline from '../components/charts/MainHRTimeline.astro';
+import TimeInZones from '../components/charts/TimeInZones.astro';
+import EffortPerSegment from '../components/charts/EffortPerSegment.astro';
+import DriftHalves from '../components/charts/DriftHalves.astro';
+import RecoveryTransitions from '../components/charts/RecoveryTransitions.astro';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HYROX Bengaluru 2026 — Heart rate report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,500;9..144,700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="wrap">
+
+      <section>
+        <div class="chart-frame">
+          <h2>The full race in one breath</h2>
+          <div class="sub">{raceData.sample_count} samples · ~5 second resolution · zones shown as background bands</div>
+          <MainHRTimeline raceData={raceData} />
+        </div>
+      </section>
+
+      <section>
+        <div class="chart-frame">
+          <h2>Where the 2 hours went</h2>
+          <div class="sub">Time spent in each heart rate zone</div>
+          <p class="lede">
+            Heart rate zones are defined as percentages of a reference max of {raceData.ref_max_hr} bpm
+            (one above the observed race peak). In this race, two zones dominate: Z4 Threshold and Z5 Anaerobic.
+          </p>
+          <TimeInZones raceData={raceData} />
+        </div>
+      </section>
+
+      <section>
+        <div class="chart-frame">
+          <h2>Effort, segment by segment</h2>
+          <div class="sub">Average bpm per segment · bar coloured by zone · yellow tick = peak bpm</div>
+          <p class="lede">
+            Every running segment from Run 3 onwards landed in Z5. Stations are mixed, with Sled Pull,
+            Row, and Wall Balls coming in below the race average.
+          </p>
+          <EffortPerSegment raceData={raceData} />
+        </div>
+      </section>
+
+      <section>
+        <div class="chart-frame">
+          <h2>Cardiovascular drift across the race</h2>
+          <div class="sub">First half vs second half average — overall, runs only, stations only</div>
+          <p class="lede">
+            Overall drift is nearly invisible (+0.6 bpm). But isolating just running segments reveals
+            the real fatigue picture: a +4.2 bpm rise from early to late runs.
+          </p>
+          <DriftHalves raceData={raceData} />
+        </div>
+      </section>
+
+      <section>
+        <div class="chart-frame">
+          <h2>How the body handled transitions</h2>
+          <div class="sub">HR at end of station → first HR sample of next run, for each measured transition</div>
+          <p class="lede">
+            Most transitions see heart rate rise into the next run — the run effort exceeds what the
+            station was demanding at its end. The exception, Sandbag → Run 8, was the only true recovery
+            moment of the race.
+          </p>
+          <RecoveryTransitions raceData={raceData} />
+        </div>
+      </section>
+
+    </main>
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink-1);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+  }
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  section {
+    margin-bottom: 56px;
+  }
+</style>

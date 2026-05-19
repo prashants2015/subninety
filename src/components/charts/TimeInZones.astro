@@ -1,0 +1,87 @@
+---
+/**
+ * TimeInZones.astro
+ *
+ * Horizontal bars per HR zone (Z1–Z5). Each bar's length is proportional
+ * to the % of race time spent in that zone. Scale auto-adjusts to the
+ * largest bucket to handle heavy skew.
+ *
+ * Usage:
+ *   <TimeInZones raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { zones, zone_seconds, zone_pct } = raceData;
+
+// ----- layout -----
+const W = 1200;
+const H = 280;
+const PL = 200;
+const PR = 80;
+const PT = 30;
+const PB = 40;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+
+// ----- scaling -----
+const pctValues: number[] = Object.values(zone_pct).map((v) => Number(v));
+const maxPct = pctValues.length ? Math.max(...pctValues) : 100;
+const scaleMax = Math.max(60, maxPct + 5);
+
+const barH = (CH / zones.length) * 0.65;
+const rowGap = CH / zones.length - barH;
+
+const fmtDur = (sec: number) => {
+  const s = Math.round(sec);
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+};
+
+// ----- pre-compute rows -----
+const rows = zones.map((z, i) => {
+  const pct = zone_pct[String(z.id)] ?? 0;
+  const sec = zone_seconds[String(z.id)] ?? 0;
+  const yTop = PT + i * (CH / zones.length) + rowGap / 2;
+  const barW = (pct / scaleMax) * CW;
+  return {
+    label: z.label,
+    rangeLabel: `${Math.round(z.low_bpm)}–${Math.round(z.high_bpm)} bpm  ·  ${z.low_pct}–${z.high_pct}% max`,
+    color: z.color,
+    yTop,
+    barW,
+    pct,
+    sec,
+    showBar: pct > 0.05,
+    valueX: PL + barW + 10,
+    midY: yTop + barH / 2,
+  };
+});
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Time spent in each heart rate zone"
+  class="hyrox-chart"
+>
+  {rows.map((r) => (
+    <g>
+      <text x={PL - 12} y={(r.midY + 4).toFixed(1)} text-anchor="end" class="zone-row-label">{r.label}</text>
+      <text x={PL - 12} y={(r.midY + 18).toFixed(1)} text-anchor="end" class="zone-row-sub">{r.rangeLabel}</text>
+      <rect x={PL} y={r.yTop.toFixed(1)} width={CW} height={barH.toFixed(1)} fill="#1A1A22" rx="1" />
+      {r.showBar && (
+        <rect x={PL} y={r.yTop.toFixed(1)} width={r.barW.toFixed(1)} height={barH.toFixed(1)} fill={r.color} rx="1" />
+      )}
+      <text x={r.valueX.toFixed(1)} y={(r.midY + 4).toFixed(1)} class="zone-value">
+        {fmtDur(r.sec)}
+        <tspan class="zone-pct" dx="6">{r.pct.toFixed(1)}%</tspan>
+      </text>
+    </g>
+  ))}
+</svg>

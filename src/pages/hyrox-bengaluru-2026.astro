@@ -2,6 +2,10 @@
 import '../styles/hyrox-theme.css';
 import raceData from '../data/race-2026-04-12.json';
 import MainHRTimeline from '../components/charts/MainHRTimeline.astro';
+import TimeInZones from '../components/charts/TimeInZones.astro';
+import EffortPerSegment from '../components/charts/EffortPerSegment.astro';
+import DriftHalves from '../components/charts/DriftHalves.astro';
+import RecoveryTransitions from '../components/charts/RecoveryTransitions.astro';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -747,32 +751,7 @@ table.breakdown-table tbody tr.kind-run td.seg-name { color: var(--ink-2); }
         Heart rate zones are defined as percentages of a reference max of 190 bpm
         (one above the observed race peak). In this race, two zones dominate: Z4 Threshold and Z5 Anaerobic.
       </p>
-      <svg viewBox="0 0 1200 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Time spent in each heart rate zone" class="hyrox-chart">
-<text x="188" y="55.0" text-anchor="end" class="zone-row-label">Z1 Recovery</text>
-<text x="188" y="69.0" text-anchor="end" class="zone-row-sub">95–114 bpm  ·  50–60% max</text>
-<rect x="200" y="37.4" width="920" height="27.3" fill="#1A1A22" rx="1"/>
-<rect x="200" y="37.4" width="2.0" height="27.3" fill="#5C7593" rx="1"/>
-<text x="212.0" y="55.0" class="zone-value">0:08  <tspan class="zone-pct">0.1%</tspan></text>
-<text x="188" y="97.0" text-anchor="end" class="zone-row-label">Z2 Aerobic</text>
-<text x="188" y="111.0" text-anchor="end" class="zone-row-sub">114–133 bpm  ·  60–70% max</text>
-<rect x="200" y="79.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
-<text x="210.0" y="97.0" class="zone-value">0:00  <tspan class="zone-pct">0.0%</tspan></text>
-<text x="188" y="139.0" text-anchor="end" class="zone-row-label">Z3 Tempo</text>
-<text x="188" y="153.0" text-anchor="end" class="zone-row-sub">133–152 bpm  ·  70–80% max</text>
-<rect x="200" y="121.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
-<rect x="200" y="121.3" width="116.0" height="27.3" fill="#C9A436" rx="1"/>
-<text x="326.0" y="139.0" class="zone-value">7:43  <tspan class="zone-pct">7.6%</tspan></text>
-<text x="188" y="181.0" text-anchor="end" class="zone-row-label">Z4 Threshold</text>
-<text x="188" y="195.0" text-anchor="end" class="zone-row-sub">152–171 bpm  ·  80–90% max</text>
-<rect x="200" y="163.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
-<rect x="200" y="163.3" width="792.1" height="27.3" fill="#D6783D" rx="1"/>
-<text x="1002.1" y="181.0" class="zone-value">52:42  <tspan class="zone-pct">51.7%</tspan></text>
-<text x="188" y="223.0" text-anchor="end" class="zone-row-label">Z5 Anaerobic</text>
-<text x="188" y="237.0" text-anchor="end" class="zone-row-sub">171–190 bpm  ·  90–100% max</text>
-<rect x="200" y="205.3" width="920" height="27.3" fill="#1A1A22" rx="1"/>
-<rect x="200" y="205.3" width="623.3" height="27.3" fill="#D43F3F" rx="1"/>
-<text x="833.3" y="223.0" class="zone-value">41:28  <tspan class="zone-pct">40.6%</tspan></text>
-</svg>
+      <TimeInZones raceData={raceData} />
     </div>
   </section>
 
@@ -784,93 +763,31 @@ table.breakdown-table tbody tr.kind-run td.seg-name { color: var(--ink-2); }
         The pattern is striking: every running segment from Run 3 onwards landed in Z5. Stations are mixed,
         with Sled Pull, Row, and Wall Balls coming in below the race average.
       </p>
-      <svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Average heart rate per segment" class="hyrox-chart">
-<g>
-<line x1="64" y1="224.6" x2="1170" y2="224.6" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
-<text x="56" y="227.6" text-anchor="end" class="axis-label">140</text>
-<line x1="64" y1="189.2" x2="1170" y2="189.2" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
-<text x="56" y="192.2" text-anchor="end" class="axis-label">150</text>
-<line x1="64" y1="153.8" x2="1170" y2="153.8" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
-<text x="56" y="156.8" text-anchor="end" class="axis-label">160</text>
-<line x1="64" y1="118.5" x2="1170" y2="118.5" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
-<text x="56" y="121.5" text-anchor="end" class="axis-label">170</text>
-<line x1="64" y1="83.1" x2="1170" y2="83.1" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
-<text x="56" y="86.1" text-anchor="end" class="axis-label">180</text>
-<line x1="64" y1="47.7" x2="1170" y2="47.7" stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4"/>
-<text x="56" y="50.7" text-anchor="end" class="axis-label">190</text>
-</g>
-<line x1="64" y1="127.9" x2="1170" y2="127.9" stroke="#F5F5EE" stroke-width="0.6" stroke-dasharray="3,5" opacity="0.4"/>
-<text x="1166" y="122.9" text-anchor="end" class="ref-label">race avg 167</text>
-<text x="98.6" y="282" text-anchor="end" transform="rotate(-50 98.6 282)" class="seg-axis-label">R1</text>
-<rect x="77.1" y="174.0" width="42.9" height="86.0" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="74.1" y1="125.5" x2="123.0" y2="125.5" stroke="#FFE600" stroke-width="1.8"/>
-<text x="98.6" y="168.0" text-anchor="middle" class="bar-value">154</text>
-<text x="167.7" y="282" text-anchor="end" transform="rotate(-50 167.7 282)" class="seg-axis-label">SkiErg</text>
-<text x="167.7" y="252.0" text-anchor="middle" class="no-data">no data</text>
-<text x="236.8" y="282" text-anchor="end" transform="rotate(-50 236.8 282)" class="seg-axis-label">R2</text>
-<rect x="215.4" y="131.2" width="42.9" height="128.8" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="212.4" y1="125.5" x2="261.2" y2="125.5" stroke="#FFE600" stroke-width="1.8"/>
-<text x="236.8" y="125.2" text-anchor="middle" class="bar-value">166</text>
-<text x="305.9" y="282" text-anchor="end" transform="rotate(-50 305.9 282)" class="seg-axis-label">Sled Push</text>
-<rect x="284.5" y="118.5" width="42.9" height="141.5" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="281.5" y1="76.0" x2="330.4" y2="76.0" stroke="#FFE600" stroke-width="1.8"/>
-<text x="305.9" y="112.5" text-anchor="middle" class="bar-value">170</text>
-<text x="375.1" y="282" text-anchor="end" transform="rotate(-50 375.1 282)" class="seg-axis-label">R3</text>
-<rect x="353.6" y="89.5" width="42.9" height="170.5" fill="#D43F3F" opacity="0.85" rx="1"/>
-<line x1="350.6" y1="51.2" x2="399.5" y2="51.2" stroke="#FFE600" stroke-width="1.8"/>
-<text x="375.1" y="83.5" text-anchor="middle" class="bar-value">178</text>
-<text x="444.2" y="282" text-anchor="end" transform="rotate(-50 444.2 282)" class="seg-axis-label">Sled Pull</text>
-<rect x="422.8" y="159.3" width="42.9" height="100.7" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="419.8" y1="111.4" x2="468.6" y2="111.4" stroke="#FFE600" stroke-width="1.8"/>
-<text x="444.2" y="153.3" text-anchor="middle" class="bar-value">158</text>
-<text x="513.3" y="282" text-anchor="end" transform="rotate(-50 513.3 282)" class="seg-axis-label">R4</text>
-<rect x="491.9" y="98.0" width="42.9" height="162.0" fill="#D43F3F" opacity="0.85" rx="1"/>
-<line x1="488.9" y1="72.5" x2="537.7" y2="72.5" stroke="#FFE600" stroke-width="1.8"/>
-<text x="513.3" y="92.0" text-anchor="middle" class="bar-value">176</text>
-<text x="582.4" y="282" text-anchor="end" transform="rotate(-50 582.4 282)" class="seg-axis-label">Burpee Broad Jump</text>
-<rect x="561.0" y="147.1" width="42.9" height="112.9" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="558.0" y1="114.9" x2="606.9" y2="114.9" stroke="#FFE600" stroke-width="1.8"/>
-<text x="582.4" y="141.1" text-anchor="middle" class="bar-value">162</text>
-<text x="651.6" y="282" text-anchor="end" transform="rotate(-50 651.6 282)" class="seg-axis-label">R5</text>
-<rect x="630.1" y="112.7" width="42.9" height="147.3" fill="#D43F3F" opacity="0.85" rx="1"/>
-<line x1="627.1" y1="100.8" x2="676.0" y2="100.8" stroke="#FFE600" stroke-width="1.8"/>
-<text x="651.6" y="106.7" text-anchor="middle" class="bar-value">172</text>
-<text x="720.7" y="282" text-anchor="end" transform="rotate(-50 720.7 282)" class="seg-axis-label">Row</text>
-<rect x="699.3" y="158.8" width="42.9" height="101.2" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="696.3" y1="136.2" x2="745.1" y2="136.2" stroke="#FFE600" stroke-width="1.8"/>
-<text x="720.7" y="152.8" text-anchor="middle" class="bar-value">159</text>
-<text x="789.8" y="282" text-anchor="end" transform="rotate(-50 789.8 282)" class="seg-axis-label">R6</text>
-<rect x="768.4" y="117.1" width="42.9" height="142.9" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="765.4" y1="86.6" x2="814.2" y2="86.6" stroke="#FFE600" stroke-width="1.8"/>
-<text x="789.8" y="111.1" text-anchor="middle" class="bar-value">170</text>
-<text x="858.9" y="282" text-anchor="end" transform="rotate(-50 858.9 282)" class="seg-axis-label">Farmers Carry</text>
-<rect x="837.5" y="130.3" width="42.9" height="129.7" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="834.5" y1="97.2" x2="883.4" y2="97.2" stroke="#FFE600" stroke-width="1.8"/>
-<text x="858.9" y="124.3" text-anchor="middle" class="bar-value">167</text>
-<text x="928.1" y="282" text-anchor="end" transform="rotate(-50 928.1 282)" class="seg-axis-label">R7</text>
-<rect x="906.6" y="88.4" width="42.9" height="171.6" fill="#D43F3F" opacity="0.85" rx="1"/>
-<line x1="903.6" y1="72.5" x2="952.5" y2="72.5" stroke="#FFE600" stroke-width="1.8"/>
-<text x="928.1" y="82.4" text-anchor="middle" class="bar-value">178</text>
-<text x="997.2" y="282" text-anchor="end" transform="rotate(-50 997.2 282)" class="seg-axis-label">Sandbag Lunges</text>
-<rect x="975.8" y="119.4" width="42.9" height="140.6" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="972.8" y1="79.5" x2="1021.6" y2="79.5" stroke="#FFE600" stroke-width="1.8"/>
-<text x="997.2" y="113.4" text-anchor="middle" class="bar-value">170</text>
-<text x="1066.3" y="282" text-anchor="end" transform="rotate(-50 1066.3 282)" class="seg-axis-label">R8</text>
-<rect x="1044.9" y="115.3" width="42.9" height="144.7" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="1041.9" y1="79.5" x2="1090.7" y2="79.5" stroke="#FFE600" stroke-width="1.8"/>
-<text x="1066.3" y="109.3" text-anchor="middle" class="bar-value">171</text>
-<text x="1135.4" y="282" text-anchor="end" transform="rotate(-50 1135.4 282)" class="seg-axis-label">Wall Balls</text>
-<rect x="1114.0" y="149.4" width="42.9" height="110.6" fill="#D6783D" opacity="0.85" rx="1"/>
-<line x1="1111.0" y1="86.6" x2="1159.9" y2="86.6" stroke="#FFE600" stroke-width="1.8"/>
-<text x="1135.4" y="143.4" text-anchor="middle" class="bar-value">161</text>
-<line x1="64" y1="260" x2="1170" y2="260" stroke="#A0A09A" stroke-width="0.8"/>
-<g transform="translate(950, 8)">
-<line x1="0" y1="8" x2="14" y2="8" stroke="#FFE600" stroke-width="1.8"/>
-<text x="20" y="12" class="legend-text">peak bpm</text>
-<rect x="100" y="2" width="14" height="12" fill="#D6783D" opacity="0.85"/>
-<text x="120" y="12" class="legend-text">bar coloured by zone</text>
-</g>
-</svg>
+      <EffortPerSegment raceData={raceData} />
+    </div>
+  </section>
+
+  <section>
+    <div class="chart-frame">
+      <h2>Cardiovascular drift across the race</h2>
+      <div class="sub">First half vs second half average — overall, runs only, stations only</div>
+      <p class="lede">
+        Overall drift is nearly invisible (+0.6 bpm). But isolating just running segments reveals the real
+        fatigue picture: a +4.2 bpm rise from early to late runs. Stations were almost identical across halves.
+      </p>
+      <DriftHalves raceData={raceData} />
+    </div>
+  </section>
+
+  <section>
+    <div class="chart-frame">
+      <h2>How the body handled transitions</h2>
+      <div class="sub">HR at end of station → first HR sample of next run, for each measured transition</div>
+      <p class="lede">
+        Most transitions see heart rate rise into the next run — the run effort exceeds what the station was
+        demanding at its end. The exception, Sandbag → Run 8, was the only true recovery moment of the race.
+      </p>
+      <RecoveryTransitions raceData={raceData} />
     </div>
   </section>
 

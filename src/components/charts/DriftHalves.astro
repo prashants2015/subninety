@@ -1,0 +1,118 @@
+---
+/**
+ * DriftHalves.astro
+ *
+ * Three paired-bar groups comparing first-half vs second-half average HR:
+ *   1. Overall race
+ *   2. Running segments only
+ *   3. Station segments only
+ *
+ * Each pair shows two bars (grey = 1st half, yellow = 2nd half) with the
+ * delta in bpm annotated above. Delta color flips based on direction
+ * (red = increase, green = decrease, neutral grey when negligible).
+ *
+ * Usage:
+ *   <DriftHalves raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { drift } = raceData;
+
+// ----- layout -----
+const W = 1200;
+const H = 320;
+const PL = 64;
+const PR = 30;
+const PT = 56;
+const PB = 50;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+
+const Y_MIN = 155;
+const Y_MAX = 180;
+const BAR_W = 80;
+const BAR_GAP = 12;
+
+const y = (b: number) => PT + (1 - (b - Y_MIN) / (Y_MAX - Y_MIN)) * CH;
+
+const pairs = [
+  { label: 'Overall race', v1: drift.fh_avg, v2: drift.sh_avg },
+  { label: 'Running segments', v1: drift.runs_early, v2: drift.runs_late },
+  { label: 'Station segments', v1: drift.stations_early, v2: drift.stations_late },
+];
+
+// ----- y axis ticks -----
+const yTicks: { value: number; y: number }[] = [];
+for (let b = 160; b <= 175; b += 5) yTicks.push({ value: b, y: y(b) });
+
+// ----- pre-compute pair geometry -----
+const groupW = CW / pairs.length;
+const groups = pairs.map((p, i) => {
+  const cx = PL + groupW * (i + 0.5);
+  const b1x = cx - BAR_W - BAR_GAP / 2;
+  const b2x = cx + BAR_GAP / 2;
+  const y1 = y(p.v1);
+  const y2 = y(p.v2);
+  const h1 = PT + CH - y1;
+  const h2 = PT + CH - y2;
+  const delta = p.v2 - p.v1;
+  const deltaColor = delta > 0.3 ? '#D43F3F' : delta < -0.3 ? '#5B8C7F' : '#A0A09A';
+  const topY = Math.min(y1, y2) - 28;
+  return {
+    label: p.label,
+    cx,
+    b1x,
+    b2x,
+    y1,
+    y2,
+    h1,
+    h2,
+    v1: Math.round(p.v1),
+    v2: Math.round(p.v2),
+    deltaStr: `${delta >= 0 ? '+' : ''}${delta.toFixed(1)} bpm`,
+    deltaColor,
+    topY,
+  };
+});
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Heart rate drift first half versus second half"
+  class="hyrox-chart"
+>
+  <g transform={`translate(${PL + CW - 280}, 6)`}>
+    <rect x="0" y="0" width="14" height="14" fill="#5C5C58" />
+    <text x="20" y="11" class="legend-text">1st half average</text>
+    <rect x="140" y="0" width="14" height="14" fill="#FFE600" />
+    <text x="160" y="11" class="legend-text">2nd half average</text>
+  </g>
+
+  {yTicks.map((t) => (
+    <g>
+      <line x1={PL} y1={t.y.toFixed(1)} x2={PL + CW} y2={t.y.toFixed(1)} stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4" />
+      <text x={PL - 8} y={(t.y + 3).toFixed(1)} text-anchor="end" class="axis-label">{t.value}</text>
+    </g>
+  ))}
+
+  {groups.map((g) => (
+    <g>
+      <rect x={g.b1x.toFixed(1)} y={g.y1.toFixed(1)} width={BAR_W} height={g.h1.toFixed(1)} fill="#5C5C58" rx="1" />
+      <rect x={g.b2x.toFixed(1)} y={g.y2.toFixed(1)} width={BAR_W} height={g.h2.toFixed(1)} fill="#FFE600" rx="1" />
+      <text x={(g.b1x + BAR_W / 2).toFixed(1)} y={(g.y1 - 8).toFixed(1)} text-anchor="middle" class="bar-value-small">{g.v1}</text>
+      <text x={(g.b2x + BAR_W / 2).toFixed(1)} y={(g.y2 - 8).toFixed(1)} text-anchor="middle" class="bar-value-small">{g.v2}</text>
+      <text x={g.cx.toFixed(1)} y={g.topY.toFixed(1)} text-anchor="middle" class="delta" fill={g.deltaColor}>{g.deltaStr}</text>
+      <text x={g.cx.toFixed(1)} y={(PT + CH + 26).toFixed(1)} text-anchor="middle" class="group-label">{g.label}</text>
+    </g>
+  ))}
+
+  <line x1={PL} y1={PT + CH} x2={PL + CW} y2={PT + CH} stroke="#A0A09A" stroke-width="0.8" />
+</svg>

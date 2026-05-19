@@ -1,0 +1,157 @@
+---
+/**
+ * EffortPerSegment.astro
+ *
+ * Vertical bars showing average heart rate for each of the 16 segments.
+ * Bar is coloured by which zone the avg falls into. A yellow tick above
+ * the bar marks the segment's peak HR. The race average is shown as a
+ * dashed reference line.
+ *
+ * Segments with no HR data (e.g. SkiErg sensor gap) render a "no data"
+ * placeholder in the empty band so the layout stays aligned.
+ *
+ * Usage:
+ *   <EffortPerSegment raceData={raceData} />
+ */
+
+import type { RaceData, Zone } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { main_segments, overall, zones } = raceData;
+
+// zone lookup by id
+const zoneById: Record<number, Zone> = {};
+for (const z of zones) zoneById[z.id] = z;
+
+// ----- layout -----
+const W = 1200;
+const H = 380;
+const PL = 64;
+const PR = 30;
+const PT = 30;
+const PB = 120;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+
+const Y_MIN = 130;
+const Y_MAX = 195;
+
+const bandW = CW / main_segments.length;
+const barW = bandW * 0.62;
+
+const y = (b: number) => PT + (1 - (b - Y_MIN) / (Y_MAX - Y_MIN)) * CH;
+
+// ----- y axis ticks -----
+const yTicks: { value: number; y: number }[] = [];
+for (let b = 140; b <= 190; b += 10) yTicks.push({ value: b, y: y(b) });
+
+// ----- race avg reference -----
+const avgY = y(overall.avg);
+
+// ----- bars -----
+const bars = main_segments.map((seg, i) => {
+  const bx = PL + i * bandW + (bandW - barW) / 2;
+  const labelY = PT + CH + 22;
+  let label = seg.label;
+  if (seg.kind === 'run') label = label.replace('Run ', 'R');
+
+  if (seg.avg_hr === null || seg.avg_hr === undefined) {
+    return {
+      hasData: false as const,
+      bx,
+      midX: bx + barW / 2,
+      label,
+      labelY,
+      placeholderY: PT + CH - 8,
+    };
+  }
+
+  const zone = zoneById[seg.zone as number];
+  const barTopY = y(seg.avg_hr);
+  const barH = PT + CH - barTopY;
+  const peakY = y(seg.peak_hr as number);
+
+  return {
+    hasData: true as const,
+    bx,
+    midX: bx + barW / 2,
+    label,
+    labelY,
+    barTopY,
+    barH,
+    peakY,
+    color: zone?.color ?? '#D6783D',
+    avg: Math.round(seg.avg_hr),
+  };
+});
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Average heart rate per HYROX segment"
+  class="hyrox-chart"
+>
+  <g class="y-grid">
+    {yTicks.map((t) => (
+      <g>
+        <line x1={PL} y1={t.y.toFixed(1)} x2={PL + CW} y2={t.y.toFixed(1)} stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4" />
+        <text x={PL - 8} y={(t.y + 3).toFixed(1)} text-anchor="end" class="axis-label">{t.value}</text>
+      </g>
+    ))}
+  </g>
+
+  <line x1={PL} y1={avgY.toFixed(1)} x2={PL + CW} y2={avgY.toFixed(1)} stroke="#F5F5EE" stroke-width="0.6" stroke-dasharray="3,5" opacity="0.4" />
+  <text x={PL + CW - 4} y={(avgY - 5).toFixed(1)} text-anchor="end" class="ref-label">race avg {overall.avg.toFixed(0)}</text>
+
+  {bars.map((b) => (
+    <g>
+      <text
+        x={b.midX.toFixed(1)}
+        y={b.labelY}
+        text-anchor="end"
+        transform={`rotate(-50 ${b.midX.toFixed(1)} ${b.labelY})`}
+        class="seg-axis-label"
+      >{b.label}</text>
+
+      {b.hasData ? (
+        <g>
+          <rect
+            x={b.bx.toFixed(1)}
+            y={b.barTopY.toFixed(1)}
+            width={barW.toFixed(1)}
+            height={b.barH.toFixed(1)}
+            fill={b.color}
+            opacity="0.85"
+            rx="1"
+          />
+          <line
+            x1={(b.bx - 3).toFixed(1)}
+            y1={b.peakY.toFixed(1)}
+            x2={(b.bx + barW + 3).toFixed(1)}
+            y2={b.peakY.toFixed(1)}
+            stroke="#FFE600"
+            stroke-width="1.8"
+          />
+          <text x={b.midX.toFixed(1)} y={(b.barTopY - 6).toFixed(1)} text-anchor="middle" class="bar-value">{b.avg}</text>
+        </g>
+      ) : (
+        <text x={b.midX.toFixed(1)} y={b.placeholderY.toFixed(1)} text-anchor="middle" class="no-data">no data</text>
+      )}
+    </g>
+  ))}
+
+  <line x1={PL} y1={PT + CH} x2={PL + CW} y2={PT + CH} stroke="#A0A09A" stroke-width="0.8" />
+
+  <g transform={`translate(${PL + CW - 220}, 8)`}>
+    <line x1="0" y1="8" x2="14" y2="8" stroke="#FFE600" stroke-width="1.8" />
+    <text x="20" y="12" class="legend-text">peak bpm</text>
+    <rect x="100" y="2" width="14" height="12" fill="#D6783D" opacity="0.85" />
+    <text x="120" y="12" class="legend-text">bar coloured by zone</text>
+  </g>
+</svg>

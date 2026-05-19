@@ -100,6 +100,88 @@
   text-transform: uppercase;
 }
 
+/* Zones chart (horizontal bars per zone) */
+.hyrox-chart .zone-row-label {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+.hyrox-chart .zone-row-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+}
+.hyrox-chart .zone-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.hyrox-chart .zone-pct {
+  fill: var(--ink-3);
+  font-weight: 400;
+}
+
+/* Effort chart (vertical bars per segment) */
+.hyrox-chart .seg-axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.04em;
+}
+.hyrox-chart .no-data {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Drift chart (paired bars) */
+.hyrox-chart .bar-value-small {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.hyrox-chart .delta {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.hyrox-chart .group-label {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+
+/* Recovery chart (dumbbells) */
+.hyrox-chart .recovery-station {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+.hyrox-chart .recovery-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.hyrox-chart .recovery-delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
 /* Chart frame wrapper — use around any chart for consistent presentation */
 .chart-frame {
   background: var(--surface);
