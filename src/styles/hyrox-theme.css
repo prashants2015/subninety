@@ -1,0 +1,140 @@
+/* =================================================
+   HYROX SUBNINETY THEME
+   Shared across all chart components and page layouts.
+   Import once in your layout or root page.
+   ================================================= */
+
+:root {
+  /* Backgrounds */
+  --bg: #0A0A0B;
+  --surface: #14141A;
+  --panel: #1A1A22;
+
+  /* Text */
+  --ink-1: #F5F5EE;   /* primary */
+  --ink-2: #A0A09A;   /* muted */
+  --ink-3: #5C5C58;   /* tertiary / axis */
+
+  /* Lines, borders */
+  --rule: #26262C;
+
+  /* Brand */
+  --yellow: #FFE600;
+  --crimson: #E84B5F;
+
+  /* HR zones */
+  --zone-1: #5C7593;
+  --zone-2: #5B8C7F;
+  --zone-3: #C9A436;
+  --zone-4: #D6783D;
+  --zone-5: #D43F3F;
+}
+
+/* ===== Shared chart text styles =====
+   Every chart component uses these classes so axis/labels look identical.
+*/
+.hyrox-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hyrox-chart .axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.hyrox-chart .axis-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  fill: var(--ink-2);
+}
+
+.hyrox-chart .seg-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hyrox-chart .ref-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.hyrox-chart .peak-callout {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--yellow);
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+.hyrox-chart .zone-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.hyrox-chart .bar-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.hyrox-chart .legend-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Chart frame wrapper — use around any chart for consistent presentation */
+.chart-frame {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 36px 32px 28px;
+  margin: 0 0 16px;
+  position: relative;
+}
+
+.chart-frame h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  color: var(--ink-1);
+  font-variation-settings: "SOFT" 60;
+}
+
+.chart-frame .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.chart-frame .lede {
+  color: var(--ink-2);
+  margin: 0 0 28px;
+  max-width: 760px;
+  font-size: 16px;
+}
+
+@media (max-width: 720px) {
+  .chart-frame { padding: 24px 16px 16px; }
+}

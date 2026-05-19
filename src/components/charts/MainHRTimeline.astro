@@ -1,0 +1,257 @@
+---
+/**
+ * MainHRTimeline.astro
+ *
+ * The hero HR timeline chart. Shows the full heart-rate trace across all
+ * 16 HYROX segments, with zone bands, segment markers, race peak callout,
+ * and race average reference line.
+ *
+ * Renders entirely server-side as inline SVG (no JS needed at runtime).
+ *
+ * Usage:
+ *   import data from '../../data/race-2026-04-12.json';
+ *   import MainHRTimeline from '../../components/charts/MainHRTimeline.astro';
+ *   <MainHRTimeline raceData={data} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { samples, segments, total_race_s: totalS, overall, zones } = raceData;
+
+// ----- layout constants -----
+const W = 1200;
+const H = 560;
+const PL = 64;
+const PR = 56;
+const PT = 60;
+const PB = 80;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+const Y_MIN = 95;
+const Y_MAX = 195;
+const GAP_THRESHOLD = 60;
+
+const x = (t: number) => PL + (t / totalS) * CW;
+const y = (b: number) => PT + (1 - (b - Y_MIN) / (Y_MAX - Y_MIN)) * CH;
+
+// ----- HR line (gap-aware) -----
+type Pt = { x: number; y: number };
+const paths: Pt[][] = [];
+let current: Pt[] = [];
+let prevT: number | null = null;
+for (const s of samples) {
+  if (prevT !== null && s.t_sec - prevT > GAP_THRESHOLD) {
+    if (current.length) paths.push(current);
+    current = [];
+  }
+  current.push({ x: x(s.t_sec), y: y(s.avg) });
+  prevT = s.t_sec;
+}
+if (current.length) paths.push(current);
+
+const linePath = (pts: Pt[]) =>
+  'M ' + pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ');
+const areaPath = (pts: Pt[]) => {
+  const base = y(Y_MIN);
+  const middle = pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ');
+  return `M ${pts[0].x.toFixed(1)} ${base.toFixed(1)} L ${middle} L ${pts[pts.length - 1].x.toFixed(1)} ${base.toFixed(1)} Z`;
+};
+
+const linePaths = paths.map(linePath);
+const areaPaths = paths.map(areaPath);
+
+// ----- zone bands -----
+const zoneBands = zones
+  .map((z) => {
+    const yTop = Math.max(PT, y(z.high_bpm));
+    const yBot = Math.min(PT + CH, y(z.low_bpm));
+    return { color: z.color, yTop, height: yBot - yTop };
+  })
+  .filter((b) => b.height > 0);
+
+// ----- zone right-side labels -----
+const zoneTags = zones
+  .map((z) => {
+    const ymid = (y(z.low_bpm) + y(z.high_bpm)) / 2;
+    return { label: z.label.split(' ')[0], color: z.color, ymid };
+  })
+  .filter((t) => t.ymid >= PT && t.ymid <= PT + CH);
+
+// ----- segment separators (every boundary except the last) -----
+const separators = segments.slice(0, -1).map((seg) => ({ x: x(seg.end_s) }));
+
+// ----- y axis ticks -----
+const yTicks: { value: number; y: number }[] = [];
+for (let b = 100; b <= 190; b += 20) yTicks.push({ value: b, y: y(b) });
+
+// ----- x axis ticks (every 10 min) -----
+const fmtClock = (sec: number) => {
+  const s = Math.round(sec);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const ss = s % 60;
+  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+  return `${m}:${String(ss).padStart(2, '0')}`;
+};
+const xTicks: { x: number; label: string }[] = [];
+for (let t = 0; t <= totalS; t += 600) xTicks.push({ x: x(t), label: fmtClock(t) });
+
+// ----- segment markers (top bars + labels) -----
+const segMarkers = segments
+  .filter((s) => s.kind !== 'roxzone')
+  .map((seg) => {
+    const x1 = x(seg.start_s);
+    const x2 = x(seg.end_s);
+    const w = x2 - x1;
+    const color = seg.kind === 'station' ? '#FFE600' : '#5C5C58';
+    let label = seg.label;
+    if (seg.kind === 'run') label = label.replace('Run ', 'R');
+    const maxChars = Math.max(2, Math.floor(w / 6.5));
+    const display = label.length <= maxChars ? label : label.slice(0, maxChars - 1);
+    return { x1, w, color, label: display, showLabel: w > 28, midX: (x1 + x2) / 2 };
+  });
+
+// ----- peak sample callout -----
+const peakSample = samples.reduce((acc, s) => (s.max > acc.max ? s : acc), samples[0]);
+const peakX = x(peakSample.t_sec);
+const peakY = y(peakSample.max);
+const peakLabelX = peakX < PL + CW - 100 ? peakX + 10 : peakX - 10;
+const peakLabelAnchor = peakX < PL + CW - 100 ? 'start' : 'end';
+
+// ----- race avg ref line -----
+const avgY = y(overall.avg);
+
+// ----- accessibility text -----
+const ariaDesc = `Heart rate line plot over ${Math.round(totalS / 60)} minutes, showing ${samples.length} samples. Average ${overall.avg.toFixed(0)} bpm, peak ${overall.peak} bpm.`;
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="hr-timeline-title hr-timeline-desc"
+  class="hyrox-chart"
+>
+  <title id="hr-timeline-title">Heart rate across all 16 HYROX segments</title>
+  <desc id="hr-timeline-desc">{ariaDesc}</desc>
+
+  <defs>
+    <linearGradient id="hrFillGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE600" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#FFE600" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <g class="zone-bands">
+    {zoneBands.map((b) => (
+      <rect
+        x={PL}
+        y={b.yTop.toFixed(1)}
+        width={CW}
+        height={b.height.toFixed(1)}
+        fill={b.color}
+        opacity="0.08"
+      />
+    ))}
+  </g>
+
+  <g class="zone-tags">
+    {zoneTags.map((t) => (
+      <text
+        x={PL + CW + 6}
+        y={(t.ymid + 3).toFixed(1)}
+        class="zone-tag"
+        fill={t.color}
+      >{t.label}</text>
+    ))}
+  </g>
+
+  <g class="seg-separators">
+    {separators.map((s) => (
+      <line x1={s.x.toFixed(1)} y1={PT} x2={s.x.toFixed(1)} y2={PT + CH} stroke="#26262C" stroke-width="0.5" />
+    ))}
+  </g>
+
+  <g class="y-axis">
+    {yTicks.map((tk) => (
+      <g>
+        <line x1={PL - 4} y1={tk.y.toFixed(1)} x2={PL} y2={tk.y.toFixed(1)} stroke="#5C5C58" stroke-width="0.6" />
+        <text x={PL - 8} y={(tk.y + 3).toFixed(1)} text-anchor="end" class="axis-label">{tk.value}</text>
+      </g>
+    ))}
+    <text
+      x="14"
+      y={(PT + CH / 2).toFixed(1)}
+      transform={`rotate(-90 14 ${(PT + CH / 2).toFixed(1)})`}
+      class="axis-title"
+      text-anchor="middle"
+    >Heart rate (bpm)</text>
+  </g>
+
+  <g class="seg-markers">
+    {segMarkers.map((m) => (
+      <g>
+        <rect x={m.x1.toFixed(1)} y={PT - 14} width={m.w.toFixed(1)} height="3" fill={m.color} />
+        {m.showLabel && (
+          <text x={m.midX.toFixed(1)} y={PT - 20} text-anchor="middle" class="seg-label">{m.label}</text>
+        )}
+      </g>
+    ))}
+  </g>
+
+  <g class="x-axis">
+    {xTicks.map((tk) => (
+      <g>
+        <line x1={tk.x.toFixed(1)} y1={PT + CH} x2={tk.x.toFixed(1)} y2={PT + CH + 4} stroke="#5C5C58" stroke-width="0.6" />
+        <text x={tk.x.toFixed(1)} y={PT + CH + 18} text-anchor="middle" class="axis-label">{tk.label}</text>
+      </g>
+    ))}
+    <text x={(PL + CW / 2).toFixed(1)} y={H - 26} text-anchor="middle" class="axis-title">Elapsed race time</text>
+  </g>
+
+  <line x1={PL} y1={PT + CH} x2={PL + CW} y2={PT + CH} stroke="#A0A09A" stroke-width="0.8" />
+
+  <g class="hr-area">
+    {areaPaths.map((d) => <path d={d} fill="url(#hrFillGradient)" />)}
+  </g>
+
+  <g class="hr-line">
+    {linePaths.map((d) => (
+      <path
+        d={d}
+        stroke="#FFE600"
+        stroke-width="1.8"
+        fill="none"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
+    ))}
+  </g>
+
+  <line
+    x1={PL}
+    y1={avgY.toFixed(1)}
+    x2={PL + CW}
+    y2={avgY.toFixed(1)}
+    stroke="#F5F5EE"
+    stroke-width="0.8"
+    stroke-dasharray="3,5"
+    opacity="0.4"
+  />
+  <text x={PL + 8} y={(avgY - 5).toFixed(1)} class="ref-label">
+    race avg · {overall.avg.toFixed(0)} bpm
+  </text>
+
+  <circle cx={peakX.toFixed(1)} cy={peakY.toFixed(1)} r="4" fill="#FFE600" stroke="#0A0A0B" stroke-width="2" />
+  <text
+    x={peakLabelX.toFixed(1)}
+    y={(peakY - 6).toFixed(1)}
+    text-anchor={peakLabelAnchor}
+    class="peak-callout"
+  >RACE PEAK · {peakSample.max} bpm</text>
+</svg>
