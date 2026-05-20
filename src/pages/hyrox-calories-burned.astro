@@ -287,6 +287,39 @@ section { margin-bottom: 56px; }
 }
 svg.hyrox-chart { width: 100%; height: auto; display: block; }
 
+.body-section { max-width: 760px; margin: 0 auto 56px; }
+.body-section h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+  color: var(--ink-1);
+}
+.body-section h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin: 36px 0 10px;
+  color: var(--ink-1);
+}
+.body-section p {
+  color: var(--ink-1);
+  margin: 0 0 14px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.body-section p.muted { color: var(--ink-2); }
+.body-section code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--yellow);
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
 .faq {
   margin: 56px auto;
   max-width: 880px;
@@ -355,6 +388,11 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
 }
 .method p { margin: 0 0 10px; }
 .method p:last-child { margin-bottom: 0; }
+.method code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--yellow);
+}
 
 @media (max-width: 720px) {
   .wrap { padding: 44px 18px 64px; }
@@ -377,7 +415,7 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
 
   <p class="standfirst">
     1,441 kilocalories across 2 hours and 1 minute of HYROX, ranked segment by
-    segment. The longest two stations cost more than the highest-HR ones — duration
+    segment. The longest two stations cost more than the highest-HR ones &mdash; duration
     beats intensity for total burn.
   </p>
 
@@ -385,30 +423,30 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
     <h2>Key takeaways</h2>
     <ol>
       <li>
-        <span class="n">01 — TOTAL</span>
-        <strong>A 2:01:06 HYROX burned 1,441 kcal.</strong> That's about 11.9 kcal per minute across
-        the full race window — comparable to sustaining a hard tempo run for two hours straight.
+        <span class="n">01 &mdash; TOTAL</span>
+        <strong>A 2:01:06 HYROX burned 1,441 kcal.</strong> That&#8217;s about 11.9 kcal per minute across
+        the full race window &mdash; comparable to sustaining a hard tempo run for two hours straight.
       </li>
       <li>
-        <span class="n">02 — TOPS THE LIST</span>
-        <strong>Wall Balls and Sled Pull tied at 115 kcal each — the costliest segments of the race.</strong>
+        <span class="n">02 &mdash; TOPS THE LIST</span>
+        <strong>Wall Balls and Sled Pull tied at 115 kcal each &mdash; the costliest segments of the race.</strong>
         Both are also the two longest segments (11:28 and 10:01). Time on the floor wins.
       </li>
       <li>
-        <span class="n">03 — DURATION &gt; INTENSITY</span>
+        <span class="n">03 &mdash; DURATION &gt; INTENSITY</span>
         <strong>The five most expensive segments are also the five longest.</strong> Per-minute differences
         in intensity are smaller than per-segment differences in duration. To raise total burn, lengthen
-        what you do; you don't have to suffer harder.
+        what you do; you don&#8217;t have to suffer harder.
       </li>
       <li>
-        <span class="n">04 — RUNS ≈ STATIONS</span>
+        <span class="n">04 &mdash; RUNS &asymp; STATIONS</span>
         <strong>Running segments collectively burned 691 kcal; stations burned 632 kcal.</strong>
         Roxzone transitions added another 118 kcal. The metabolic split is roughly 48% running, 44%
-        stations, 8% transitions — HYROX is genuinely a hybrid race by energy cost.
+        stations, 8% transitions &mdash; HYROX is genuinely a hybrid race by energy cost.
       </li>
       <li>
-        <span class="n">05 — CHEAPEST</span>
-        <strong>Farmers Carry burned just 29 kcal — by far the cheapest segment.</strong> At 2:29 it's
+        <span class="n">05 &mdash; CHEAPEST</span>
+        <strong>Farmers Carry burned just 29 kcal &mdash; by far the cheapest segment.</strong> At 2:29 it&#8217;s
         also the shortest. Per-minute burn rate was actually competitive with the heavy stations;
         the total is small because the segment is brief, not because the effort is easy.
       </li>
@@ -418,7 +456,7 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
   <div class="byline">
     <div>By <strong>Prashant Singh</strong></div>
     <div>Bib <strong>95039</strong></div>
-    <div>Age group <strong>30–34</strong></div>
+    <div>Age group <strong>30&ndash;34</strong></div>
     <div>Race <strong>12 April 2026</strong></div>
     <div>Final time <strong>02:01:06</strong></div>
     <div>Tracker <strong>Apple Watch</strong></div>
@@ -443,28 +481,138 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
     </div>
   </div>
 
+  <section class="body-section">
+    <h2>Why this question matters more than runners think</h2>
+    <p class="muted">
+      HYROX athletes obsess over splits. The 7:01 first-run, the 5:11 SkiErg, the 11:28 Wall Balls
+      &mdash; these are the numbers we share, screenshot, and post-mortem. But splits only tell you
+      what happened. They don&#8217;t tell you why minute 95 felt the way it did, or why some segments
+      leave you hollowed out for the next run while others don&#8217;t.
+    </p>
+    <p>
+      Calorie burn is one of the better answers. It&#8217;s a single number that aggregates duration,
+      intensity, and muscle-mass engaged &mdash; the closest thing we have to a &ldquo;total cost&rdquo;
+      figure for each part of the race. And in this data, it tells a different story than the splits do.
+    </p>
+  </section>
+
   <section>
     <div class="chart-frame">
       <h2>Every segment, ranked by cost</h2>
-      <div class="sub">Active energy per segment · sorted highest to lowest · yellow = station, grey = run</div>
+      <div class="sub">Active energy per segment &middot; sorted highest to lowest &middot; yellow = station, grey = run</div>
       <p class="lede">
-        Stations cluster at the top of the list because they're long. Runs spread through the middle.
-        The shortest segment, Farmers Carry, sits at the bottom — not because it was easy but because
-        2 minutes 29 seconds wasn't long enough to accumulate.
+        Stations cluster at the top of the list because they&#8217;re long. Runs spread through the middle.
+        The shortest segment, Farmers Carry, sits at the bottom &mdash; not because it was easy but because
+        2 minutes 29 seconds wasn&#8217;t long enough to accumulate.
       </p>
       <CaloriesPerStation raceData={raceData} />
     </div>
+  </section>
+
+  <section class="body-section">
+    <h2>What the data actually shows</h2>
+
+    <h3>The biggest surprise isn&#8217;t the hardest segment</h3>
+    <p>
+      If I&#8217;d been asked beforehand to predict which segment would top the calorie list, I&#8217;d
+      have said one of the running segments. They had the highest heart rates &mdash; R3 and R7 both
+      averaged 178 bpm &mdash; and they felt the most all-out. I would have been wrong.
+    </p>
+    <p>
+      The costliest segments were Wall Balls and Sled Pull, tied at 115 kcal each. Wall Balls is the
+      obvious one with hindsight: 100 reps of squat-to-throw is a full-body grind. Sled Pull is less
+      obvious. It ended with the lowest heart rate of any station (158 bpm), it has built-in rest
+      intervals (you walk back between pulls), and its per-minute calorie burn was lower than several
+      of the runs.
+    </p>
+    <p>
+      What both segments share is duration. Wall Balls took 11:28. Sled Pull took 10:01. The next three
+      on the calorie list &mdash; Burpee Broad Jump (104 kcal), Run 8 (104), Run 3 (103) &mdash; are all
+      in the 7&ndash;8 minute range. <strong>The five most expensive segments are also the five longest.</strong>
+      The data is dense with this finding: in HYROX, cost is duration-driven.
+    </p>
+
+    <h3>The Sled Pull paradox</h3>
+    <p>
+      Sled Pull deserves a second look. It posted the lowest finishing HR of any station. One of the
+      more comfortable per-minute calorie rates. And yet: highest total calorie burn, tied with Wall Balls.
+    </p>
+    <p>
+      The explanation is in the structure of the segment. You pull the sled in stages &mdash; short
+      bursts followed by walks back to the start. The walks don&#8217;t actually rest you; heart rate
+      stays elevated and you&#8217;re still under tension. But they stop the segment from feeling like
+      a continuous burn. You finish Sled Pull thinking you&#8217;ve recovered.
+    </p>
+    <p>
+      The next run says otherwise. The transition from Sled Pull to Run 4 produced a 21 bpm jump
+      (157 &rarr; 178) &mdash; the biggest cardiovascular spike of the entire race. Sled Pull
+      hadn&#8217;t been a rest; it had been a low-grade, sustained tax on the system. The calorie
+      figure captures that more accurately than the average HR does.
+    </p>
+
+    <h3>Are HYROX runs or stations more demanding?</h3>
+    <p>
+      This is an old debate in HYROX coaching circles, with strong opinions on both sides. The data
+      here is unambiguous and slightly anticlimactic: they&#8217;re roughly equal.
+    </p>
+    <p>
+      The eight running segments collectively burned 691 kcal. The eight workout stations burned 632.
+      The remaining 118 kcal came from the roxzone &mdash; the time spent moving between segments. The
+      metabolic split was approximately 48% running, 44% stations, 8% transitions.
+    </p>
+    <p>
+      That&#8217;s a 50/50 race by energy cost, give or take a few per cent in either direction. It
+      supports HYROX&#8217;s own framing of the sport as a true hybrid event rather than a running race
+      with stations attached. From a training standpoint, it suggests that strength and station-specific
+      work shouldn&#8217;t be treated as secondary preparation. The stations are exactly half the race,
+      energetically.
+    </p>
+
+    <h3>What this means for race day</h3>
+    <p>Two practical implications.</p>
+    <p>
+      <strong>The long segments matter most.</strong> If you&#8217;re going to find time, find it on the
+      floor. Wall Balls at 11:28 represents 10% of the entire race; Sled Pull at 10:01 is another 8%.
+      Together that&#8217;s 18% of race time and 16% of total calorie burn. Getting faster at those two
+      will drop your finish time more than equivalent improvements elsewhere.
+    </p>
+    <p>
+      <strong>Fuelling deserves more thought than most amateurs give it.</strong> 1,441 kcal of active
+      energy is substantial &mdash; more than the daily active burn for many people, packed into two
+      hours. Going in glycogen-depleted invites the wheels coming off around minute 85. Most HYROX
+      athletes carb-load for a marathon-style race; few treat HYROX with the same respect. They should.
+    </p>
+
+    <h3>What these numbers aren&#8217;t</h3>
+    <p>
+      Apple Watch <code>active_energy</code> is an estimate, not a measurement. Validation studies
+      against indirect calorimetry put it within about &plusmn;10&ndash;15% for cardiovascular activity,
+      with consistency typically poorer for strength work. The absolute total here &mdash; 1,441 kcal
+      &mdash; could plausibly land anywhere between roughly 1,200 and 1,650 on a metabolic cart.
+    </p>
+    <p>
+      Internal consistency within a single athlete&#8217;s data is much better than cross-athlete
+      accuracy. The relative ranking of segments &mdash; which ones cost more or less &mdash; is solid.
+      The 50/50 runs-vs-stations split holds even at 15% measurement noise on either side. The Sled Pull
+      paradox holds. The duration-wins finding holds.
+    </p>
+    <p>
+      Treat these numbers as a credible relative comparison between segments of one race, not as a
+      precise absolute. And don&#8217;t use my body&#8217;s data as a stand-in for yours: heavier
+      athletes burn more per segment; faster athletes burn less in total; fitter athletes burn more
+      efficiently per heartbeat.
+    </p>
   </section>
 
   <section class="faq">
     <h2>Frequently asked questions</h2>
     <details>
       <summary>How many calories does a HYROX race burn?</summary>
-      <p>For this 2:01:06 race, the Apple Watch recorded 1,441 kcal of active energy across all 16 segments — an average of about 11.9 kcal per minute. That's comparable to a sustained hard tempo run kept up for two hours. Individual burn varies with body weight, finishing time, and effort. A faster 90-minute finish on the same body would burn less because total time-on-floor is shorter; a slower 2:30 finish would burn more.</p>
+      <p>For this 2:01:06 race, the Apple Watch recorded 1,441 kcal of active energy across all 16 segments &mdash; an average of about 11.9 kcal per minute. That&#8217;s comparable to a sustained hard tempo run kept up for two hours. Individual burn varies with body weight, finishing time, and effort. A faster 90-minute finish on the same body would burn less because total time-on-floor is shorter; a slower 2:30 finish would burn more.</p>
     </details>
     <details>
       <summary>Which HYROX station burns the most calories?</summary>
-      <p>In this race, Wall Balls and Sled Pull tied as the costliest segments at 115 kcal each. They're also the two longest segments in the race — Wall Balls at 11:28 and Sled Pull at 10:01. The pattern holds across the data: duration drives total cost more than intensity does. Sled Pull is particularly notable because it had the lowest average heart rate of any station (158 bpm) yet topped the calorie chart — the long, technical, stop-start nature kept HR moderate but total time-under-load high.</p>
+      <p>In this race, Wall Balls and Sled Pull tied as the costliest segments at 115 kcal each. They&#8217;re also the two longest segments in the race &mdash; Wall Balls at 11:28 and Sled Pull at 10:01. The pattern holds across the data: duration drives total cost more than intensity does. Sled Pull is particularly notable because it had the lowest average heart rate of any station (158 bpm) yet topped the calorie chart &mdash; the long, technical, stop-start nature kept HR moderate but total time-under-load high.</p>
     </details>
     <details>
       <summary>Do HYROX runs or stations burn more calories?</summary>
@@ -472,7 +620,7 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
     </details>
     <details>
       <summary>How was this calorie data measured?</summary>
-      <p>Active energy was captured on an Apple Watch during a Mixed Cardio workout session and exported as JSON via the Health Auto Export iOS app. Apple's <code>active_energy</code> metric estimates expenditure above resting metabolic rate, computed from heart rate and motion data. It's an estimate, not a metabolic-cart measurement — absolute values can vary between athletes by 10–15% — but the metric is internally consistent within a single athlete's data, which makes it useful for comparing segments within one race.</p>
+      <p>Active energy was captured on an Apple Watch during a Mixed Cardio workout session and exported as JSON via the Health Auto Export iOS app. Apple&#8217;s <code>active_energy</code> metric estimates expenditure above resting metabolic rate, computed from heart rate and motion data. It&#8217;s an estimate, not a metabolic-cart measurement &mdash; absolute values can vary between athletes by 10&ndash;15% &mdash; but the metric is internally consistent within a single athlete&#8217;s data, which makes it useful for comparing segments within one race.</p>
     </details>
   </section>
 
@@ -481,14 +629,14 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
     <p>
       Active energy was captured on an Apple Watch during a Mixed Cardio workout
       (started 09:50:10 IST, ended 11:51:38 IST on 12 April 2026), exported via the
-      Health Auto Export iOS app as JSON. Apple's <code>active_energy</code> metric
+      Health Auto Export iOS app as JSON. Apple&#8217;s <code>active_energy</code> metric
       estimates expenditure above resting metabolic rate, computed from heart rate
       and motion sensors. The Watch reports values in kilojoules; figures here are
       converted to kilocalories at 1 kcal = 4.184 kJ.
     </p>
     <p>
       Per-segment totals are computed by summing active_energy samples that fall
-      within each segment's start and end time, using durations taken from the
+      within each segment&#8217;s start and end time, using durations taken from the
       official HYROX race results (bib 95039, HYROX Bengaluru 2026, Sunday division).
       The 10:12 of total roxzone time is distributed equally as ~41 seconds between
       each of the 15 segment transitions.
@@ -496,7 +644,7 @@ svg.hyrox-chart { width: 100%; height: auto; display: block; }
     <p>
       Apple Watch <code>active_energy</code> is an estimate, not a metabolic-cart
       measurement. Published validation studies suggest absolute accuracy within
-      roughly ±10–15% versus indirect calorimetry, with consistency improving for
+      roughly &plusmn;10&ndash;15% versus indirect calorimetry, with consistency improving for
       cardiovascular activity over strength work. Use these numbers as a credible
       relative comparison between segments of one race rather than as a precise
       absolute burn figure.
