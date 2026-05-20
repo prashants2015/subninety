@@ -1,0 +1,162 @@
+---
+/**
+ * TimeAllocationDonut.astro
+ *
+ * Donut chart showing how the total race time was split between three
+ * categories: running segments, workout stations, and roxzone (transitions).
+ *
+ * Center of the donut shows the total race time.
+ * Right side has a legend with exact durations and percentages.
+ *
+ * Usage:
+ *   <TimeAllocationDonut raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { main_segments, total_race_s: totalS, race_meta } = raceData;
+
+// ----- aggregate time per category -----
+const runS = main_segments.filter((s) => s.kind === 'run').reduce((sum, s) => sum + s.duration_s, 0);
+const stationS = main_segments.filter((s) => s.kind === 'station').reduce((sum, s) => sum + s.duration_s, 0);
+const roxS = totalS - runS - stationS;
+
+const slices = [
+  { label: 'Running',  value: runS,     color: '#5C5C58', accent: '#A0A09A' },
+  { label: 'Stations', value: stationS, color: '#FFE600', accent: '#FFE600' },
+  { label: 'Roxzone',  value: roxS,     color: '#D6783D', accent: '#D6783D' },
+];
+
+const fmtDur = (sec: number) => {
+  const s = Math.round(sec);
+  const m = Math.floor(s / 60);
+  const ss = s % 60;
+  return `${m}:${String(ss).padStart(2, '0')}`;
+};
+
+// ----- donut geometry -----
+const W = 1200;
+const H = 520;
+const CENTER_X = 320;
+const CENTER_Y = H / 2;
+const R_OUTER = 200;
+const R_INNER = 140;
+
+// Compute slice paths (SVG arcs)
+type SliceGeo = { d: string; midAngle: number; pct: number; label: string; value: number; color: string; accent: string };
+
+let cursorAngle = -Math.PI / 2; // start at top
+const sliceGeo: SliceGeo[] = slices.map((s) => {
+  const pct = (s.value / totalS) * 100;
+  const sweep = (s.value / totalS) * Math.PI * 2;
+  const startAngle = cursorAngle;
+  const endAngle = cursorAngle + sweep;
+  const midAngle = (startAngle + endAngle) / 2;
+
+  const x1Out = CENTER_X + R_OUTER * Math.cos(startAngle);
+  const y1Out = CENTER_Y + R_OUTER * Math.sin(startAngle);
+  const x2Out = CENTER_X + R_OUTER * Math.cos(endAngle);
+  const y2Out = CENTER_Y + R_OUTER * Math.sin(endAngle);
+  const x1In = CENTER_X + R_INNER * Math.cos(endAngle);
+  const y1In = CENTER_Y + R_INNER * Math.sin(endAngle);
+  const x2In = CENTER_X + R_INNER * Math.cos(startAngle);
+  const y2In = CENTER_Y + R_INNER * Math.sin(startAngle);
+
+  const largeArc = sweep > Math.PI ? 1 : 0;
+  const d = [
+    `M ${x1Out.toFixed(2)} ${y1Out.toFixed(2)}`,
+    `A ${R_OUTER} ${R_OUTER} 0 ${largeArc} 1 ${x2Out.toFixed(2)} ${y2Out.toFixed(2)}`,
+    `L ${x1In.toFixed(2)} ${y1In.toFixed(2)}`,
+    `A ${R_INNER} ${R_INNER} 0 ${largeArc} 0 ${x2In.toFixed(2)} ${y2In.toFixed(2)}`,
+    'Z',
+  ].join(' ');
+
+  cursorAngle = endAngle;
+  return { d, midAngle, pct, label: s.label, value: s.value, color: s.color, accent: s.accent };
+});
+
+// ----- legend positioning (right side) -----
+const LEGEND_X = 640;
+const LEGEND_Y_START = 130;
+const LEGEND_LINE_H = 86;
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Race time allocation between running, stations, and roxzone"
+  class="hyrox-chart"
+>
+  <g class="donut-slices">
+    {sliceGeo.map((s) => (
+      <path d={s.d} fill={s.color} opacity="0.9" />
+    ))}
+  </g>
+
+  <g class="donut-center">
+    <text x={CENTER_X} y={(CENTER_Y - 16).toFixed(1)} text-anchor="middle" class="donut-center-label">total race time</text>
+    <text x={CENTER_X} y={(CENTER_Y + 22).toFixed(1)} text-anchor="middle" class="donut-center-value">{race_meta.final_time}</text>
+  </g>
+
+  <g class="legend">
+    {sliceGeo.map((s, i) => {
+      const y = LEGEND_Y_START + i * LEGEND_LINE_H;
+      return (
+        <g>
+          <rect x={LEGEND_X} y={(y - 18).toFixed(1)} width="5" height="38" fill={s.color} />
+          <text x={LEGEND_X + 18} y={(y - 4).toFixed(1)} class="legend-section-label">{s.label}</text>
+          <text x={LEGEND_X + 18} y={(y + 24).toFixed(1)} class="legend-section-value">
+            {fmtDur(s.value)}
+            <tspan dx="10" class="legend-section-pct">{s.pct.toFixed(1)}%</tspan>
+          </text>
+        </g>
+      );
+    })}
+  </g>
+</svg>
+
+<style>
+  .donut-center-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    fill: var(--ink-3);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .donut-center-value {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 500;
+    fill: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .legend-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    fill: var(--ink-3);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .legend-section-value {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 500;
+    fill: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .legend-section-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    fill: var(--ink-3);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+</style>

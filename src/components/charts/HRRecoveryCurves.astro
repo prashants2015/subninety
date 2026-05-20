@@ -1,0 +1,194 @@
+---
+/**
+ * HRRecoveryCurves.astro
+ *
+ * Small-multiples grid showing how heart rate behaves in the 90 seconds
+ * immediately after each station ends. Six panels, one per measured
+ * transition (Sled Push → Run 3, Sled Pull → Run 4, etc.).
+ *
+ * Each panel: HR curve from station-end through the first part of the
+ * next run. Yellow line if HR dropped (true recovery), red if HR rose
+ * (no recovery / kick into next effort).
+ *
+ * Usage:
+ *   <HRRecoveryCurves raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { recoveries } = raceData;
+
+// ----- layout -----
+const W = 1200;
+const PANELS_PER_ROW = 3;
+const N_ROWS = Math.ceil(recoveries.length / PANELS_PER_ROW);
+const PANEL_W = (W - 60) / PANELS_PER_ROW;
+const PANEL_H = 220;
+const ROW_GAP = 20;
+const H = N_ROWS * PANEL_H + (N_ROWS - 1) * ROW_GAP + 40;
+
+// HR range across all panels — use a consistent scale so panels are comparable
+const HR_MIN = 130;
+const HR_MAX = 190;
+
+// Time window (seconds after station end)
+const T_MIN = 0;
+const T_MAX = 90;
+
+// Per-panel padding inside its rectangle
+const P_PL = 44;
+const P_PR = 12;
+const P_PT = 36;
+const P_PB = 30;
+
+type PanelPoint = { x: number; y: number };
+interface Panel {
+  station: string;
+  panelX: number;
+  panelY: number;
+  cw: number;
+  ch: number;
+  isDrop: boolean;
+  drop: number;
+  startHR: number;
+  endHR: number;
+  linePath: string;
+  startDotX: number;
+  startDotY: number;
+  endDotX: number;
+  endDotY: number;
+  ticks: { value: number; y: number }[];
+  xTicks: { value: number; x: number; label: string }[];
+}
+
+const panels: Panel[] = recoveries.map((r, i) => {
+  const row = Math.floor(i / PANELS_PER_ROW);
+  const col = i % PANELS_PER_ROW;
+  const panelX = 30 + col * (PANEL_W + 0);
+  const panelY = 20 + row * (PANEL_H + ROW_GAP);
+  const cw = PANEL_W - P_PL - P_PR;
+  const ch = PANEL_H - P_PT - P_PB;
+
+  const xLocal = (t: number) => panelX + P_PL + ((t - T_MIN) / (T_MAX - T_MIN)) * cw;
+  const yLocal = (hr: number) => panelY + P_PT + (1 - (hr - HR_MIN) / (HR_MAX - HR_MIN)) * ch;
+
+  // Plot the recovery window
+  const pts: PanelPoint[] = r.recovery_window.map((p) => ({ x: xLocal(p.t_offset), y: yLocal(p.hr) }));
+  const linePath = pts.length ? 'M ' + pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ') : '';
+
+  // Start = station-end HR, mark at t=0
+  const startDotX = xLocal(0);
+  const startDotY = yLocal(r.station_end_hr);
+  // End marker at first run sample
+  const tRunOffset = r.run_start_t - r.station_end_t;
+  const endDotX = xLocal(Math.min(tRunOffset, T_MAX));
+  const endDotY = yLocal(r.run_start_hr);
+
+  const ticks = [150, 170, 190].map((v) => ({ value: v, y: yLocal(v) }));
+  const xTicks = [0, 30, 60, 90].map((v) => ({ value: v, x: xLocal(v), label: `${v}s` }));
+
+  return {
+    station: r.station,
+    panelX,
+    panelY,
+    cw,
+    ch,
+    isDrop: r.drop > 0,
+    drop: r.drop,
+    startHR: r.station_end_hr,
+    endHR: r.run_start_hr,
+    linePath,
+    startDotX,
+    startDotY,
+    endDotX,
+    endDotY,
+    ticks,
+    xTicks,
+  };
+});
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Heart rate decay curves after each HYROX station, six small-multiple panels"
+  class="hyrox-chart"
+>
+  {panels.map((p) => {
+    const lineColor = p.isDrop ? '#FFE600' : '#D43F3F';
+    const sign = p.isDrop ? '↓' : '↑';
+    const headerY = p.panelY + 16;
+    const titleX = p.panelX + P_PL;
+    return (
+      <g class="recovery-panel">
+        <!-- Title -->
+        <text x={titleX} y={headerY} class="recovery-panel-title">{p.station}</text>
+        <text x={titleX} y={headerY + 14} class="recovery-panel-sub">→ next run</text>
+        <!-- Delta in top-right -->
+        <text x={p.panelX + PANEL_W - P_PR} y={headerY} text-anchor="end" class="recovery-panel-delta" fill={lineColor}>
+          {sign} {Math.abs(Math.round(p.drop))} bpm
+        </text>
+
+        <!-- Y axis ticks -->
+        {p.ticks.map((t) => (
+          <g>
+            <line x1={p.panelX + P_PL} y1={t.y.toFixed(1)} x2={p.panelX + PANEL_W - P_PR} y2={t.y.toFixed(1)} stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4" />
+            <text x={p.panelX + P_PL - 6} y={(t.y + 3).toFixed(1)} text-anchor="end" class="axis-label">{t.value}</text>
+          </g>
+        ))}
+
+        <!-- X axis ticks -->
+        {p.xTicks.map((t) => (
+          <text x={t.x.toFixed(1)} y={(p.panelY + PANEL_H - P_PB + 16).toFixed(1)} text-anchor="middle" class="axis-label">{t.label}</text>
+        ))}
+
+        <!-- Axis baseline -->
+        <line
+          x1={p.panelX + P_PL}
+          y1={p.panelY + PANEL_H - P_PB}
+          x2={p.panelX + PANEL_W - P_PR}
+          y2={p.panelY + PANEL_H - P_PB}
+          stroke="#A0A09A"
+          stroke-width="0.8"
+        />
+
+        <!-- HR curve -->
+        {p.linePath && (
+          <path d={p.linePath} stroke={lineColor} stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round" opacity="0.9" />
+        )}
+
+        <!-- Endpoints -->
+        <circle cx={p.startDotX.toFixed(1)} cy={p.startDotY.toFixed(1)} r="3.5" fill="#5C5C58" stroke="#F5F5EE" stroke-width="1" />
+        <circle cx={p.endDotX.toFixed(1)} cy={p.endDotY.toFixed(1)} r="3.5" fill="#FFE600" stroke="#0A0A0B" stroke-width="1" />
+      </g>
+    );
+  })}
+</svg>
+
+<style>
+  .recovery-panel-title {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    fill: var(--ink-1);
+    font-weight: 500;
+  }
+  .recovery-panel-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    fill: var(--ink-3);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .recovery-panel-delta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+</style>

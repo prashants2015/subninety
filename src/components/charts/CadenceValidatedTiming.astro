@@ -1,0 +1,146 @@
+---
+/**
+ * CadenceValidatedTiming.astro
+ *
+ * Methodology chart: cadence per segment, with annotations showing where
+ * cadence patterns suggest the watch clock was offset from the official
+ * race-timing chip mat.
+ *
+ * The visible story: my model labels seconds 421–732 as "SkiErg",
+ * but during those seconds the watch recorded 172 spm at 9.8 km/h —
+ * that's full running pace, not skiing. The split-time clock and the
+ * watch clock didn't start at the same instant.
+ *
+ * Usage:
+ *   <CadenceValidatedTiming raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { main_segments } = raceData;
+
+// ----- layout -----
+const W = 1200;
+const H = 460;
+const PL = 64;
+const PR = 30;
+const PT = 50;
+const PB = 120;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+
+const SPM_MIN = 0;
+const SPM_MAX = 200;
+const y = (spm: number) => PT + (1 - (spm - SPM_MIN) / (SPM_MAX - SPM_MIN)) * CH;
+
+const bandW = CW / main_segments.length;
+const barW = bandW * 0.62;
+
+// Cadence "running threshold" reference at 160 spm
+const runThresholdY = y(160);
+
+interface Bar {
+  bandX: number;
+  bx: number;
+  midX: number;
+  barTopY: number;
+  barH: number;
+  label: string;
+  spm: number;
+  isAnomaly: boolean; // station with running-level cadence (a likely timing offset)
+  color: string;
+  labelY: number;
+}
+
+const bars: Bar[] = main_segments.map((seg, i) => {
+  const bandX = PL + i * bandW + bandW / 2;
+  const bx = bandX - barW / 2;
+  const spm = seg.avg_spm ?? 0;
+  const barTopY = y(spm);
+  const barH = PT + CH - barTopY;
+  const labelY = PT + CH + 22;
+  let label = seg.label;
+  if (seg.kind === 'run') label = label.replace('Run ', 'R');
+  // Anomaly: station with running-level cadence
+  const isAnomaly = seg.kind === 'station' && spm >= 160;
+  // Color rules:
+  //  - Anomaly stations: crimson (highlight the offset)
+  //  - Other stations: yellow
+  //  - Runs: muted grey
+  let color = '#5C5C58';
+  if (seg.kind === 'station') color = isAnomaly ? '#E84B5F' : '#FFE600';
+  return { bandX, bx, midX: bandX, barTopY, barH, label, spm: Math.round(spm), isAnomaly, color, labelY };
+});
+
+// Y axis ticks
+const yTicks: { value: number; y: number }[] = [];
+for (let v = 0; v <= 200; v += 50) yTicks.push({ value: v, y: y(v) });
+
+// Pre-compute anomaly count for the headline
+const anomalyCount = bars.filter((b) => b.isAnomaly).length;
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Cadence per segment, with timing offset anomalies highlighted"
+  class="hyrox-chart"
+>
+  <!-- Legend -->
+  <g transform={`translate(${PL}, 12)`}>
+    <rect x="0" y="0" width="14" height="12" fill="#FFE600" />
+    <text x="20" y="10" class="legend-text">station (expected)</text>
+    <rect x="170" y="0" width="14" height="12" fill="#E84B5F" />
+    <text x="190" y="10" class="legend-text">station with running cadence (timing offset)</text>
+    <rect x="540" y="0" width="14" height="12" fill="#5C5C58" />
+    <text x="560" y="10" class="legend-text">run</text>
+  </g>
+
+  <!-- Y axis -->
+  {yTicks.map((t) => (
+    <g>
+      <line x1={PL} y1={t.y.toFixed(1)} x2={PL + CW} y2={t.y.toFixed(1)} stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4" />
+      <text x={(PL - 8).toFixed(1)} y={(t.y + 3).toFixed(1)} text-anchor="end" class="axis-label">{t.value}</text>
+    </g>
+  ))}
+  <text x="14" y={(PT + CH / 2).toFixed(1)} transform={`rotate(-90 14 ${(PT + CH / 2).toFixed(1)})`} class="axis-title" text-anchor="middle">Cadence (spm)</text>
+
+  <!-- Running threshold reference -->
+  <line x1={PL} y1={runThresholdY.toFixed(1)} x2={PL + CW} y2={runThresholdY.toFixed(1)} stroke="#5B8C7F" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7" />
+  <text x={(PL + CW - 4).toFixed(1)} y={(runThresholdY - 5).toFixed(1)} text-anchor="end" class="ref-label">running cadence threshold · 160 spm</text>
+
+  <!-- Bars -->
+  {bars.map((b) => (
+    <g>
+      <text x={b.midX.toFixed(1)} y={b.labelY} text-anchor="end" transform={`rotate(-50 ${b.midX.toFixed(1)} ${b.labelY})`} class="seg-axis-label">{b.label}</text>
+      <rect x={b.bx.toFixed(1)} y={b.barTopY.toFixed(1)} width={barW.toFixed(1)} height={b.barH.toFixed(1)} fill={b.color} opacity={b.isAnomaly ? '1' : '0.85'} rx="1" />
+      <text x={b.midX.toFixed(1)} y={(b.barTopY - 6).toFixed(1)} text-anchor="middle" class="bar-value">{b.spm}</text>
+    </g>
+  ))}
+
+  <!-- Bottom axis -->
+  <line x1={PL} y1={PT + CH} x2={PL + CW} y2={PT + CH} stroke="#A0A09A" stroke-width="0.8" />
+
+  <!-- Annotation explaining the anomaly -->
+  {anomalyCount > 0 && (
+    <text x={(PL + CW).toFixed(1)} y={(H - 36).toFixed(1)} text-anchor="end" class="annotation">
+      {anomalyCount} {anomalyCount === 1 ? 'station' : 'stations'} with running-level cadence
+      &nbsp;·&nbsp; the watch clock and the chip mat were offset by ~30–60 seconds
+    </text>
+  )}
+</svg>
+
+<style>
+  .annotation {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    fill: var(--ink-2);
+    letter-spacing: 0.04em;
+  }
+</style>

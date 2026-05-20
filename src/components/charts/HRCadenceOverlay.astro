@@ -1,0 +1,203 @@
+---
+/**
+ * HRCadenceOverlay.astro
+ *
+ * Two-panel chart sharing an x-axis. Top panel: heart-rate trace.
+ * Bottom panel: step cadence (spm) bucketed in 10-second windows.
+ *
+ * Together they reveal what the body was actually DOING moment-to-moment.
+ * Running shows ~170 spm + high HR. Stations show low spm + variable HR.
+ * Burpees collapse cadence near zero; rowing registers leg-drive steps.
+ *
+ * Station segments are shaded yellow in the background for context.
+ *
+ * Usage:
+ *   <HRCadenceOverlay raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { samples, segments, cadence_buckets, total_race_s: totalS } = raceData;
+
+// ----- layout -----
+const W = 1200;
+const H = 700;
+const PL = 64;
+const PR = 30;
+const PT = 36;
+const PB = 60;
+const CW = W - PL - PR;
+const CH_TOTAL = H - PT - PB;
+const PANEL_GAP = 12;
+const CH = (CH_TOTAL - PANEL_GAP) / 2;       // each panel height
+const Y_TOP = PT;                             // HR panel top
+const Y_BOT = PT + CH + PANEL_GAP;            // Cadence panel top
+
+const HR_MIN = 95;
+const HR_MAX = 195;
+const SPM_MIN = 0;
+const SPM_MAX = 220;
+
+const x = (t: number) => PL + (t / totalS) * CW;
+const yHr = (b: number) => Y_TOP + (1 - (b - HR_MIN) / (HR_MAX - HR_MIN)) * CH;
+const ySpm = (s: number) => Y_BOT + (1 - (s - SPM_MIN) / (SPM_MAX - SPM_MIN)) * CH;
+
+// ----- HR line, gap-aware -----
+type Pt = { x: number; y: number };
+const GAP_THRESHOLD = 60;
+const hrPaths: Pt[][] = [];
+let cur: Pt[] = [];
+let prevT: number | null = null;
+for (const s of samples) {
+  if (prevT !== null && s.t_sec - prevT > GAP_THRESHOLD) {
+    if (cur.length) hrPaths.push(cur);
+    cur = [];
+  }
+  cur.push({ x: x(s.t_sec), y: yHr(s.avg) });
+  prevT = s.t_sec;
+}
+if (cur.length) hrPaths.push(cur);
+const linePath = (pts: Pt[]) => 'M ' + pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ');
+
+// ----- Cadence line from buckets -----
+const cadencePts = cadence_buckets
+  .filter((c) => c.t_sec >= 0 && c.t_sec <= totalS)
+  .map((c) => ({ x: x(c.t_sec), y: ySpm(c.spm) }));
+const cadencePath = cadencePts.length
+  ? 'M ' + cadencePts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ')
+  : '';
+
+// ----- Station shading bands (full chart height) -----
+const stationBands = segments
+  .filter((s) => s.kind === 'station')
+  .map((s) => ({
+    x: x(s.start_s),
+    width: x(s.end_s) - x(s.start_s),
+    label: s.label,
+  }));
+
+// ----- Segment dividers -----
+const segDividers = segments.slice(0, -1).map((s) => ({ x: x(s.end_s) }));
+
+// ----- HR axis ticks -----
+const hrTicks: { value: number; y: number }[] = [];
+for (let b = 100; b <= 190; b += 30) hrTicks.push({ value: b, y: yHr(b) });
+
+// ----- Cadence axis ticks -----
+const spmTicks: { value: number; y: number }[] = [];
+for (let s = 0; s <= 200; s += 50) spmTicks.push({ value: s, y: ySpm(s) });
+
+// ----- X axis ticks (every 20 min) -----
+const fmtClock = (sec: number) => {
+  const s = Math.round(sec);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const ss = s % 60;
+  return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${String(ss).padStart(2, '0')}` : `${m}:${String(ss).padStart(2, '0')}`;
+};
+const xTicks: { x: number; label: string }[] = [];
+for (let t = 0; t <= totalS; t += 1200) xTicks.push({ x: x(t), label: fmtClock(t) });
+
+// ----- Segment top labels (stations only, in shaded bands) -----
+const stationLabels = stationBands
+  .filter((b) => b.width > 32)
+  .map((b) => {
+    let lbl = b.label;
+    if (lbl === 'Burpee Broad Jump') lbl = 'BBJ';
+    if (lbl === 'Sandbag Lunges') lbl = 'Sandbag';
+    if (lbl === 'Farmers Carry') lbl = 'Farmers';
+    return { x: b.x + b.width / 2, label: lbl };
+  });
+
+// Running cadence reference threshold
+const runThresholdY = ySpm(160);
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Heart rate and step cadence over the full race"
+  class="hyrox-chart"
+>
+  <!-- Station shading across both panels -->
+  <g class="station-bands">
+    {stationBands.map((b) => (
+      <g>
+        <rect x={b.x.toFixed(1)} y={Y_TOP} width={b.width.toFixed(1)} height={CH.toFixed(1)} fill="#FFE600" opacity="0.06" />
+        <rect x={b.x.toFixed(1)} y={Y_BOT} width={b.width.toFixed(1)} height={CH.toFixed(1)} fill="#FFE600" opacity="0.06" />
+      </g>
+    ))}
+  </g>
+
+  <!-- Station labels at top of HR panel -->
+  <g class="station-labels">
+    {stationLabels.map((l) => (
+      <text x={l.x.toFixed(1)} y={(Y_TOP - 8).toFixed(1)} text-anchor="middle" class="overlay-station-label">{l.label}</text>
+    ))}
+  </g>
+
+  <!-- HR panel -->
+  <text x={PL + 4} y={(Y_TOP + 14).toFixed(1)} class="panel-label">HEART RATE</text>
+  {hrTicks.map((t) => (
+    <g>
+      <text x={(PL - 8).toFixed(1)} y={(t.y + 3).toFixed(1)} text-anchor="end" class="axis-label">{t.value}</text>
+    </g>
+  ))}
+  {hrPaths.map((pts) => (
+    <path d={linePath(pts)} stroke="#FFE600" stroke-width="1.4" fill="none" stroke-linejoin="round" stroke-linecap="round" />
+  ))}
+  <line x1={PL} y1={(Y_TOP + CH).toFixed(1)} x2={PL + CW} y2={(Y_TOP + CH).toFixed(1)} stroke="#26262C" stroke-width="0.6" />
+
+  <!-- Segment dividers (subtle) -->
+  <g class="seg-dividers">
+    {segDividers.map((s) => (
+      <g>
+        <line x1={s.x.toFixed(1)} y1={Y_TOP} x2={s.x.toFixed(1)} y2={(Y_TOP + CH).toFixed(1)} stroke="#26262C" stroke-width="0.4" />
+        <line x1={s.x.toFixed(1)} y1={Y_BOT} x2={s.x.toFixed(1)} y2={(Y_BOT + CH).toFixed(1)} stroke="#26262C" stroke-width="0.4" />
+      </g>
+    ))}
+  </g>
+
+  <!-- Cadence panel -->
+  <text x={PL + 4} y={(Y_BOT + 14).toFixed(1)} class="panel-label">STEP CADENCE · 10-sec rolling</text>
+  {spmTicks.map((t) => (
+    <text x={(PL - 8).toFixed(1)} y={(t.y + 3).toFixed(1)} text-anchor="end" class="axis-label">{t.value}</text>
+  ))}
+  <line x1={PL} y1={runThresholdY.toFixed(1)} x2={PL + CW} y2={runThresholdY.toFixed(1)} stroke="#5B8C7F" stroke-width="0.6" stroke-dasharray="3,5" opacity="0.7" />
+  <text x={(PL + CW - 4).toFixed(1)} y={(runThresholdY - 4).toFixed(1)} text-anchor="end" class="ref-label">running ≈ 160 spm</text>
+  {cadencePath && <path d={cadencePath} stroke="#FFE600" stroke-width="1.4" fill="none" stroke-linejoin="round" />}
+  <line x1={PL} y1={(Y_BOT + CH).toFixed(1)} x2={PL + CW} y2={(Y_BOT + CH).toFixed(1)} stroke="#A0A09A" stroke-width="0.8" />
+
+  <!-- X axis (under cadence panel) -->
+  {xTicks.map((t) => (
+    <g>
+      <line x1={t.x.toFixed(1)} y1={(Y_BOT + CH).toFixed(1)} x2={t.x.toFixed(1)} y2={(Y_BOT + CH + 4).toFixed(1)} stroke="#5C5C58" stroke-width="0.6" />
+      <text x={t.x.toFixed(1)} y={(Y_BOT + CH + 18).toFixed(1)} text-anchor="middle" class="axis-label">{t.label}</text>
+    </g>
+  ))}
+  <text x={(PL + CW / 2).toFixed(1)} y={(H - 16).toFixed(1)} text-anchor="middle" class="axis-title">Elapsed race time</text>
+</svg>
+
+<style>
+  .panel-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    fill: var(--ink-2);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .overlay-station-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    fill: var(--yellow);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>

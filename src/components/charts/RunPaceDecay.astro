@@ -1,0 +1,160 @@
+---
+/**
+ * RunPaceDecay.astro
+ *
+ * For each of the 8 running segments: vertical bar showing pace (km/h),
+ * with the average HR for that run overlaid as a connected line + dots.
+ *
+ * Tells the pacing story across the race: do later runs slow down (pace
+ * decay) while HR stays the same or rises (fatigue tax)?
+ *
+ * Usage:
+ *   <RunPaceDecay raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { main_segments } = raceData;
+
+// Filter to just runs in order
+const runs = main_segments.filter((s) => s.kind === 'run');
+
+// ----- layout -----
+const W = 1200;
+const H = 460;
+const PL = 70;
+const PR = 70;
+const PT = 60;
+const PB = 80;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+
+// Pace axis (left) — km/h, range roughly 5–9
+const PACE_MIN = 5;
+const PACE_MAX = 9;
+const yPace = (kmh: number) => PT + (1 - (kmh - PACE_MIN) / (PACE_MAX - PACE_MIN)) * CH;
+
+// HR axis (right) — bpm
+const HR_MIN = 150;
+const HR_MAX = 190;
+const yHr = (bpm: number) => PT + (1 - (bpm - HR_MIN) / (HR_MAX - HR_MIN)) * CH;
+
+// X positions
+const bandW = CW / runs.length;
+const barW = bandW * 0.5;
+
+// Pre-compute bars and HR points
+const bars = runs.map((seg, i) => {
+  const bandX = PL + i * bandW + bandW / 2;
+  const bx = bandX - barW / 2;
+  const barTopY = yPace(seg.pace_kmh);
+  const barH = PT + CH - barTopY;
+  const hrY = yHr(seg.avg_hr as number);
+  const label = seg.label.replace('Run ', 'R');
+  // Pace as min/km for label clarity
+  const minPerKm = 60 / seg.pace_kmh;
+  const minutes = Math.floor(minPerKm);
+  const seconds = Math.round((minPerKm - minutes) * 60);
+  const paceLabel = `${minutes}:${String(seconds).padStart(2, '0')}/km`;
+  return {
+    label,
+    bandX,
+    bx,
+    barTopY,
+    barH,
+    paceKmh: seg.pace_kmh,
+    paceLabel,
+    avgHr: Math.round(seg.avg_hr as number),
+    hrY,
+  };
+});
+
+// HR line path (connect the dots)
+const hrLinePath = 'M ' + bars.map((b) => `${b.bandX.toFixed(1)} ${b.hrY.toFixed(1)}`).join(' L ');
+
+// Y axis ticks
+const paceTicks: number[] = [];
+for (let v = 5; v <= 9; v += 1) paceTicks.push(v);
+const hrTicks: number[] = [];
+for (let v = 150; v <= 190; v += 10) hrTicks.push(v);
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Pace and heart rate per running segment, Run 1 through Run 8"
+  class="hyrox-chart"
+>
+  <g transform={`translate(${PL + CW - 280}, 16)`}>
+    <rect x="0" y="2" width="14" height="12" fill="#5C5C58" />
+    <text x="20" y="12" class="legend-text">pace (km/h)</text>
+    <line x1="100" y1="8" x2="118" y2="8" stroke="#FFE600" stroke-width="2" />
+    <circle cx="109" cy="8" r="3" fill="#FFE600" stroke="#0A0A0B" stroke-width="1" />
+    <text x="124" y="12" class="legend-text">avg HR (bpm)</text>
+  </g>
+
+  {paceTicks.map((v) => (
+    <g>
+      <line x1={PL} y1={yPace(v).toFixed(1)} x2={PL + CW} y2={yPace(v).toFixed(1)} stroke="#26262C" stroke-width="0.5" stroke-dasharray="2,4" />
+      <text x={PL - 8} y={(yPace(v) + 3).toFixed(1)} text-anchor="end" class="axis-label">{v}</text>
+    </g>
+  ))}
+  <text x="14" y={(PT + CH / 2).toFixed(1)} transform={`rotate(-90 14 ${(PT + CH / 2).toFixed(1)})`} class="axis-title" text-anchor="middle">Pace (km/h)</text>
+
+  {hrTicks.map((v) => (
+    <text x={(PL + CW + 8).toFixed(1)} y={(yHr(v) + 3).toFixed(1)} text-anchor="start" class="axis-label hr-axis">{v}</text>
+  ))}
+  <text x={(W - 14).toFixed(1)} y={(PT + CH / 2).toFixed(1)} transform={`rotate(-90 ${(W - 14).toFixed(1)} ${(PT + CH / 2).toFixed(1)})`} class="axis-title hr-axis" text-anchor="middle">Heart rate (bpm)</text>
+
+  {bars.map((b) => (
+    <g>
+      <rect x={b.bx.toFixed(1)} y={b.barTopY.toFixed(1)} width={barW.toFixed(1)} height={b.barH.toFixed(1)} fill="#5C5C58" opacity="0.85" rx="1" />
+      <text x={b.bandX.toFixed(1)} y={(b.barTopY - 8).toFixed(1)} text-anchor="middle" class="pace-value">{b.paceLabel}</text>
+      <text x={b.bandX.toFixed(1)} y={(PT + CH + 24).toFixed(1)} text-anchor="middle" class="run-label">{b.label}</text>
+    </g>
+  ))}
+
+  <path d={hrLinePath} stroke="#FFE600" stroke-width="2" fill="none" stroke-linejoin="round" />
+  {bars.map((b) => (
+    <g>
+      <circle cx={b.bandX.toFixed(1)} cy={b.hrY.toFixed(1)} r="4" fill="#FFE600" stroke="#0A0A0B" stroke-width="1.5" />
+      <text x={b.bandX.toFixed(1)} y={(b.hrY - 10).toFixed(1)} text-anchor="middle" class="hr-value">{b.avgHr}</text>
+    </g>
+  ))}
+
+  <line x1={PL} y1={PT + CH} x2={PL + CW} y2={PT + CH} stroke="#A0A09A" stroke-width="0.8" />
+</svg>
+
+<style>
+  .pace-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    fill: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .run-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    fill: var(--ink-1);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hr-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    fill: var(--yellow);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  .hr-axis {
+    fill: var(--yellow);
+    opacity: 0.7;
+  }
+</style>

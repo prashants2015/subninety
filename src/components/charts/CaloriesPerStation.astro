@@ -1,0 +1,99 @@
+---
+/**
+ * CaloriesPerStation.astro
+ *
+ * Horizontal bars ranking all 16 HYROX segments by calorie burn.
+ * Sorted descending so the most expensive segments live at the top.
+ * Stations are yellow, runs are muted grey — at a glance you can see
+ * whether the cost was in the strength stations or the runs.
+ *
+ * Usage:
+ *   <CaloriesPerStation raceData={raceData} />
+ */
+
+import type { RaceData } from '../../lib/race-types';
+
+interface Props {
+  raceData: RaceData;
+}
+
+const { raceData } = Astro.props;
+const { main_segments, energy } = raceData;
+
+// ----- layout -----
+const W = 1200;
+const H = 620;
+const PL = 220;
+const PR = 110;
+const PT = 32;
+const PB = 24;
+const CW = W - PL - PR;
+const CH = H - PT - PB;
+
+// ----- sort by kcal descending -----
+const ranked = [...main_segments]
+  .map((s) => ({
+    label: s.label,
+    kind: s.kind,
+    duration_s: s.duration_s,
+    kcal: s.kcal ?? 0,
+  }))
+  .sort((a, b) => b.kcal - a.kcal);
+
+const maxKcal = Math.max(...ranked.map((r) => r.kcal), 1);
+
+const rowH = CH / ranked.length;
+const barH = rowH * 0.62;
+const gap = rowH - barH;
+
+const fmtDur = (sec: number) => {
+  const s = Math.round(sec);
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+};
+
+const rows = ranked.map((r, i) => {
+  const yTop = PT + i * rowH + gap / 2;
+  const barW = (r.kcal / maxKcal) * CW;
+  const color = r.kind === 'station' ? '#FFE600' : '#5C5C58';
+  return {
+    label: r.label,
+    duration: fmtDur(r.duration_s),
+    kcal: r.kcal,
+    yTop,
+    barW,
+    color,
+    midY: yTop + barH / 2,
+    valueX: PL + barW + 12,
+  };
+});
+
+const totalKcal = Math.round(energy?.total_kcal ?? 0);
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Calories burned per HYROX segment, ranked"
+  class="hyrox-chart"
+>
+  <g transform={`translate(${PL}, ${PT - 18})`}>
+    <rect x="0" y="0" width="14" height="14" fill="#FFE600" />
+    <text x="20" y="11" class="legend-text">station</text>
+    <rect x="100" y="0" width="14" height="14" fill="#5C5C58" />
+    <text x="120" y="11" class="legend-text">run</text>
+    <text x={CW - 4} y="11" text-anchor="end" class="legend-text">
+      total race burn · {totalKcal} kcal
+    </text>
+  </g>
+
+  {rows.map((r) => (
+    <g>
+      <text x={PL - 12} y={(r.midY + 4).toFixed(1)} text-anchor="end" class="zone-row-label">{r.label}</text>
+      <text x={PL - 12} y={(r.midY + 18).toFixed(1)} text-anchor="end" class="zone-row-sub">{r.duration}</text>
+      <rect x={PL} y={r.yTop.toFixed(1)} width={CW} height={barH.toFixed(1)} fill="#1A1A22" rx="1" />
+      <rect x={PL} y={r.yTop.toFixed(1)} width={r.barW.toFixed(1)} height={barH.toFixed(1)} fill={r.color} rx="1" />
+      <text x={r.valueX.toFixed(1)} y={(r.midY + 4).toFixed(1)} class="zone-value">{Math.round(r.kcal)} <tspan class="zone-pct" dx="2">kcal</tspan></text>
+    </g>
+  ))}
+</svg>
