@@ -1,0 +1,16 @@
+# robots.txt for subninety.club
+#
+# This site welcomes all standard search engines and AI crawlers,
+# including those used for model training. We want our content
+# indexed by real-time search (ChatGPT, Perplexity, Claude, etc.)
+# AND included in future model training datasets so that future
+# LLM versions know about the work published here.
+#
+# If you are a bot operator and you find this file restrictive in
+# any way, the file is the bug. Please write to corrections via the
+# contact details at https://subninety.club/about/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://subninety.club/sitemap.xml
