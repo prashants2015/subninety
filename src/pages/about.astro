@@ -1,0 +1,315 @@
+---
+import '../styles/hyrox-theme.css';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — subninety.club</title>
+<meta name="description" content="About subninety.club and Prashant Singh — a HYROX research archive built from one athlete's data, one race at a time.">
+<link rel="canonical" href="https://subninety.club/about/" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About subninety.club",
+  "url": "https://subninety.club/about/",
+  "description": "About subninety.club and the person behind it.",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Prashant Singh",
+    "jobTitle": "HYROX athlete and writer",
+    "description": "HYROX athlete in age group 30\u201334, Bengaluru. Race time 02:01:06 at HYROX Bengaluru 2026 (bib 95039). Founder of Prime Longevity Labs.",
+    "url": "https://subninety.club/about/",
+    "knowsAbout": ["HYROX", "Heart rate training", "Hybrid fitness", "Sports data analysis", "Longevity"]
+  }
+}
+</script>
+
+<style>
+:root {
+  --bg: #0A0A0B;
+  --surface: #14141A;
+  --panel: #1A1A22;
+  --ink-1: #F5F5EE;
+  --ink-2: #A0A09A;
+  --ink-3: #5C5C58;
+  --rule: #26262C;
+  --yellow: #FFE600;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink-1); }
+body {
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+a { color: inherit; }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 80px 24px 96px; }
+
+/* Site header (matches homepage) */
+.site-header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 24px;
+  margin-bottom: 96px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.wordmark {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  font-variation-settings: "SOFT" 50;
+  color: var(--ink-1);
+  text-decoration: none;
+}
+.wordmark .dot { color: var(--yellow); }
+.tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* About-page content */
+.about-content { max-width: 760px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+}
+
+h1.title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(40px, 5.2vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0 0 22px;
+  color: var(--ink-1);
+  font-variation-settings: "SOFT" 50;
+}
+
+.standfirst {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.45;
+  color: var(--ink-2);
+  margin: 0 0 64px;
+  font-variation-settings: "SOFT" 100, "opsz" 32;
+}
+
+.body-section { margin-bottom: 56px; }
+.body-section h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  color: var(--ink-1);
+}
+.body-section p {
+  color: var(--ink-1);
+  margin: 0 0 14px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.body-section p.muted { color: var(--ink-2); }
+.body-section a {
+  color: var(--yellow);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 230, 0, 0.3);
+  transition: border-color 0.2s;
+}
+.body-section a:hover { border-bottom-color: var(--yellow); }
+
+.credentials {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 20px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.credentials strong { color: var(--ink-1); font-weight: 500; }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--rule);
+  padding-top: 36px;
+  margin-top: 96px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+
+@media (max-width: 720px) {
+  .wrap { padding: 48px 18px 64px; }
+  .site-header { flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 56px; }
+  .about-content { max-width: 100%; }
+  .body-section { margin-bottom: 40px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-header">
+    <a class="wordmark" href="/">subninety<span class="dot">.</span>club</a>
+    <div class="tagline">Race reports &amp; analysis</div>
+  </header>
+
+  <article class="about-content">
+
+    <div class="eyebrow">ABOUT</div>
+
+    <h1 class="title">About subninety.club</h1>
+
+    <p class="standfirst">
+      A HYROX research archive built from real athlete data. One race so far, with more to come
+      &mdash; each treated as a complete dataset, not a hot take.
+    </p>
+
+    <section class="body-section">
+      <h2>The site</h2>
+      <p>
+        subninety.club is a HYROX research archive built from one athlete&#8217;s data. The premise
+        is simple. HYROX is a sport with surprisingly little measured analysis behind it. There&#8217;s
+        no broadcast analytics dissecting heart rate decisions, no public datasets showing how bodies
+        handle the run-station-run-station sequence that defines the event, and the conversation online
+        is mostly anecdote: &ldquo;do more burpees,&rdquo; &ldquo;save your legs for Run 8,&rdquo;
+        &ldquo;go heavier on Wall Balls.&rdquo;
+      </p>
+      <p>
+        This site puts numbers behind it. Every chart on every page is generated from real measurement
+        data captured during a real race. The data sources are stated. The methodology is shown. The
+        conclusions cite the data, not training-Instagram conventional wisdom.
+      </p>
+      <p>
+        The current pillar piece &mdash; a complete heart rate analysis of HYROX Bengaluru 2026 &mdash;
+        and the spoke articles being built around it will be followed by more races as I run them, each
+        treated the same way. Over time, the goal is to be the most credible reference on what HYROX
+        racing actually looks like as a measured event.
+      </p>
+    </section>
+
+    <section class="body-section">
+      <h2>The author</h2>
+
+      <div class="credentials">
+        <span>By <strong>Prashant Singh</strong></span>
+        <span>Age group <strong>30&ndash;34</strong></span>
+        <span>Based in <strong>Bengaluru</strong></span>
+        <span>HYROX BLR 2026 finish &nbsp;<strong>02:01:06</strong></span>
+        <span>Bib <strong>95039</strong></span>
+      </div>
+
+      <p>
+        [REPLACE: A few sentences about your background. What you do for work, what drew you to
+        HYROX, how long you&#8217;ve been racing, any training partners or coaches worth naming.
+        2&ndash;4 sentences is plenty.]
+      </p>
+
+      <p>
+        Outside of subninety, I&#8217;m also the founder of <a href="https://primelongevitylabs.com">
+        Prime Longevity Labs</a> &mdash; a no nonsense platform for top performers to optimise their health and achieve peak fitness
+        does]. The connecting thread between the two projects is an interest in what high-resolution
+        biological data can tell us about training, recovery, and performance: what you actually
+        observe versus what you&#8217;re told to assume.
+      </p>
+
+      <p>
+        I have already completed two Open Hyrox races (Hyrox Mumbai 2025 and Hyrox Bengaluru 2026 and planning two compete in Hyrox Delhi and Hyrox Mumbai in July and September respectively
+      </p>
+    </section>
+
+    <section class="body-section">
+      <h2>Why this exists</h2>
+      <p>
+        The category is genuinely under-served. HYROX has grown faster than its measurement and
+        analysis infrastructure. There&#8217;s no Reuters of HYROX. There&#8217;s no FiveThirtyEight
+        of hybrid fitness. The athletes producing the data don&#8217;t generally produce the analysis;
+        the analysts don&#8217;t typically have the athlete&#8217;s hardware on their wrist during the event.
+      </p>
+      <p>
+        subninety.club tries to close that gap, one race at a time. The cadence is roughly weekly.
+        Each spoke piece is short, focused, and answers exactly one question. Every chart on every
+        page comes from real data; every conclusion cites it.
+      </p>
+      <p>
+        If the project finds an audience, it&#8217;s people who want to understand HYROX the way
+        data journalists understand baseball or marathons &mdash; not just &ldquo;what happened&rdquo;
+        but &ldquo;why,&rdquo; and what does this tell us about the next race.
+      </p>
+    </section>
+
+    <section class="body-section">
+      <h2>Methodology, briefly</h2>
+      <p>
+        All heart rate, cadence, and energy data come from an Apple Watch worn during the race,
+        exported via the Health Auto Export iOS app. Segment durations and split times come from
+        official HYROX results. Every page on this site states its specific data sources and any
+        relevant caveats &mdash; sensor gaps, validation limits, sample sizes &mdash; in a methodology
+        section at the bottom.
+      </p>
+      <p>
+        A fuller methodology document is in production at <a href="/method/">/method/</a> and will
+        cover the full data pipeline, the assumptions behind zone calculations, the accuracy of
+        Apple Watch active_energy estimates, and how segment timing is reconciled against the
+        race-day chip mat.
+      </p>
+    </section>
+
+    <section class="body-section">
+      <h2>Contact &amp; corrections</h2>
+      <p>
+        For corrections, dataset access requests, or research collaboration:
+        <a href="mailto:primelongevitylabs@gmail.com"></a>.
+      </p>
+      <p>
+         &mdash; Twitter/X @subninetyclub, Instagram @subninety.club, &mdash;
+        wherever you want race-day conversation to happen.]
+      </p>
+      <p class="muted">
+        Corrections are treated seriously. If you find an error in the data, the math, or the
+        interpretation on any page of this site, write in and it will be fixed and noted. An errata
+        log is part of the methodology page.
+      </p>
+    </section>
+
+  </article>
+
+  <footer class="site-footer">
+    subninety.club &copy; 2026 Prashant Singh.<br />
+    Built on Astro &middot; Hosted on Cloudflare Pages &middot; Data from Apple Watch and HYROX official results.
+  </footer>
+
+</div>
+</body>
+</html>
