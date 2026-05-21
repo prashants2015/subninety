@@ -1,0 +1,600 @@
+---
+import '../styles/hyrox-theme.css';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Method — subninety.club</title>
+<meta name="description" content="How the data on subninety.club is captured, processed, and what its limits are. Data sources, sampling resolution, heart rate zones, calorie estimation methodology, and known limitations.">
+<link rel="canonical" href="https://subninety.club/method/" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Method \u2014 subninety.club",
+  "description": "How the data on subninety.club is captured, processed, and what its limits are.",
+  "datePublished": "2026-05-22",
+  "dateModified": "2026-05-22",
+  "author": {
+    "@type": "Person",
+    "name": "Prashant Singh"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Prashant Singh"
+  },
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "Methodology"
+    },
+    {
+      "@type": "Thing",
+      "name": "Heart rate measurement"
+    },
+    {
+      "@type": "Thing",
+      "name": "Apple Watch data"
+    }
+  ]
+}
+</script>
+
+<style>
+:root {
+  --bg: #0A0A0B;
+  --surface: #14141A;
+  --panel: #1A1A22;
+  --ink-1: #F5F5EE;
+  --ink-2: #A0A09A;
+  --ink-3: #5C5C58;
+  --rule: #26262C;
+  --yellow: #FFE600;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink-1); }
+body {
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+a { color: inherit; }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 80px 24px 96px; }
+
+/* Site header (matches homepage + about) */
+.site-header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 24px;
+  margin-bottom: 96px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.wordmark {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  font-variation-settings: "SOFT" 50;
+  color: var(--ink-1);
+  text-decoration: none;
+}
+.wordmark .dot { color: var(--yellow); }
+.tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.method-content { max-width: 760px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+}
+
+h1.title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(40px, 5.2vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0 0 22px;
+  color: var(--ink-1);
+  font-variation-settings: "SOFT" 50;
+}
+
+.standfirst {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.45;
+  color: var(--ink-2);
+  margin: 0 0 56px;
+  font-variation-settings: "SOFT" 100, "opsz" 32;
+}
+
+.toc {
+  background: var(--surface);
+  border-left: 2px solid var(--yellow);
+  padding: 20px 28px;
+  margin-bottom: 64px;
+}
+.toc h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  margin: 0 0 12px;
+}
+.toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: toc;
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  line-height: 1.85;
+  font-variant-numeric: tabular-nums;
+}
+.toc ol li {
+  counter-increment: toc;
+}
+.toc ol li::before {
+  content: counter(toc, decimal-leading-zero) "  ";
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-right: 4px;
+}
+.toc a {
+  text-decoration: none;
+  color: var(--ink-1);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.toc a:hover { border-bottom-color: var(--yellow); }
+
+.body-section { margin-bottom: 56px; scroll-margin-top: 32px; }
+.body-section h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  color: var(--ink-1);
+}
+.body-section h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin: 28px 0 10px;
+  color: var(--ink-1);
+}
+.body-section p {
+  color: var(--ink-1);
+  margin: 0 0 14px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.body-section p.muted { color: var(--ink-2); }
+.body-section ul, .body-section ol {
+  margin: 0 0 14px;
+  padding-left: 24px;
+  color: var(--ink-1);
+}
+.body-section li { margin-bottom: 6px; line-height: 1.6; }
+.body-section a {
+  color: var(--yellow);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 230, 0, 0.3);
+  transition: border-color 0.2s;
+}
+.body-section a:hover { border-bottom-color: var(--yellow); }
+.body-section code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--yellow);
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.zone-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  margin: 16px 0 12px;
+}
+.zone-table thead th {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--ink-1);
+  font-weight: 500;
+}
+.zone-table tbody td {
+  padding: 12px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-1);
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+.zone-table .zone-name { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500; }
+.zone-table .swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+.caveat {
+  background: var(--surface);
+  border-left: 3px solid var(--yellow);
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.caveat p { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
+.caveat p strong { color: var(--ink-1); font-weight: 500; }
+
+.spec-list {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  padding: 16px 0 4px;
+}
+.spec-list .row { display: flex; gap: 16px; padding: 4px 0; border-bottom: 1px dashed var(--rule); }
+.spec-list .row:last-child { border-bottom: none; }
+.spec-list .label { min-width: 200px; color: var(--ink-3); letter-spacing: 0.04em; text-transform: uppercase; font-size: 10.5px; padding-top: 3px; }
+.spec-list .value { color: var(--ink-1); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--rule);
+  padding-top: 36px;
+  margin-top: 96px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+
+@media (max-width: 720px) {
+  .wrap { padding: 48px 18px 64px; }
+  .site-header { flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 56px; }
+  .method-content { max-width: 100%; }
+  .body-section { margin-bottom: 40px; }
+  .spec-list .row { flex-direction: column; gap: 2px; }
+  .spec-list .label { min-width: unset; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-header">
+    <a class="wordmark" href="/">subninety<span class="dot">.</span>club</a>
+    <div class="tagline">Race reports &amp; analysis</div>
+  </header>
+
+  <article class="method-content">
+
+    <div class="eyebrow">METHOD</div>
+
+    <h1 class="title">Methodology</h1>
+
+    <p class="standfirst">
+      Every number on this site, traced to its source. The data pipeline, the assumptions made,
+      and the limits of what it can show.
+    </p>
+
+    <nav class="toc">
+      <h2>On this page</h2>
+      <ol>
+        <li><a href="#sources">Data sources</a></li>
+        <li><a href="#sampling">Sampling resolution</a></li>
+        <li><a href="#segments">How segments are aligned</a></li>
+        <li><a href="#zones">Heart rate zones</a></li>
+        <li><a href="#calories">Calorie calculations</a></li>
+        <li><a href="#cadence">Cadence calculations</a></li>
+        <li><a href="#limitations">Known limitations</a></li>
+        <li><a href="#repro">Reproducibility &amp; dataset access</a></li>
+        <li><a href="#cite">How to cite this site</a></li>
+        <li><a href="#corrections">Corrections &amp; versioning</a></li>
+      </ol>
+    </nav>
+
+    <section class="body-section" id="sources">
+      <h2>Data sources</h2>
+      <p>Three sources feed every page on this site:</p>
+
+      <h3>Apple Watch</h3>
+      <p>
+        Worn during the race in a Mixed Cardio workout session. Captures heart rate
+        (optical sensor), step cadence (accelerometer), active energy, and walking/running
+        distance. Sample rates and accuracy vary by metric &mdash; see the next section.
+      </p>
+
+      <h3>Health Auto Export (iOS app)</h3>
+      <p>
+        Used to extract Apple HealthKit data as structured JSON after the workout. This
+        is the only practical way to get sub-minute-resolution data out of HealthKit;
+        Apple&#8217;s built-in workout summaries are aggregate only.
+      </p>
+
+      <h3>Official HYROX results</h3>
+      <p>
+        Segment durations, total roxzone time, age group, and final finish time come from
+        the official HYROX timing system (chip mat). The watch is treated as the primary
+        measurement source for biology; the chip mat is the primary source for race timing.
+      </p>
+    </section>
+
+    <section class="body-section" id="sampling">
+      <h2>Sampling resolution</h2>
+      <p>
+        Apple HealthKit samples different metrics at different intervals. For HYROX Bengaluru 2026:
+      </p>
+      <div class="spec-list">
+        <div class="row"><span class="label">Heart rate</span><span class="value">~5 second median interval (1,157 samples / 121 min)</span></div>
+        <div class="row"><span class="label">Step count</span><span class="value">~13 second median interval (6,556 samples)</span></div>
+        <div class="row"><span class="label">Active energy</span><span class="value">~3 second median interval (38,794 samples)</span></div>
+        <div class="row"><span class="label">Distance</span><span class="value">~22 second median interval (24,845 samples)</span></div>
+        <div class="row"><span class="label">Race window</span><span class="value">09:50:10 IST &rarr; 11:51:38 IST · 12 April 2026</span></div>
+        <div class="row"><span class="label">Bib</span><span class="value">95039 (Sunday division)</span></div>
+      </div>
+      <p class="muted">
+        All timestamps are stored in IST (UTC+05:30) with sub-second precision.
+      </p>
+    </section>
+
+    <section class="body-section" id="segments">
+      <h2>How segments are aligned</h2>
+      <p>
+        The Apple Watch provides a continuous stream; HYROX provides 16 segment durations
+        plus a total roxzone (transition) time. Reconciling the two requires three steps:
+      </p>
+      <ol>
+        <li>Race start anchored to the first HR sample after the official start (<code>09:50:10 IST</code>).</li>
+        <li>Each of the 16 official segment durations applied sequentially.</li>
+        <li>Total roxzone time (10:12 in this race) distributed evenly across the 15 transitions, roughly 41 seconds each.</li>
+      </ol>
+      <div class="caveat">
+        <p>
+          <strong>Clock offset noted.</strong> Cadence-validated analysis (see the upcoming
+          <a href="/hyrox-watch-timing/">Watch vs chip-mat timing</a> spoke) reveals an apparent
+          ~30&ndash;60 second offset between the watch&#8217;s clock and the chip-mat&#8217;s
+          clock during this race. This affects exact-second alignment but not the
+          aggregate per-segment values reported on the site.
+        </p>
+      </div>
+    </section>
+
+    <section class="body-section" id="zones">
+      <h2>Heart rate zones</h2>
+      <p>
+        Zones are defined as percentages of a reference maximum heart rate. The reference max
+        is set to <strong>190 bpm</strong> for this race &mdash; one beat above the observed
+        race peak of 189.
+      </p>
+
+      <table class="zone-table">
+        <thead>
+          <tr><th>Zone</th><th>% of max</th><th>BPM range</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="zone-name"><span class="swatch" style="background:#5C7593"></span>Z1 Recovery</td>
+            <td>50&ndash;60%</td>
+            <td>95&ndash;114 bpm</td>
+          </tr>
+          <tr>
+            <td class="zone-name"><span class="swatch" style="background:#5B8C7F"></span>Z2 Aerobic</td>
+            <td>60&ndash;70%</td>
+            <td>114&ndash;133 bpm</td>
+          </tr>
+          <tr>
+            <td class="zone-name"><span class="swatch" style="background:#C9A436"></span>Z3 Tempo</td>
+            <td>70&ndash;80%</td>
+            <td>133&ndash;152 bpm</td>
+          </tr>
+          <tr>
+            <td class="zone-name"><span class="swatch" style="background:#D6783D"></span>Z4 Threshold</td>
+            <td>80&ndash;90%</td>
+            <td>152&ndash;171 bpm</td>
+          </tr>
+          <tr>
+            <td class="zone-name"><span class="swatch" style="background:#D43F3F"></span>Z5 Anaerobic</td>
+            <td>90&ndash;100%</td>
+            <td>171&ndash;190 bpm</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Why this approach</h3>
+      <p>
+        Several valid HR zone definitions exist: Karvonen (heart-rate reserve), lactate
+        threshold-based zones, FTP-style zones for cyclists. The choice here is the simple
+        percentage-of-max approach with the reference max anchored to observed race peak +1.
+      </p>
+      <p>
+        Trade-offs: it&#8217;s reproducible without requiring threshold testing, and it&#8217;s
+        the methodology most readily applied to HYROX where lactate sampling mid-race
+        isn&#8217;t practical. It&#8217;s less precise than a threshold-based system would
+        be for any individual athlete. Across athletes, results are comparable only when
+        the reference max methodology is the same.
+      </p>
+
+      <h3>Time-in-zone calculation</h3>
+      <p>
+        Time spent in each zone is summed only across pairs of consecutive HR samples
+        whose timestamps are less than 60 seconds apart. This excludes the ~11-minute
+        sensor gap during SkiErg/early Run 2 from being mis-attributed to any zone.
+      </p>
+    </section>
+
+    <section class="body-section" id="calories">
+      <h2>Calorie calculations</h2>
+      <p>
+        Apple Watch reports <code>active_energy</code> in kilojoules. This site converts
+        to kilocalories at the standard <code>1 kcal = 4.184 kJ</code>.
+      </p>
+      <p>
+        Per-segment totals are computed by summing every active_energy sample whose
+        timestamp falls within that segment&#8217;s start and end window.
+      </p>
+      <div class="caveat">
+        <p>
+          <strong>Apple&#8217;s active_energy is an estimate.</strong> Published validation
+          studies against indirect calorimetry put it within roughly &plusmn;10&ndash;15%
+          for cardiovascular activity, with consistency typically poorer for resistance and
+          strength work. Absolute total burn figures on this site should be treated as
+          having a &plusmn;15% confidence interval. Relative comparisons between segments
+          of the <em>same</em> race are far more reliable, because measurement noise is
+          consistent within a single body&#8217;s data.
+        </p>
+      </div>
+    </section>
+
+    <section class="body-section" id="cadence">
+      <h2>Cadence calculations</h2>
+      <p>
+        Step cadence is bucketed in 10-second windows from raw step-count samples. Each
+        bucket reports steps per minute (spm) as
+        <code>(steps_in_window / window_seconds) &times; 60</code>.
+      </p>
+      <p>
+        Reference threshold for &ldquo;running cadence&rdquo;: 160 spm. Stations typically
+        show 50&ndash;130 spm depending on exercise type. Burpees and Sandbag Lunges trend
+        low; Sled Push trends moderate; running consistently lands in 170&ndash;180 spm.
+      </p>
+    </section>
+
+    <section class="body-section" id="limitations">
+      <h2>Known limitations</h2>
+      <ol>
+        <li>
+          <strong>Sensor gap during SkiErg.</strong> An ~11-minute period spanning SkiErg
+          and early Run 2 has no recorded heart rate (likely the optical sensor lost contact
+          during the upper-body pulling motion). This region is shown as a break in the line
+          rather than interpolated, and time-in-zone calculations exclude it.
+        </li>
+        <li>
+          <strong>Apple Watch active_energy is an estimate, not metabolic-cart measurement.</strong>
+          See Calorie calculations above for the &plusmn;15% caveat.
+        </li>
+        <li>
+          <strong>Optical HR, not chest-strap ECG.</strong> Apple&#8217;s wrist-based
+          measurement is generally less accurate during strength work where forearm motion
+          can fool the sensor. Most HYROX coaches consider chest-strap data the gold
+          standard.
+        </li>
+        <li>
+          <strong>Single-athlete data.</strong> Findings about this race may or may not
+          generalize to other athletes, other body compositions, other finish times, or
+          other race courses. Aggregate claims about &ldquo;HYROX&rdquo; should be read as
+          claims about one body in one race until corroborated across more athletes.
+        </li>
+        <li>
+          <strong>Roxzone is distributed evenly, not measured per-transition.</strong>
+          Actual transitions varied in length. Aggregate roxzone time is from the chip mat
+          and is accurate; per-transition splits are an approximation.
+        </li>
+        <li>
+          <strong>Single race so far.</strong> Race-specific factors (weather, course
+          layout, racing tactics on the day) confound generalization until more races are
+          added to the archive.
+        </li>
+      </ol>
+    </section>
+
+    <section class="body-section" id="repro">
+      <h2>Reproducibility &amp; dataset access</h2>
+      <p>
+        The complete data pipeline is implemented in Python (a script called
+        <code>process.py</code> in the project repository). Inputs: HealthKit JSON export +
+        a small table of segment timings from the official results. Outputs: a structured
+        JSON file consumed directly by the Astro page templates that render the charts.
+      </p>
+      <p>
+        Researchers, journalists, or other athletes wanting access to the processed
+        dataset for HYROX Bengaluru 2026 can request it via the <a href="/about/">contact
+        details on the About page</a>. A direct download link is planned for a future
+        update.
+      </p>
+    </section>
+
+    <section class="body-section" id="cite">
+      <h2>How to cite this site</h2>
+      <p>To cite any page on this site, the suggested format is:</p>
+      <div class="caveat">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: var(--ink-1);">
+          Singh, Prashant. (2026). &ldquo;[Page title].&rdquo; subninety.club. [URL]. Accessed [date].
+        </p>
+      </div>
+      <p>For the pillar race report, that&#8217;s:</p>
+      <div class="caveat">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: var(--ink-1);">
+          Singh, Prashant. (2026). &ldquo;What heart rate looks like during a HYROX race:
+          1,157 data points from Bengaluru 2026.&rdquo; subninety.club.
+          https://subninety.club/hyrox-bengaluru-2026/. Accessed [date].
+        </p>
+      </div>
+    </section>
+
+    <section class="body-section" id="corrections">
+      <h2>Corrections &amp; versioning</h2>
+      <p>
+        If you find an error in the data, the math, or the interpretation on any page,
+        please write in via <a href="/about/">the contact on the About page</a>. Corrections
+        are made and noted with a dated update on the affected page.
+      </p>
+      <p>
+        A public errata log is in development. This methodology document itself is versioned:
+      </p>
+      <div class="spec-list">
+        <div class="row"><span class="label">Current version</span><span class="value">1.0</span></div>
+        <div class="row"><span class="label">Published</span><span class="value">22 May 2026</span></div>
+        <div class="row"><span class="label">Last revised</span><span class="value">22 May 2026</span></div>
+      </div>
+    </section>
+
+  </article>
+
+  <footer class="site-footer">
+    subninety.club &copy; 2026 Prashant Singh.<br />
+    Built on Astro &middot; Hosted on Cloudflare Pages &middot; Data from Apple Watch and HYROX official results.
+  </footer>
+
+</div>
+</body>
+</html>
