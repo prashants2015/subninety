@@ -1,194 +1,116 @@
-/* =================================================
-   HYROX SUBNINETY THEME
-   Shared across all chart components and page layouts.
-   Import once in your layout or root page.
-   ================================================= */
+/* ============================================
+   hyrox-theme.css
+   Shared theme + chart styles for subninety.club
+   ============================================ */
 
+/* Color & token variables */
 :root {
-  /* Backgrounds */
   --bg: #0A0A0B;
   --surface: #14141A;
   --panel: #1A1A22;
-
-  /* Text */
-  --ink-1: #F5F5EE;   /* primary */
-  --ink-2: #A0A09A;   /* muted */
-  --ink-3: #5C5C58;   /* tertiary / axis */
-
-  /* Lines, borders */
+  --ink-1: #F5F5EE;
+  --ink-2: #A0A09A;
+  --ink-3: #5C5C58;
   --rule: #26262C;
-
-  /* Brand */
   --yellow: #FFE600;
   --crimson: #E84B5F;
 
-  /* HR zones */
-  --zone-1: #5C7593;
-  --zone-2: #5B8C7F;
-  --zone-3: #C9A436;
-  --zone-4: #D6783D;
-  --zone-5: #D43F3F;
+  /* HR zone colors */
+  --z1: #5C7593;
+  --z2: #5B8C7F;
+  --z3: #C9A436;
+  --z4: #D6783D;
+  --z5: #D43F3F;
 }
 
-/* ===== Shared chart text styles =====
-   Every chart component uses these classes so axis/labels look identical.
-*/
-.hyrox-chart {
-  width: 100%;
-  height: auto;
-  display: block;
+* {
+  box-sizing: border-box;
 }
 
-.hyrox-chart .axis-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--ink-3);
-  font-variant-numeric: tabular-nums;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink-1);
 }
 
-.hyrox-chart .axis-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  fill: var(--ink-2);
+/* ============================================
+   Site header & navigation (NEW)
+   ============================================ */
+.site-header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 24px;
+  margin-bottom: 64px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.hyrox-chart .seg-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--ink-2);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.hyrox-chart .ref-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--ink-2);
-  font-variant-numeric: tabular-nums;
-}
-
-.hyrox-chart .peak-callout {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--yellow);
-  letter-spacing: 0.12em;
+.site-header .wordmark {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
   font-weight: 500;
+  letter-spacing: -0.01em;
+  font-variation-settings: "SOFT" 50;
+  color: var(--ink-1);
+  text-decoration: none;
 }
 
-.hyrox-chart .zone-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  font-weight: 500;
+.site-header .wordmark .dot {
+  color: var(--yellow);
 }
 
-.hyrox-chart .bar-value {
+.site-nav {
+  display: flex;
+  gap: 28px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  fill: var(--ink-1);
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-}
-
-.hyrox-chart .legend-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--ink-2);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  flex-wrap: wrap;
 }
 
-/* Zones chart (horizontal bars per zone) */
-.hyrox-chart .zone-row-label {
-  font-family: 'Fraunces', serif;
-  font-size: 17px;
-  fill: var(--ink-1);
-  font-weight: 500;
-}
-.hyrox-chart .zone-row-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--ink-3);
-  letter-spacing: 0.05em;
-}
-.hyrox-chart .zone-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  fill: var(--ink-1);
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-}
-.hyrox-chart .zone-pct {
-  fill: var(--ink-3);
-  font-weight: 400;
+.site-nav a {
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
 }
 
-/* Effort chart (vertical bars per segment) */
-.hyrox-chart .seg-axis-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--ink-2);
-  letter-spacing: 0.04em;
-}
-.hyrox-chart .no-data {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  fill: var(--ink-3);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.site-nav a:hover {
+  color: var(--ink-1);
 }
 
-/* Drift chart (paired bars) */
-.hyrox-chart .bar-value-small {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  fill: var(--ink-1);
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-}
-.hyrox-chart .delta {
-  font-family: 'Fraunces', serif;
-  font-size: 18px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-.hyrox-chart .group-label {
-  font-family: 'Fraunces', serif;
-  font-size: 14px;
-  fill: var(--ink-1);
-  font-weight: 500;
+.site-nav a.active {
+  color: var(--ink-1);
+  border-bottom-color: var(--yellow);
 }
 
-/* Recovery chart (dumbbells) */
-.hyrox-chart .recovery-station {
-  font-family: 'Fraunces', serif;
-  font-size: 15px;
-  fill: var(--ink-1);
-  font-weight: 500;
-}
-.hyrox-chart .recovery-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  fill: var(--ink-3);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-.hyrox-chart .recovery-delta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
+@media (max-width: 720px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .site-nav {
+    gap: 18px;
+  }
 }
 
-/* Chart frame wrapper — use around any chart for consistent presentation */
+/* ============================================
+   Chart frame container
+   ============================================ */
 .chart-frame {
   background: var(--surface);
   border: 1px solid var(--rule);
   padding: 36px 32px 28px;
   margin: 0 0 16px;
-  position: relative;
 }
 
 .chart-frame h2 {
@@ -198,7 +120,6 @@
   letter-spacing: -0.02em;
   margin: 0 0 6px;
   color: var(--ink-1);
-  font-variation-settings: "SOFT" 60;
 }
 
 .chart-frame .sub {
@@ -210,13 +131,169 @@
   margin-bottom: 24px;
 }
 
-.chart-frame .lede {
+.chart-frame p.lede {
   color: var(--ink-2);
   margin: 0 0 28px;
   max-width: 760px;
   font-size: 16px;
 }
 
-@media (max-width: 720px) {
-  .chart-frame { padding: 24px 16px 16px; }
+svg.hyrox-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ============================================
+   Shared chart text classes
+   ============================================ */
+.axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.axis-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  fill: var(--ink-2);
+}
+
+.seg-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.zone-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.ref-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.peak-callout {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--yellow);
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+.legend-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Zones chart (horizontal bars per zone) */
+.zone-row-label {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+
+.zone-row-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+}
+
+.zone-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.zone-pct {
+  fill: var(--ink-3);
+  font-weight: 400;
+}
+
+/* Effort chart (vertical bars per segment) */
+.seg-axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-2);
+  letter-spacing: 0.04em;
+}
+
+.bar-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.no-data {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Drift chart (paired bars) */
+.bar-value-small {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  fill: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.delta {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.group-label {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+
+/* Recovery chart (dumbbells) */
+.recovery-station {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  fill: var(--ink-1);
+  font-weight: 500;
+}
+
+.recovery-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  fill: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.recovery-delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
 }

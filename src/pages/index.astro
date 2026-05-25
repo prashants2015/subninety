@@ -8,6 +8,17 @@ import '../styles/hyrox-theme.css';
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>subninety.club — What HYROX racing actually looks like</title>
 <meta name="description" content="Race reports and analysis of HYROX racing built from real athlete data — heart rate, calorie burn, cadence, recovery. Every chart is one athlete's hardware in one race; every conclusion has its data.">
+
+<!-- Open Graph / Social Media -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="subninety.club" />
+<meta property="og:url" content="https://subninety.club/" />
+<meta property="og:title" content="subninety.club — What HYROX racing actually looks like" />
+<meta property="og:description" content="Race reports and analysis of HYROX racing built from real athlete data — heart rate, calorie burn, cadence, recovery." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="subninety.club — What HYROX racing actually looks like" />
+<meta name="twitter:description" content="Race reports and analysis of HYROX racing built from real athlete data." />
+
 <link rel="canonical" href="https://subninety.club/" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,35 +30,15 @@ import '../styles/hyrox-theme.css';
   "@type": "WebSite",
   "name": "subninety.club",
   "url": "https://subninety.club/",
-  "description": "Race reports &amp; analysis. Race reports and analysis built from real athlete data.",
-  "author": {
+  "description": "Race reports and analysis of HYROX racing built from real athlete data.",
+  "publisher": {
     "@type": "Person",
     "name": "Prashant Singh"
   }
 }
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Prashant Singh",
-  "jobTitle": "HYROX athlete and writer",
-  "description": "HYROX athlete in age group 30\u201334, Bengaluru. Race time 02:01:06 at HYROX Bengaluru 2026.",
-  "url": "https://subninety.club/"
-}
-</script>
 
 <style>
-:root {
-  --bg: #0A0A0B;
-  --surface: #14141A;
-  --panel: #1A1A22;
-  --ink-1: #F5F5EE;
-  --ink-2: #A0A09A;
-  --ink-3: #5C5C58;
-  --rule: #26262C;
-  --yellow: #FFE600;
-}
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink-1); }
 body {
@@ -61,281 +52,198 @@ a { color: inherit; }
 
 .wrap { max-width: 1240px; margin: 0 auto; padding: 80px 24px 96px; }
 
-/* Site header */
-.site-header {
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 24px;
-  margin-bottom: 96px;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-.wordmark {
-  font-family: 'Fraunces', serif;
-  font-size: 28px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  font-variation-settings: "SOFT" 50;
-  color: var(--ink-1);
-}
-.wordmark .dot { color: var(--yellow); }
-.tagline {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-/* Mission */
-.mission { margin-bottom: 128px; }
+.mission { margin-bottom: 96px; max-width: 880px; }
 .mission-text {
   font-family: 'Fraunces', serif;
   font-weight: 500;
-  font-size: clamp(40px, 5vw, 64px);
-  line-height: 1.05;
+  font-size: clamp(40px, 5.6vw, 68px);
+  line-height: 1.02;
   letter-spacing: -0.025em;
   margin: 0 0 28px;
-  max-width: 920px;
   color: var(--ink-1);
   font-variation-settings: "SOFT" 50;
 }
 .mission-text em {
   font-style: italic;
-  font-variation-settings: "SOFT" 100, "WONK" 1;
   color: var(--yellow);
-  font-weight: 400;
+  font-variation-settings: "SOFT" 100;
 }
 .mission-sub {
   font-family: 'Fraunces', serif;
   font-weight: 400;
-  font-size: clamp(20px, 1.8vw, 24px);
-  line-height: 1.5;
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.45;
   color: var(--ink-2);
-  max-width: 760px;
-  margin: 0 0 44px;
+  margin: 0 0 36px;
   font-variation-settings: "SOFT" 100, "opsz" 32;
 }
 .author-intro {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-3);
   padding-top: 24px;
   border-top: 1px solid var(--rule);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
 }
 .author-intro strong { color: var(--ink-1); font-weight: 500; }
 
-/* Featured race report card */
-.featured { margin-bottom: 96px; }
-.featured-card {
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  padding: 56px 56px 48px;
-  position: relative;
-  transition: border-color 0.2s ease;
-  text-decoration: none;
-  color: var(--ink-1);
-  display: block;
-}
-.featured-card:hover { border-color: var(--yellow); }
-.card-category {
+.featured { margin-bottom: 64px; }
+.featured-eyebrow {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--yellow);
-  margin-bottom: 24px;
-  font-weight: 500;
+  color: var(--ink-3);
+  margin-bottom: 16px;
 }
-.featured-card .card-title {
+.featured-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 48px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, background 0.2s;
+}
+.featured-card:hover { border-color: var(--yellow); background: #181820; }
+.featured-card h2 {
   font-family: 'Fraunces', serif;
   font-weight: 500;
-  font-size: clamp(32px, 4vw, 44px);
-  line-height: 1.05;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.1;
   letter-spacing: -0.02em;
   margin: 0 0 20px;
-  max-width: 820px;
-  font-variation-settings: "SOFT" 50;
   color: var(--ink-1);
 }
-.featured-card .card-title em {
-  font-style: italic;
-  font-variation-settings: "SOFT" 100, "WONK" 1;
-  color: var(--yellow);
-  font-weight: 400;
-}
-.featured-card .card-lede {
+.featured-card .featured-desc {
   color: var(--ink-2);
-  font-size: 18px;
-  line-height: 1.55;
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 32px;
   max-width: 720px;
-  margin: 0 0 40px;
 }
-.card-stats {
+.featured-meta {
   display: flex;
-  gap: 56px;
+  gap: 32px;
   flex-wrap: wrap;
-  padding: 24px 0;
+  padding-top: 24px;
   border-top: 1px solid var(--rule);
-  margin-bottom: 28px;
-}
-.card-stats .stat .num {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  display: block;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-1);
-}
-.card-stats .stat .num .unit { font-size: 14px; color: var(--ink-3); font-weight: 400; margin-left: 2px; }
-.card-stats .stat .lbl {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.16em;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-top: 8px;
+}
+.featured-meta .stat strong {
   display: block;
-}
-.card-link {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--yellow);
-  font-weight: 500;
-}
-
-/* Analysis grid */
-.analysis { margin-bottom: 96px; }
-.section-header { margin-bottom: 36px; }
-.section-header h2 {
   font-family: 'Fraunces', serif;
+  font-size: 22px;
   font-weight: 500;
-  font-size: 32px;
-  letter-spacing: -0.02em;
-  margin: 0 0 8px;
+  letter-spacing: -0.01em;
   color: var(--ink-1);
-}
-.section-header p {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 17px;
-  color: var(--ink-2);
-  margin: 0;
+  text-transform: none;
+  margin-bottom: 4px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 24px;
-}
-.grid .card {
+/* Key Takeaways */
+.takeaways-homepage {
   background: var(--surface);
   border: 1px solid var(--rule);
-  padding: 32px;
-  text-decoration: none;
-  color: var(--ink-1);
-  display: block;
-  transition: border-color 0.2s ease;
-}
-.grid .card:hover { border-color: var(--yellow); }
-.grid .card .card-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: -0.01em;
-  margin: 0 0 12px;
-  line-height: 1.2;
-  color: var(--ink-1);
-}
-.grid .card .card-lede {
-  color: var(--ink-2);
-  font-size: 15.5px;
-  line-height: 1.55;
-  margin: 0 0 24px;
-}
-.card-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  padding-top: 16px;
-  border-top: 1px solid var(--rule);
-}
-
-/* In production */
-.coming {
+  padding: 36px 40px;
   margin-bottom: 96px;
-  padding: 40px 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
 }
-.coming h2 {
+.takeaways-homepage h2.takeaways-h {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--yellow);
   font-weight: 500;
-  margin: 0 0 16px;
-}
-.coming > p {
-  color: var(--ink-2);
   margin: 0 0 24px;
-  font-size: 16px;
-  max-width: 720px;
 }
-.coming ul {
+.takeaways-homepage ol {
   list-style: none;
   padding: 0;
-  margin: 0 0 16px;
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 8px;
 }
-.coming li {
-  padding: 12px 0 12px 20px;
-  border-left: 2px solid var(--rule);
+.takeaways-homepage li {
+  padding: 18px 24px 18px 20px;
+  border-left: 2px solid var(--yellow);
+  font-size: 15.5px;
+  line-height: 1.55;
   color: var(--ink-1);
-  font-size: 15px;
-  line-height: 1.5;
 }
-.coming li strong {
-  color: var(--ink-1);
+.takeaways-homepage li .n {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--yellow);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 6px;
   font-weight: 500;
 }
-.coming li .meta {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-top: 2px;
-}
-.coming .schedule {
-  color: var(--ink-3);
-  font-size: 12.5px;
-  margin: 24px 0 0;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.takeaways-homepage li strong { color: var(--ink-1); font-weight: 600; }
+.takeaways-homepage li a {
+  color: var(--yellow);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 230, 0, 0.3);
 }
 
-/* Footer */
+.section-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 28px;
+  padding-top: 16px;
+}
+.analysis { margin-bottom: 96px; }
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.analysis-item {
+  display: block;
+  padding: 28px 32px 28px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left 0.2s, background 0.2s;
+}
+.analysis-item:hover { padding-left: 16px; background: var(--surface); }
+.analysis-item h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+  color: var(--ink-1);
+}
+.analysis-item p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+
+.coming { margin-bottom: 64px; }
+.coming-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 2.2;
+}
+.coming-list li::before { content: "→ "; color: var(--ink-3); }
+
 .site-footer {
   border-top: 1px solid var(--rule);
   padding-top: 36px;
+  margin-top: 96px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -343,14 +251,11 @@ a { color: inherit; }
   line-height: 1.7;
 }
 
-/* Mobile */
 @media (max-width: 720px) {
   .wrap { padding: 48px 18px 64px; }
-  .site-header { flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 56px; }
-  .mission { margin-bottom: 72px; }
-  .featured-card { padding: 32px 24px; }
-  .card-stats { gap: 32px; }
-  .featured, .analysis, .coming { margin-bottom: 64px; }
+  .featured-card { padding: 28px 24px; }
+  .takeaways-homepage { padding: 24px 22px; }
+  .analysis-item { padding: 22px 0; }
 }
 </style>
 </head>
@@ -358,8 +263,13 @@ a { color: inherit; }
 <div class="wrap">
 
   <header class="site-header">
-    <div class="wordmark">subninety<span class="dot">.</span>club</div>
-    <div class="tagline">Race reports &amp; analysis</div>
+    <a class="wordmark" href="/">subninety<span class="dot">.</span>club</a>
+    <nav class="site-nav">
+      <a href="/hyrox-bengaluru-2026/">Race reports</a>
+      <a href="/hyrox-calories-burned/">Analysis</a>
+      <a href="/about/">About</a>
+      <a href="/method/">Method</a>
+    </nav>
   </header>
 
   <section class="mission">
@@ -367,98 +277,85 @@ a { color: inherit; }
       What HYROX racing actually looks like, from <em>one athlete's data</em>.
     </h1>
     <p class="mission-sub">
-      Every chart on this site comes from one athlete&#8217;s hardware in one race.
-      Every conclusion shows its data.
+      Race reports and analysis built from heart rate, calorie burn, cadence, and recovery
+      data captured during real HYROX races. Every chart cites its source. Every conclusion
+      shows its data.
     </p>
     <div class="author-intro">
-      <span>By <strong>Prashant Singh</strong></span>
-      <span>Age group <strong>30&ndash;34</strong></span>
-      <span>Based in <strong>Bengaluru</strong></span>
-      <span>HYROX BLR 2026 finish &nbsp;<strong>02:01:06</strong></span>
+      By <strong>Prashant Singh</strong> &nbsp;&middot;&nbsp; Age group 30&ndash;34 &nbsp;&middot;&nbsp;
+      Bengaluru &nbsp;&middot;&nbsp; Race time <strong>02:01:06</strong>
     </div>
   </section>
 
   <section class="featured">
+    <div class="featured-eyebrow">Featured race report</div>
     <a class="featured-card" href="/hyrox-bengaluru-2026/">
-      <div class="card-category">FEATURED RACE REPORT</div>
-      <h2 class="card-title">
-        What does <em>heart rate</em> look like during a HYROX race?
-      </h2>
-      <p class="card-lede">
-        1,157 heart rate samples from a 2:01:06 finish in Bengaluru &mdash; mapped to all 16
-        segments, decomposed into zones, drift, and recovery. Five charts, one race, one body.
+      <h2>What heart rate looks like during a HYROX race &mdash; Bengaluru 2026</h2>
+      <p class="featured-desc">
+        1,157 heart rate samples from a 2:01:06 finish, broken down by all 16 segments.
+        92% of the race spent at threshold or above. Five charts covering zone distribution,
+        per-segment effort, drift, and post-station recovery &mdash; built from one
+        athlete&rsquo;s Apple Watch hardware and the official HYROX timing system.
       </p>
-      <div class="card-stats">
-        <div class="stat">
-          <span class="num">92<span class="unit">%</span></span>
-          <span class="lbl">Time at threshold+</span>
-        </div>
-        <div class="stat">
-          <span class="num">1,157</span>
-          <span class="lbl">HR samples</span>
-        </div>
-        <div class="stat">
-          <span class="num">189<span class="unit">bpm</span></span>
-          <span class="lbl">Peak heart rate</span>
-        </div>
-        <div class="stat">
-          <span class="num">2:01:06</span>
-          <span class="lbl">Total race time</span>
-        </div>
+      <div class="featured-meta">
+        <div class="stat"><strong>1,157</strong>HR samples</div>
+        <div class="stat"><strong>189 bpm</strong>peak</div>
+        <div class="stat"><strong>92%</strong>at threshold+</div>
+        <div class="stat"><strong>5</strong>charts, 1 race</div>
       </div>
-      <span class="card-link">Read the full report &rarr;</span>
     </a>
   </section>
 
+  <section class="takeaways-homepage">
+    <h2 class="takeaways-h">Key takeaways</h2>
+    <ol>
+      <li>
+        <span class="n">01 &mdash; What this is</span>
+        <strong>A single-athlete HYROX research archive.</strong> One person&rsquo;s body,
+        one race so far, eleven charts. Built from primary data, not aggregated content.
+      </li>
+      <li>
+        <span class="n">02 &mdash; What the data says</span>
+        <strong>HYROX is functionally a 2-hour threshold race.</strong> 92% of a 2:01:06
+        finish was spent at threshold or above &mdash; not an interval workout with rest breaks.
+      </li>
+      <li>
+        <span class="n">03 &mdash; Methodology</span>
+        <strong>Every number is traceable.</strong> Sources, sampling rates, accuracy caveats,
+        and the full data pipeline are documented at <a href="/method/">/method/</a>.
+      </li>
+      <li>
+        <span class="n">04 &mdash; Cadence</span>
+        <strong>New analysis weekly.</strong> Five more pieces in production from the same
+        race data: cadence, recovery curves, pacing, time allocation, and timing accuracy.
+      </li>
+    </ol>
+  </section>
+
   <section class="analysis">
-    <div class="section-header">
-      <h2>Recent analysis</h2>
-      <p>Focused deep-dives, one chart each, each answering one question.</p>
-    </div>
-    <div class="grid">
-      <a href="/hyrox-calories-burned/" class="card">
-        <div class="card-category">ANALYSIS</div>
-        <h3 class="card-title">How many calories does HYROX burn?</h3>
-        <p class="card-lede">
-          1,441 kcal across 2 hours. The longest two segments &mdash; Wall Balls and Sled Pull
-          &mdash; cost more than the highest-HR runs. Duration beats intensity for total burn.
-        </p>
-        <div class="card-meta">22 May 2026 &nbsp;&middot;&nbsp; Calorie cost</div>
+    <div class="section-head">Analysis from this race</div>
+    <div class="analysis-grid">
+      <a class="analysis-item" href="/hyrox-calories-burned/">
+        <h3>How many calories does HYROX burn?</h3>
+        <p>1,441 kcal across the race, broken down station by station. Wall Balls and Sled Pull tied as the costliest segments.</p>
       </a>
     </div>
   </section>
 
   <section class="coming">
-    <h2>In production</h2>
-    <p>Five more analyses being prepared from the same race data, publishing weekly:</p>
-    <ul>
-      <li>
-        <strong>HR + cadence overlay</strong>
-        <span class="meta">What the body was actually doing, minute by minute</span>
-      </li>
-      <li>
-        <strong>Heart rate recovery curves</strong>
-        <span class="meta">The 90 seconds after each station</span>
-      </li>
-      <li>
-        <strong>Run pace and pacing strategy</strong>
-        <span class="meta">How each of the 8 runs compared</span>
-      </li>
-      <li>
-        <strong>Time allocation</strong>
-        <span class="meta">Running, stations, and transitions, broken down</span>
-      </li>
-      <li>
-        <strong>Watch vs chip-mat timing</strong>
-        <span class="meta">A cadence-validated accuracy story</span>
-      </li>
+    <div class="section-head">In production</div>
+    <ul class="coming-list">
+      <li>Heart rate and cadence overlay &mdash; how your body keeps tempo through HYROX</li>
+      <li>Recovery curves &mdash; what happens to HR in the 90 seconds after each station</li>
+      <li>Running pace decay &mdash; how each of the 8 runs compares to the first</li>
+      <li>Where the time goes &mdash; running vs stations vs roxzone, visualised</li>
+      <li>Cadence-validated timing &mdash; what the watch saw vs what the chip mat saw</li>
     </ul>
-    <p class="schedule">New analysis every Sunday &middot; check back, or RSS coming soon</p>
   </section>
 
   <footer class="site-footer">
     subninety.club &copy; 2026 Prashant Singh.<br />
-    Built on Astro &middot; Hosted on Cloudflare Pages &middot; Data from Apple Watch and HYROX official results.
+    Built on Astro &middot; Hosted on Cloudflare Pages &middot; Data from Apple Watch Series 9 and HYROX official results.
   </footer>
 
 </div>
