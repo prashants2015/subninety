@@ -12,7 +12,7 @@ import RecoveryTransitions from '../components/charts/RecoveryTransitions.astro'
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What heart rate looks like during a HYROX race — Bengaluru 2026 data</title>
+<title>What heart rate looks like during a HYROX (a standardised run-plus-functional-fitness race format) race — Bengaluru 2026 data</title>
 <meta name="description" content="1,157 heart rate samples from a 2:01:06 HYROX race, broken down by all 16 segments. 92% at threshold+, average 167 bpm. Real Apple Watch data with zone, drift, and recovery analysis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,7 +79,7 @@ import RecoveryTransitions from '../components/charts/RecoveryTransitions.astro'
       "name": "What's a typical heart rate during a HYROX race?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For a competitive sub-2-hour finish, expect to average around 167 bpm and spend 90%+ of the race at threshold or above (Z4 + Z5). In this race, the average was 167 bpm across 2 hours 1 minute, with 92.3% of total time at or above 80% of max HR."
+        "text": "For a competitive sub-2-hour finish, expect to average around 167 bpm and spend 90%+ of the race at threshold or above (Z4 + Z5). In this race, the average was 167 bpm across 2 hours 1 minute, with 92.3% of total time at or above 80% of max heart rate (HR)."
       }
     },
     {
@@ -116,7 +116,7 @@ import RecoveryTransitions from '../components/charts/RecoveryTransitions.astro'
     },
     {
       "@type": "Question",
-      "name": "How is heart rate during the roxzone (transitions)?",
+      "name": "How is heart rate during the roxzone (the transition time between runs and stations)?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "The roxzone \u2014 the time spent moving between segments \u2014 averaged ~41 seconds per transition in this race (10:12 total across 15 transitions). Heart rate behaviour in transitions was bidirectional: 5 of 6 measured transitions saw HR rise into the next run rather than drop, because the run effort exceeds what the previous station was demanding by the end."
@@ -676,7 +676,7 @@ table.breakdown-table tbody tr.kind-run td.seg-name { color: var(--ink-2); }
 <div class="wrap">
 <header class="site-header">
   <a class="wordmark" href="/">subninety<span class="dot">.</span>club</a>
-  <nav class="site-nav">
+  <nav class="site-nav" aria-label="Main navigation">
     <a href="/hyrox-bengaluru-2026/" class="active">Race reports</a>
     <a href="/hyrox-calories-burned/">Analysis</a>
     <a href="/about/">About</a>
