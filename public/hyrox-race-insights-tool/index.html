@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>HYROX Heart Rate Analysis — see your HR at every station | subninety.club</title>
 <meta name="description" content="Upload your Apple Health export and HYROX result card to see your heart rate at every station and running lap. Free HYROX heart-rate analyzer."/>
-<link rel="icon" type="image/svg+xml" href="./subninety-icon.svg"/>
-<link rel="apple-touch-icon" href="./subninety-icon.svg"/>
+<link rel="icon" type="image/svg+xml" href="subninety-icon.svg"/>
+<link rel="apple-touch-icon" href="subninety-icon.svg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <!-- libs -->
@@ -420,16 +420,26 @@ function App(){
 
   return (
     <div className="wrap" style={{paddingBottom:80}}>
-      <header style={{padding:"56px 0 26px"}}>
+      <header style={{padding: "56px 0 26px"}}>
+        {/* Logo and Brand */}
         <div className="mono" style={{display: "flex", alignItems: "center", gap: "10px", color: "var(--hy)", letterSpacing: ".25em", fontSize: 12}}>
-  <img src="subninety-icon.svg" style={{width: 28, height: 28}} alt="" />
-  SUBNINETY.CLUB
-</div>
-        <h1 className="display" style={{fontSize:"clamp(40px,7vw,82px)",lineHeight:.95,margin:"10px 0 0",textTransform:"uppercase"}}>
-          Your HYROX,<br/><span className="hy">heart&nbsp;by&nbsp;heart</span>
+          <img src="subninety-icon.svg" style={{width: 28, height: 28}} alt="" />
+          SUBNINETY.CLUB
+        </div>
+
+        {/* Main Heading */}
+        <h1 className="display" style={{fontSize: "clamp(40px, 8vw, 82px)", lineHeight: 0.95, margin: "15px 0 5px", textTransform: "uppercase"}}>
+          Visualize your<br/> HYROX Performance.
         </h1>
-        <p style={{color:"var(--dim)",maxWidth:560,fontSize:16,marginTop:16}}>
-          Upload your Apple Health export and your HYROX result card. See exactly what your heart rate did at every station and every run — SkiErg to Wall Balls.
+
+        {/* Second Heading Line */}
+        <div className="display" style={{fontSize: "clamp(20px, 4vw, 36px)", color: "var(--hy)", textTransform: "uppercase", marginBottom: "20px"}}>
+          Every Station. Every Beat.
+        </div>
+
+        {/* Description */}
+        <p style={{color: "var(--dim)", maxWidth: 580, fontSize: 17, lineHeight: 1.5, marginTop: 10}}>
+          From the first run to the last Wall Ball—see exactly where you pushed, where you faded, and how to master your next race.
         </p>
       </header>
 
