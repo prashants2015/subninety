@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>HYROX Heart Rate Analysis — see your HR at every station | subninety.club</title>
+<meta name="description" content="Upload your Apple Health export and HYROX result card to see your heart rate at every station and running lap. Free HYROX heart-rate analyzer."/>
+<link rel="icon" type="image/svg+xml" href="./subninety-icon.svg"/>
+<link rel="apple-touch-icon" href="./subninety-icon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<!-- libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0c0e; --panel:#141619; --line:#23262b; --ink:#f4f5f3; --dim:#9aa0a6; --faint:#5f6670;
+    --hy:#e6ff00;          /* HYROX-ish electric yellow */
+    --run:#4ad6c4;         /* runs */
+    --station:#e6ff00;     /* stations */
+    --bad:#ff5d6c;
+  }
+  *{box-sizing:border-box}
+  html,body,#root{margin:0;background:var(--bg);min-height:100%}
+  body{font-family:'Sora',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .display{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.01em}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .hy{color:var(--hy)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px}
+  button.cta{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.04em;background:var(--hy);color:#0b0c0e;border:none;border-radius:12px;padding:16px 26px;cursor:pointer;text-transform:uppercase}
+  button.cta:disabled{opacity:.4;cursor:not-allowed}
+  button.btn2{font-family:'JetBrains Mono',monospace;font-size:13px;background:#0e1013;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 16px;cursor:pointer}
+  button.btn2:hover{border-color:var(--hy)}
+  input[type=text],input[type=email],input[type=date],input[type=time]{background:#0b0c0e;border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:11px 13px;font-family:'JetBrains Mono',monospace;font-size:14px;width:100%}
+  input::placeholder{color:var(--faint)}
+  label.fld{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:0 0 7px 2px}
+  .drop{border:1.5px dashed var(--line);border-radius:14px;padding:18px;text-align:center;cursor:pointer;transition:.15s;background:#0e1013}
+  .drop:hover{border-color:var(--hy)}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px}
+  th{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  td.mono,th.mono{font-family:'JetBrains Mono',monospace}
+  .seg-run{color:var(--run)} .seg-st{color:var(--hy)}
+  .pill{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
+  .grain:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body class="grain">
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useRef, useMemo, useEffect } = React;
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+/* ---- email capture endpoint (the subninety-leads Worker you deploy below) ---- */
+// After deploying on the subninety.club Cloudflare account, paste the Worker's URL here (keep the /lead).
+const LEAD_ENDPOINT = "https://subninety-leads.prashants2015.workers.dev/lead";
+
+/* ---- branding for the shareable card ---- */
+const SITE_URL = "subninety.club/hyrox-race-insights-tool";
+const LOGO_URL = ""; // optional: a PNG/SVG logo URL; falls back to a clean wordmark if empty
+
+/* ===== canonical HYROX order (defaults pre-filled with a real race) ===== */
+const SEG_TEMPLATE = [
+  ["Run 1","run",421],["1000m SkiErg","station",311],
+  ["Run 2","run",400],["50m Sled Push","station",326],
+  ["Run 3","run",453],["50m Sled Pull","station",601],
+  ["Run 4","run",413],["80m Burpee Broad Jump","station",517],
+  ["Run 5","run",405],["1000m Row","station",349],
+  ["Run 6","run",344],["200m Farmers Carry","station",149],
+  ["Run 7","run",322],["100m Sandbag Lunges","station",483],
+  ["Run 8","run",482],["Wall Balls","station",688],
+];
+
+/* ---- time helpers ---- */
+const pad = (n) => String(n).padStart(2,"0");
+const secToClock = (s) => { s=Math.round(s); const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60; return (h?h+":":"")+pad(m)+":"+pad(x); };
+const mmss = (s) => { s=Math.max(0,Math.round(s)); return pad(Math.floor(s/60))+":"+pad(s%60); };
+function parseMMSS(str){ // "7:01" or "00:07:01" -> seconds
+  const p = String(str).trim().split(":").map(Number);
+  if(p.some(isNaN)||!p.length) return null;
+  return p.reduce((a,v)=>a*60+v,0);
+}
+// "2026-04-20 09:55:00 +0530" or ISO -> ms
+function toMs(s){
+  if(!s) return null;
+  let t=String(s).trim().replace(" ","T").replace(/\s*([+-]\d{2})(\d{2})$/,"$1:$2");
+  const d=new Date(t); return isNaN(d.getTime())?null:d.getTime();
+}
+
+/* ===== build the elapsed-time window for each segment, distributing Roxzone ===== */
+function buildTimeline(segs, roxzoneSec){
+  const gaps = Math.max(0, segs.length-1);
+  const per = gaps ? roxzoneSec/gaps : 0;
+  let cur = 0; const out=[];
+  segs.forEach((s,i)=>{
+    const start=cur, end=cur+s.sec;
+    out.push({...s, start, end});
+    cur = end + (i<segs.length-1 ? per : 0);
+  });
+  return { windows: out, total: cur, gapEach: per };
+}
+
+/* ===== assign HR samples (elapsed sec from race start) to segments ===== */
+function summarize(hr, timeline){
+  return timeline.windows.map(w=>{
+    const inSeg = hr.filter(p=>p.t>=w.start && p.t<w.end).map(p=>p.hr);
+    const avg = inSeg.length? inSeg.reduce((a,b)=>a+b,0)/inSeg.length : null;
+    return {...w, avg, max: inSeg.length?Math.max(...inSeg):null, min: inSeg.length?Math.min(...inSeg):null, n: inSeg.length};
+  });
+}
+
+/* ===== parse a HYROX result-card PDF (best effort; user can correct) ===== */
+async function parsePdf(file){
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  let text="";
+  for(let i=1;i<=pdf.numPages;i++){ const pg=await pdf.getPage(i); const c=await pg.getTextContent(); text+=" "+c.items.map(it=>it.str).join(" "); }
+  const out={};
+  const bib = text.match(/Bib Number\s+(\d+)/i); if(bib) out.bib=bib[1];
+  // runs
+  const runs=[...text.matchAll(/Running\s*\d\s+(\d{1,2}:\d{2}(?::\d{2})?)/gi)].map(m=>parseMMSS(m[1]));
+  // roxzone
+  const rox = text.match(/Roxzone[^0-9]*(\d{1,2}:\d{2}(?::\d{2})?)/i); if(rox) out.roxzone=parseMMSS(rox[1]);
+  // station times appear as standalone hh:mm:ss with a place; collect all times then map by elimination is unreliable,
+  // so we only auto-fill runs + roxzone + bib, and let the user confirm station times.
+  if(runs.length) out.runs=runs;
+  return out;
+}
+
+/* ===== stream the Apple Health export (.zip or .xml) and keep only HR in [startMs,endMs] ===== */
+// Matches the OPENING <Record ...> tag whether self-closing (<Record .../>) OR with child
+// metadata (<Record ...>\n  <MetadataEntry/>\n</Record>) — Apple Watch workout HR uses the latter.
+function scanText(chunk, startMs, endMs, samples, startTs, stats){
+  const re=/<Record\b[^>]*?type="HKQuantityTypeIdentifierHeartRate"[^>]*?>/g; let m;
+  while((m=re.exec(chunk))){
+    const tag=m[0];
+    const dM=tag.match(/startDate="([^"]+)"/); const vM=tag.match(/value="([^"]+)"/);
+    if(!dM||!vM) continue;
+    const ms=toMs(dM[1]); const hr=parseFloat(vM[1]);
+    if(ms==null||!isFinite(hr)) continue;
+    stats.count++; if(stats.min==null||ms<stats.min)stats.min=ms; if(stats.max==null||ms>stats.max)stats.max=ms;
+    if(ms>=startMs && ms<=endMs) samples.push({t:(ms-startTs)/1000, hr});
+  }
+}
+async function streamHealth(file, startMs, endMs, onProgress){
+  const samples=[]; const stats={count:0,min:null,max:null}; const dec=new TextDecoder("utf-8");
+  let tail="";
+  const handleStr = (s) => {
+    const buf = tail + s;
+    // keep a generous tail so a <Record ...> opening tag is never split across chunks
+    const cut = Math.max(0, buf.length-4000);
+    scanText(buf.slice(0,cut), startMs, endMs, samples, startMs, stats);
+    tail = buf.slice(cut);
+  };
+  const isZip = /\.zip$/i.test(file.name);
+  if(isZip){
+    if(typeof fflate==="undefined") throw new Error("unzip library didn't load — upload export.xml directly instead");
+    await new Promise((resolve,reject)=>{
+      const { Unzip, UnzipInflate } = fflate;
+      const uz = new Unzip(); uz.register(UnzipInflate);
+      let chosen=false;
+      uz.onfile = (f)=>{
+        if(chosen) return;
+        if(/export\.xml$/i.test(f.name)){
+          chosen=true;
+          f.ondata=(err,chunk,final)=>{
+            if(err) return reject(err);
+            if(chunk&&chunk.length) handleStr(dec.decode(chunk,{stream:true}));
+            if(final){ handleStr(dec.decode()); scanText(tail,startMs,endMs,samples,startMs,stats); resolve(); }
+          };
+          f.start();
+        }
+      };
+      (async()=>{
+        const reader=file.stream().getReader(); let read=0;
+        try{
+          while(true){ const {done,value}=await reader.read();
+            if(value){ read+=value.length; onProgress&&onProgress(read,file.size); uz.push(value,false); }
+            if(done){ uz.push(new Uint8Array(0),true); break; }
+          }
+        }catch(e){ reject(e); }
+      })();
+    });
+  } else {
+    const reader=file.stream().getReader(); let read=0;
+    while(true){ const {done,value}=await reader.read();
+      if(value){ read+=value.length; onProgress&&onProgress(read,file.size); handleStr(dec.decode(value,{stream:true})); }
+      if(done){ handleStr(dec.decode()); scanText(tail,startMs,endMs,samples,startMs,stats); break; }
+    }
+  }
+  samples.sort((a,b)=>a.t-b.t);
+  return { samples, stats };
+}
+
+/* ================= UI ================= */
+function FileDrop({label,accept,file,onPick}){
+  const ref=useRef();
+  return (
+    <div>
+      <label className="fld">{label}</label>
+      <div className="drop" onClick={()=>ref.current.click()}>
+        <div className="mono" style={{fontSize:13,color:file?"var(--hy)":"var(--dim)"}}>{file?("✓ "+file.name):"Tap to choose file"}</div>
+        <input ref={ref} type="file" accept={accept} hidden onChange={e=>onPick(e.target.files[0])}/>
+      </div>
+    </div>
+  );
+}
+
+function App(){
+  const [health,setHealth]=useState(null);
+  const [pdf,setPdf]=useState(null);
+  const [date,setDate]=useState("");
+  const [start,setStart]=useState("");
+  const [email,setEmail]=useState("");
+  const [unlocked,setUnlocked]=useState(false);
+  const [gateErr,setGateErr]=useState(null);
+  const [segs,setSegs]=useState(SEG_TEMPLATE.map(([name,type,sec])=>({name,type,sec})));
+  const [roxzone,setRoxzone]=useState(612);
+  const [busy,setBusy]=useState(false);
+  const [prog,setProg]=useState(0);
+  const [err,setErr]=useState(null);
+  const [result,setResult]=useState(null);
+  const chartRef=useRef(); const chartObj=useRef();
+  const barRef=useRef(); const barObj=useRef();
+  const cardRef=useRef(); const [logoImg,setLogoImg]=useState(null);
+  useEffect(()=>{ if(!LOGO_URL) return; const im=new Image(); im.crossOrigin="anonymous"; im.onload=()=>setLogoImg(im); im.src=LOGO_URL; },[]);
+
+  const onPdf = async (f)=>{
+    setPdf(f); setErr(null);
+    try{
+      const p=await parsePdf(f);
+      setSegs(prev=>{
+        const next=prev.map(s=>({...s}));
+        if(p.runs){ let ri=0; next.forEach(s=>{ if(s.type==="run"&&p.runs[ri]!=null){ s.sec=p.runs[ri]; ri++; } }); }
+        return next;
+      });
+      if(p.roxzone!=null) setRoxzone(p.roxzone);
+      if(p.bib && p.bib.length>=3 && !start){ // bib 95039 -> 9:50 ; 10309 -> 10:30 (first 3-4 digits = H:MM)
+        const d=p.bib; const hh=d.length>=4 && +d.slice(0,2)<=23 ? d.slice(0,2):d.slice(0,1);
+        const mm=d.slice(hh.length,hh.length+2);
+        if(+mm<60) setStart(pad(+hh)+":"+mm);
+      }
+    }catch(e){ setErr("Couldn't auto-read the PDF — please enter/verify the splits below."); }
+  };
+
+  const editSeg=(i,val)=>{ const s=parseMMSS(val); setSegs(p=>p.map((x,j)=>j===i?{...x,_raw:val,sec:(s==null?x.sec:s)}:x)); };
+
+  const timeline = useMemo(()=>buildTimeline(segs,roxzone),[segs,roxzone]);
+
+  const insights = useMemo(()=>{
+    if(!result) return [];
+    const rows=result.rows, out=[];
+    const stations=rows.filter(r=>r.type==="station"&&r.avg!=null);
+    const runs=rows.filter(r=>r.type==="run"&&r.avg!=null);
+    if(stations.length){ const t=stations.reduce((a,b)=>b.avg>a.avg?b:a); out.push(["Toughest station",`${t.name} — ${Math.round(t.avg)} avg bpm`]); }
+    if(runs.length>=2){ const d=Math.round(runs[runs.length-1].avg-runs[0].avg); out.push(["Run HR drift",`${d>=0?"+":""}${d} bpm · Run 1 → Run ${runs.length}`]); }
+    const thr=result.max*0.9, near=result.hr.filter(p=>p.hr>=thr).length;
+    out.push(["Time above 90% max",`${Math.round(100*near/result.hr.length)}% of the race`]);
+    return out;
+  },[result]);
+
+  const analyze = async ()=>{
+    setErr(null);
+    if(!health){ setErr("Add your Apple Health export (.zip or export.xml)."); return; }
+    if(!date||!start){ setErr("Enter the race date and start time."); return; }
+    const startMs=toMs(date+" "+start+":00");
+    if(startMs==null){ setErr("Couldn't read that date/time."); return; }
+    const endMs=startMs+(timeline.total+120)*1000; // +2min safety
+    setBusy(true); setProg(0); setResult(null);
+    try{
+      const { samples:hr, stats } = await streamHealth(health,startMs,endMs,(r,t)=>setProg(t?r/t:0));
+      if(!hr.length){
+        const fmt=(ms)=>{ const d=new Date(ms); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes()); };
+        if(stats.count===0){
+          setErr("No heart-rate records found anywhere in this file. Make sure it's your full Apple Health export (Health app → profile → Export All Health Data), not a single workout.");
+        } else {
+          setErr(`Found ${stats.count.toLocaleString()} heart-rate records in the file (from ${fmt(stats.min)} to ${fmt(stats.max)}), but none inside your race window starting ${date} ${start}. Double-check the race date and start time above.`);
+        }
+        setBusy(false); return;
+      }
+      const rows=summarize(hr,timeline);
+      const all=hr.map(p=>p.hr);
+      setResult({hr,rows,avg:all.reduce((a,b)=>a+b,0)/all.length,max:Math.max(...all),min:Math.min(...all),count:hr.length});
+    }catch(e){ setErr("Couldn't read that file ("+(e.message||e)+"). If it's a .zip that fails, unzip it on your computer and upload export.xml directly."); }
+    setBusy(false);
+  };
+
+  const abToB64=(buf)=>{ const b=new Uint8Array(buf); let s=""; const c=0x8000; for(let i=0;i<b.length;i+=c){ s+=String.fromCharCode.apply(null,b.subarray(i,i+c)); } return btoa(s); };
+
+  const unlock=async()=>{
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email||"")){ setGateErr("Please enter a valid email."); return; }
+    setGateErr(null); setUnlocked(true);
+    if(LEAD_ENDPOINT && result){
+      let reportPdf=null;
+      if(pdf){ try{ reportPdf=abToB64(await pdf.arrayBuffer()); }catch(_){} }
+      const segments=result.rows.map(r=>({seg:r.name,type:r.type,time:mmss(r.sec),avg:r.avg!=null?Math.round(r.avg):null,max:r.max!=null?Math.round(r.max):null}));
+      try{ await fetch(LEAD_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+        email, race:"HYROX", date, overall:secToClock(timeline.total),
+        avgHR:Math.round(result.avg), peakHR:Math.round(result.max), minHR:Math.round(result.min), samples:result.count,
+        segments, reportPdf
+      })}); }catch(_){}
+    }
+  };
+
+  const roundRect=(g,x,y,w,h,r)=>{ r=Math.min(r,w/2,h/2); g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); };
+
+  // shared HR-curve renderer (used on-page and on the share card)
+  const drawCurve=(g,x,y,w,h,hr,tl,opt={})=>{
+    const total=tl.total||1;
+    const lo=Math.max(55,result.min-6),hi=result.max+6,rng=(hi-lo)||1;
+    const X=t=>x+(Math.min(t,total)/total)*w, Y=v=>y+h-((v-lo)/rng)*h;
+    tl.windows.forEach(seg=>{ g.fillStyle=seg.type==="run"?"rgba(74,214,196,0.10)":"rgba(230,255,0,0.09)"; g.fillRect(X(seg.start),y,X(seg.end)-X(seg.start),h); });
+    // area fill
+    g.beginPath(); g.moveTo(x,y+h); hr.forEach(p=>g.lineTo(X(p.t),Y(p.hr))); g.lineTo(x+w,y+h); g.closePath();
+    const grad=g.createLinearGradient(0,y,0,y+h); grad.addColorStop(0,"rgba(255,93,108,0.34)"); grad.addColorStop(1,"rgba(255,93,108,0)"); g.fillStyle=grad; g.fill();
+    // line
+    g.beginPath(); hr.forEach((p,i)=>{ const px=X(p.t),py=Y(p.hr); i?g.lineTo(px,py):g.moveTo(px,py); });
+    g.strokeStyle="#ff5d6c"; g.lineWidth=opt.lw||3; g.lineJoin="round"; g.lineCap="round"; g.stroke();
+    // peak dot
+    let pk=hr[0]; hr.forEach(p=>{if(p.hr>pk.hr)pk=p;});
+    const d=opt.dot||8; g.fillStyle="#e6ff00"; g.beginPath(); g.arc(X(pk.t),Y(pk.hr),d,0,7); g.fill();
+    g.fillStyle="#0b0c0e"; g.beginPath(); g.arc(X(pk.t),Y(pk.hr),d/2.2,0,7); g.fill();
+    // y labels
+    if(opt.axis!==false){ const fs=opt.fs||13; g.fillStyle="#5f6670"; g.font=`500 ${fs}px 'JetBrains Mono',monospace`; g.textAlign="left"; g.textBaseline="alphabetic";
+      g.fillText(Math.round(hi)+" bpm",x+8,y+fs+6); g.fillText(Math.round(lo),x+8,y+h-8); }
+    return pk;
+  };
+
+  // on-page HR curve
+  const drawCurvePanel=()=>{ const cv=chartRef.current; if(!cv||!result) return;
+    const dpr=window.devicePixelRatio||1, W=cv.clientWidth||800, H=cv.clientHeight||340;
+    cv.width=W*dpr; cv.height=H*dpr; const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+    drawCurve(g,6,12,W-12,H-40,result.hr,timeline,{lw:2.5,dot:6,fs:12});
+    const total=timeline.total; g.fillStyle="#5f6670"; g.font="500 11px 'JetBrains Mono',monospace"; g.textAlign="center";
+    for(let m=0;m<=Math.floor(total/60);m+=15){ g.fillText(m+"m", 6+(m*60/total)*(W-12), H-8); }
+  };
+
+  // on-page per-segment bars
+  const drawBarPanel=()=>{ const cv=barRef.current; if(!cv||!result) return;
+    const dpr=window.devicePixelRatio||1, W=cv.clientWidth||800, H=cv.clientHeight||300;
+    cv.width=W*dpr; cv.height=H*dpr; const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+    const rows=result.rows, avgs=rows.map(r=>r.avg||0).filter(v=>v>0);
+    const lo=Math.min(...avgs)-4, hi=Math.max(...avgs)+2, rng=(hi-lo)||1;
+    const padX=8,padB=60,padT=14,plotH=H-padB-padT,slot=(W-padX*2)/rows.length;
+    rows.forEach((r,i)=>{ const v=r.avg||lo,bh=Math.max(2,((v-lo)/rng)*plotH),bw=slot*0.66,bx=padX+i*slot+slot*0.17,by=padT+plotH-bh;
+      g.fillStyle=r.type==="run"?"#4ad6c4":"#e6ff00"; roundRect(g,bx,by,bw,bh,4); g.fill();
+      g.fillStyle="#9aa0a6"; g.font="600 10px 'JetBrains Mono',monospace"; g.textAlign="center"; g.textBaseline="alphabetic"; g.fillText(Math.round(v),bx+bw/2,by-5);
+      g.save(); g.translate(bx+bw/2,padT+plotH+10); g.rotate(-Math.PI/4.5); g.fillStyle="#9aa0a6"; g.font="500 10px Sora,sans-serif"; g.textAlign="right"; g.fillText(r.name.replace(/^\d+m\s/,""),0,0); g.restore(); });
+  };
+
+  /* ===== Direction A · "The Curve" — branded shareable race card ===== */
+  const renderShareCard=()=>{
+    const cv=cardRef.current; if(!cv||!result) return;
+    const W=1080,H=1350,P=76; cv.width=W; cv.height=H;
+    const g=cv.getContext("2d"); const total=timeline.total||1;
+    const F=(w,s,fam)=>{ g.font=`${w} ${s}px ${fam}`; };
+    g.fillStyle="#0b0c0e"; g.fillRect(0,0,W,H);
+    g.strokeStyle="rgba(255,255,255,0.028)"; g.lineWidth=1;
+    for(let y=0;y<H;y+=46){ g.beginPath(); g.moveTo(0,y); g.lineTo(W,y); g.stroke(); }
+    g.fillStyle="#e6ff00"; g.fillRect(0,0,W,12);
+    g.textBaseline="alphabetic"; g.textAlign="left";
+    // logo — concept 01 (90 tile + wordmark)
+    if(logoImg){ const lh=66,lw=lh*(logoImg.width/logoImg.height); g.drawImage(logoImg,P,50,lw,lh); }
+    else {
+      roundRect(g,P,50,74,74,18); g.fillStyle="#e6ff00"; g.fill();
+      g.fillStyle="#0b0c0e"; F(400,46,"Anton,sans-serif"); g.textAlign="center"; g.textBaseline="middle"; g.fillText("90",P+37,P+13);
+      g.textAlign="left"; g.textBaseline="alphabetic";
+      g.fillStyle="#f4f5f3"; F(400,40,"Anton,sans-serif"); g.fillText("SUBNINETY",P+92,P+22);
+      g.fillStyle="#5f6670"; F(600,14,"'JetBrains Mono',monospace"); g.fillText("RACE INTELLIGENCE",P+94,P+46);
+    }
+    const dt=date?new Date(date+"T00:00:00"):null; const dstr=dt?dt.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}):"";
+    g.fillStyle="#9aa0a6"; F(600,24,"'JetBrains Mono',monospace"); g.textAlign="right"; g.fillText(dstr,W-P,P+6); g.textAlign="left";
+    // title
+    g.fillStyle="#f4f5f3"; F(400,150,"Anton,sans-serif"); g.fillText("HYROX",P,300);
+    g.fillStyle="#5f6670"; F(600,22,"'JetBrains Mono',monospace"); g.fillText("HEART RATE · ENTIRE RACE",P,338);
+    // hero curve
+    drawCurve(g,P,378,W-2*P,432,result.hr,timeline,{lw:3.5,dot:11,fs:22});
+    // stats
+    const SY=908, bw=(W-2*P)/3;
+    const blocks=[["AVG HR",Math.round(result.avg)+""],["PEAK HR",Math.round(result.max)+""],["TIME ›90%",Math.round(100*result.hr.filter(p=>p.hr>=result.max*0.9).length/result.hr.length)+"%"]];
+    blocks.forEach((b,i)=>{ const bx=P+i*bw;
+      g.fillStyle="#5f6670"; F(600,22,"'JetBrains Mono',monospace"); g.fillText(b[0],bx,SY);
+      g.fillStyle=i===1?"#e6ff00":"#f4f5f3"; F(400,84,"Anton,sans-serif"); g.fillText(b[1],bx,SY+78); });
+    g.strokeStyle="#23262b"; [1,2].forEach(i=>{ g.beginPath(); g.moveTo(P+i*bw-18,SY-22); g.lineTo(P+i*bw-18,SY+82); g.stroke(); });
+    // toughest insight
+    const sts=result.rows.filter(r=>r.type==="station"&&r.avg!=null);
+    if(sts.length){ const t=sts.reduce((a,b)=>b.avg>a.avg?b:a); const iy=1048;
+      g.fillStyle="#e6ff00"; g.fillRect(P,iy-20,5,28);
+      g.fillStyle="#f4f5f3"; F(600,28,"Sora,sans-serif"); g.fillText(`Toughest — ${t.name}, ${Math.round(t.avg)} avg bpm`,P+20,iy); }
+    // footer
+    g.fillStyle="#e6ff00"; g.fillRect(0,H-96,W,4);
+    g.fillStyle="#f4f5f3"; F(600,30,"Sora,sans-serif"); g.fillText("Analyze your HYROX heart rate — free",P,H-46);
+    g.fillStyle="#e6ff00"; F(600,24,"'JetBrains Mono',monospace"); g.textAlign="right"; g.fillText(SITE_URL,W-P,H-44); g.textAlign="left";
+  };
+
+  const saveBlob=(blob,name)=>{ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1500); };
+  const cardBlob=()=>new Promise(res=>cardRef.current.toBlob(res,"image/png",0.95));
+  const downloadPNG=async()=>{ const b=await cardBlob(); if(b) saveBlob(b,"hyrox-heart-rate-card.png"); };
+  const downloadPDF=async()=>{ try{ const { jsPDF }=window.jspdf; const cv=cardRef.current; const pdf=new jsPDF({orientation:"portrait",unit:"px",format:[cv.width,cv.height]}); pdf.addImage(cv.toDataURL("image/png"),"PNG",0,0,cv.width,cv.height); pdf.save("hyrox-heart-rate-card.pdf"); }catch(e){ downloadPNG(); } };
+  const shareCard=async()=>{ try{ const b=await cardBlob(); const file=new File([b],"hyrox-heart-rate-card.png",{type:"image/png"});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:"My HYROX heart rate",text:`My HYROX race — avg ${Math.round(result.avg)}, peak ${Math.round(result.max)} bpm. Analyze yours free at ${SITE_URL}`}); }
+      else { downloadPNG(); }
+    }catch(e){/* cancelled/unsupported */} };
+
+  useEffect(()=>{
+    if(!result||!unlocked) return;
+    const drawAll=()=>{ try{drawCurvePanel();}catch(e){console.error("curve",e);} try{drawBarPanel();}catch(e){console.error("bar",e);} try{renderShareCard();}catch(e){console.error("card",e);} };
+    requestAnimationFrame(drawAll);
+    if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>requestAnimationFrame(drawAll));
+    const t=setTimeout(drawAll,600);
+    const onResize=()=>requestAnimationFrame(drawAll);
+    window.addEventListener("resize",onResize);
+    return ()=>{ clearTimeout(t); window.removeEventListener("resize",onResize); };
+  },[result,unlocked,logoImg]); // eslint-disable-line
+
+  return (
+    <div className="wrap" style={{paddingBottom:80}}>
+      <header style={{padding:"56px 0 26px"}}>
+        <div className="mono" style={{color:"var(--hy)",letterSpacing:".25em",fontSize:12}}>SUBNINETY.CLUB</div>
+        <h1 className="display" style={{fontSize:"clamp(40px,7vw,82px)",lineHeight:.95,margin:"10px 0 0",textTransform:"uppercase"}}>
+          Your HYROX,<br/><span className="hy">heart&nbsp;by&nbsp;heart</span>
+        </h1>
+        <p style={{color:"var(--dim)",maxWidth:560,fontSize:16,marginTop:16}}>
+          Upload your Apple Health export and your HYROX result card. See exactly what your heart rate did at every station and every run — SkiErg to Wall Balls.
+        </p>
+      </header>
+
+      <section className="panel" style={{padding:24,marginBottom:22}}>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+          <FileDrop label="1 · Apple Health export (.zip or export.xml)" accept=".zip,.xml" file={health} onPick={f=>{setHealth(f);setErr(null);}}/>
+          <FileDrop label="2 · HYROX result card (.pdf)" accept=".pdf" file={pdf} onPick={onPdf}/>
+          <div><label className="fld">3 · Race date</label><input type="date" value={date} onChange={e=>setDate(e.target.value)}/></div>
+          <div><label className="fld">Race start time (24h)</label><input type="time" value={start} onChange={e=>setStart(e.target.value)}/></div>
+        </div>
+
+        <div style={{marginTop:22}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+            <label className="fld" style={{margin:0}}>Splits — auto-filled from your card; tap any value to fix</label>
+            <span className="mono" style={{fontSize:11,color:"var(--dim)"}}>Roxzone <input className="mono" style={{width:78,display:"inline-block",padding:"5px 8px"}} value={mmss(roxzone)} onChange={e=>{const s=parseMMSS(e.target.value); if(s!=null)setRoxzone(s);}}/></span>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(168px,1fr))",gap:8}}>
+            {segs.map((s,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:8,background:"#0e1013",border:"1px solid var(--line)",borderRadius:10,padding:"7px 10px"}}>
+                <span className={s.type==="run"?"seg-run":"seg-st"} style={{fontSize:12,flex:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{s.name}</span>
+                <input className="mono" style={{width:64,padding:"5px 6px",fontSize:12}} value={s._raw!=null?s._raw:mmss(s.sec)} onChange={e=>editSeg(i,e.target.value)}/>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{marginTop:22,display:"flex",alignItems:"center",gap:18,flexWrap:"wrap"}}>
+          <button className="cta" disabled={busy} onClick={analyze}>{busy?`Reading… ${Math.round(prog*100)}%`:"Analyze my race"}</button>
+          <span className="mono" style={{fontSize:11,color:"var(--faint)",maxWidth:380}}>Your health file is read locally in your browser and never uploaded. Estimated total: {secToClock(timeline.total)}.</span>
+        </div>
+        {err && <p style={{color:"var(--bad)",fontSize:13,marginTop:14}}>{err}</p>}
+      </section>
+
+      {result && !unlocked && (
+        <section className="panel" style={{padding:"34px 28px",marginBottom:22,textAlign:"center"}}>
+          <div className="mono hy" style={{fontSize:12,letterSpacing:".2em"}}>ANALYSIS COMPLETE ✓</div>
+          <h2 className="display" style={{fontSize:34,textTransform:"uppercase",margin:"10px 0 6px"}}>Your race is ready</h2>
+          <p style={{color:"var(--dim)",maxWidth:470,margin:"0 auto 18px",lineHeight:1.55}}>
+            We tracked {result.count.toLocaleString()} heart-rate readings across your {secToClock(timeline.total)} race. Enter your email to reveal your full breakdown and unlock your shareable race card.
+          </p>
+          <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap",maxWidth:470,margin:"0 auto"}}>
+            <input type="email" placeholder="you@email.com" value={email} onChange={e=>{setEmail(e.target.value);setGateErr(null);}} onKeyDown={e=>{if(e.key==="Enter")unlock();}} style={{flex:1,minWidth:210}}/>
+            <button className="cta" style={{fontSize:16,padding:"13px 24px"}} onClick={unlock}>Unlock</button>
+          </div>
+          {gateErr && <p style={{color:"var(--bad)",fontSize:13,marginTop:10}}>{gateErr}</p>}
+          <p className="mono" style={{fontSize:11,color:"var(--faint)",marginTop:16}}>No spam. Your Apple Health export is read locally and never uploaded — we store your email, race summary, and the result card you upload.</p>
+        </section>
+      )}
+
+      {result && unlocked && (
+        <section>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:14,marginBottom:18}}>
+            {[["Avg HR",Math.round(result.avg)+" bpm"],["Max HR",Math.round(result.max)+" bpm"],["Min HR",Math.round(result.min)+" bpm"],["HR samples",result.count.toLocaleString()]].map(([k,v])=>(
+              <div key={k} className="panel" style={{padding:16}}>
+                <div className="fld" style={{margin:0}}>{k}</div>
+                <div className="display" style={{fontSize:30,marginTop:4}}>{v}</div>
+              </div>
+            ))}
+          </div>
+
+          {insights.length>0 && (
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:14,marginBottom:18}}>
+              {insights.map(([k,v])=>(
+                <div key={k} className="panel" style={{padding:16,borderLeft:"3px solid var(--hy)"}}>
+                  <div className="fld" style={{margin:0}}>{k}</div>
+                  <div style={{fontSize:17,marginTop:6,fontWeight:600}}>{v}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="panel" style={{padding:18,marginBottom:18}}>
+            <div className="fld">Your shareable race card</div>
+            <div style={{display:"flex",gap:24,flexWrap:"wrap",alignItems:"flex-start",marginTop:12}}>
+              <canvas ref={cardRef} style={{width:"100%",maxWidth:340,height:"auto",borderRadius:12,border:"1px solid var(--line)",background:"#0b0c0e"}}/>
+              <div style={{flex:1,minWidth:220}}>
+                <p style={{color:"var(--dim)",fontSize:14,marginTop:0,lineHeight:1.5}}>Post it to Instagram, X or LinkedIn — or save it straight to your photos. One tap on mobile.</p>
+                <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+                  <button className="cta" style={{fontSize:15,padding:"12px 20px"}} onClick={shareCard}>Share</button>
+                  <button className="btn2" onClick={downloadPNG}>Download PNG</button>
+                  <button className="btn2" onClick={downloadPDF}>Download PDF</button>
+                </div>
+                <p className="mono" style={{fontSize:11,color:"var(--faint)",marginTop:14}}>"Share" opens your device share sheet (mobile); on desktop it downloads the image.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="panel" style={{padding:18,marginBottom:18}}>
+            <div className="fld">Heart rate across the race · <span className="seg-run">runs</span> / <span className="seg-st">stations</span> shaded · <span className="hy">●</span> peak</div>
+            <div style={{height:340,marginTop:8}}><canvas ref={chartRef} style={{width:"100%",height:"100%",display:"block"}}></canvas></div>
+          </div>
+
+          <div className="panel" style={{padding:18,marginBottom:18}}>
+            <div className="fld">Average heart rate by segment</div>
+            <div style={{height:300,marginTop:8}}><canvas ref={barRef} style={{width:"100%",height:"100%",display:"block"}}></canvas></div>
+          </div>
+
+          <div className="panel" style={{padding:6,overflowX:"auto"}}>
+            <table>
+              <thead><tr><th>Segment</th><th>Type</th><th className="mono">Time</th><th className="mono">Avg HR</th><th className="mono">Max HR</th></tr></thead>
+              <tbody>
+                {result.rows.map((r,i)=>(
+                  <tr key={i}>
+                    <td className={r.type==="run"?"seg-run":"seg-st"}>{r.name}</td>
+                    <td><span className="pill">{r.type}</span></td>
+                    <td className="mono">{mmss(r.sec)}</td>
+                    <td className="mono" style={{color:"var(--ink)"}}>{r.avg!=null?Math.round(r.avg):"—"}</td>
+                    <td className="mono" style={{color:"var(--dim)"}}>{r.max!=null?Math.round(r.max):"—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mono" style={{fontSize:11,color:"var(--faint)",marginTop:14}}>
+            Roxzone (~{mmss(roxzone)} of transitions) is distributed evenly between segments, so boundaries are accurate to within a few seconds. Per-segment averages are solid.
+          </p>
+        </section>
+      )}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
