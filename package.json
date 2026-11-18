@@ -6,7 +6,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "verify": "node scripts/sync-shared-rules.mjs --check && npm run build"
   },
   "dependencies": {
     "astro": "^4.16.0"
